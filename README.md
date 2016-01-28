@@ -1,5 +1,4 @@
-SpecShaperCalendarBundle
-=============
+# SpecShaperCalendarBundle
 
 The SpecShaperCalendarBundle provides a calendar and appointment package for the Symfony2 system.
 
@@ -21,21 +20,18 @@ Features to be added:
 
 [![Build Status](https://travis-ci.org/FriendsOfSymfony/FOSUserBundle.svg?branch=master)](https://travis-ci.org/FriendsOfSymfony/FOSUserBundle) [![Total Downloads](https://poser.pugx.org/friendsofsymfony/user-bundle/downloads.svg)](https://packagist.org/packages/friendsofsymfony/user-bundle) [![Latest Stable Version](https://poser.pugx.org/friendsofsymfony/user-bundle/v/stable.svg)](https://packagist.org/packages/friendsofsymfony/user-bundle)
 
-Documentation
--------------
+## Documentation
 
 The source of the documentation is stored in the `Resources/doc/` folder
 in this bundle.
 
-License
--------
+## License
 
 This bundle is under the MIT license. See the complete license in the bundle:
 
     Resources/meta/LICENSE
 
-About
------
+## About
 
 CalendarBundle is a [SpecShaper](http://about.specshaper.com) bundle for managing project
 appointments.
@@ -44,8 +40,7 @@ It is based on the [adesigns/calendar-bundle](https://github.com/adesigns/calend
 and extended with additional functionality.
 
 
-Reporting an issue or a feature request
----------------------------------------
+## Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/mogilvie/CalendarBundle/issues).
 
