@@ -91,6 +91,7 @@ class AppKernel extends Kernel
 
     // ...
 }
+```
 
 ## Step 2: Create the entities
 
@@ -133,6 +134,7 @@ class Calendar extends BaseCalendar{
         //...
     }
 }
+```
 
 ### CalendarEvent Entity
 
@@ -169,6 +171,7 @@ class CalendarEvent extends BaseCalendar{
         //...
     }
 }
+```
 
 ### CalendarInvitee Entity
 
@@ -205,6 +208,7 @@ class CalendarInvitee extends BaseCalendar{
         //...
     }
 }
+```
 
 ### CalendarComent Entity
 
@@ -238,6 +242,7 @@ class CalendarComment extends BaseCalendar{
         //...
     }
 }
+```
 
 ##Step 3: Create a listener
 
