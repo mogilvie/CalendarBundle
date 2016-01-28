@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="92df6ddd94127317" resname="heading.event">
+                <source>Calendar Event</source>
+                <target>Calendar Event</target>
+            </trans-unit>
+            <trans-unit id="92dfddd94127317" resname="choice.general">
+                <source>General</source>
+                <target>General</target>
+            </trans-unit>
+            <trans-unit id="92df6ddd94d127317" resname="choice.meeting">
+                <source>Meeting</source>
+                <target>Meeting</target>
+            </trans-unit>
+            <trans-unit id="92df6ddd941273s17" resname="choice.inspection">
+                <source>Inspection</source>
+                <target>Inspection</target>
+            </trans-unit>
+            <trans-unit id="92df6dddd941273s17" resname="choice.daily">
+                <source>Daily</source>
+                <target>Daily</target>
+            </trans-unit>
+            <trans-unit id="92df6dddd94127d3s17" resname="choice.daily">
+                <source>Daily</source>
+                <target>Daily</target>
+            </trans-unit>
+            <trans-unit id="92df6dddd9d41273s17" resname="choice.weekly">
+                <source>Weekly</source>
+                <target>Weekly</target>
+            </trans-unit>
+            <trans-unit id="92df6ddddd9d41273s17" resname="choice.fortnightly">
+                <source>Fortnightly</source>
+                <target>Fortnightly</target>
+            </trans-unit>
+            <trans-unit id="92df6ssdddd941273s17" resname="choice.monthly">
+                <source>Monthly</source>
+                <target>Monthly</target>
+            </trans-unit>
+            <trans-unit id="92df6ddd941aa27317" resname="choice.conversation">
+                <source>Conversation</source>
+                <target>Conversation</target>
+            </trans-unit>   
+            <trans-unit id="92df6dddd941aa273s17" resname="label.isAllDay">
+                <source>All day event</source>
+                <target>All day event</target>
+            </trans-unit> 
+            <trans-unit id="92df6dddd941aa27d3s17" resname="label.repeatUntil">
+                <source>Repeat until</source>
+                <target>Repeat until</target>
+            </trans-unit>
+            <trans-unit id="92dggf6dddd941aa273s17" resname="label.period">
+                <source>Period</source>
+                <target>Period</target>
+            </trans-unit>
+            <trans-unit id="92df6ddd941aas27317" resname="label.isReoccuring">
+                <source>Reccuring event</source>
+                <target>Reccuring event</target>
+            </trans-unit>      
+            <trans-unit id="92df6ddds941aa27317" resname="label.isReoccuring">
+                <source>Reccuring event</source>
+                <target>Reccuring event</target>
+            </trans-unit>      
+        </body>
+    </file>
+</xliff>

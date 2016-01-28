@@ -1,0 +1,10 @@
+
+#fullcalendar_loader:
+#    pattern: /fc-load-calendar-events
+#    defaults: { _controller: SpecShaperCalendarBundle:Calendar:loadCalendar }
+#    options:
+#        expose: true
+        
+app:
+    resource: '@SpecShaperCalendarBundle/Controller/'
+    type:     annotation

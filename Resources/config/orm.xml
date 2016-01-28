@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="spec_shaper_calender.manager.persisted_event" class="SpecShaper\CalendarBundle\Doctrine\PersistedEventManager" public="true">
+            <argument type="service" id="spec_shaper_calender.entity_manager" />
+            <argument>%spec_shaper_calendar.event_class%</argument>
+        </service>
+
+
+        <service id="spec_shaper_calender.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
+<!--            <argument>%spec_shaper_calender.model_manager_name%</argument>-->
+        </service>
+
+<!--        <service id="spec_shaper_calender.user_listener" class="FOS\UserBundle\Doctrine\Orm\UserListener" public="false">
+            <argument type="service" id="service_container" />
+        </service>-->
+    </services>
+
+</container>

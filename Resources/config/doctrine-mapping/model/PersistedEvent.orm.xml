@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="SpecShaper\CalendarBundle\Model\PersistedEvent">
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preFlush" method="onPreFlush" />
+        </lifecycle-callbacks>
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+        <field name="title" column="title" type="string" />
+        <field name="startDatetime" type="datetime" nullable="false"/>
+        <field name="endDatetime" type="datetime" nullable="false"/>
+        <field name="url" type="string" length="255" nullable="true"/>
+        <field name="isAllDay" type="boolean" />
+<!--        <one-to-many field="invitees" target-entity="Invitee" mapped-by="event" />-->
+        <field name="isReoccuring" type="boolean" />
+        <field name="repeatUntil" type="datetime" nullable="true" />
+        <field name="period" type="integer" nullable="true" />
+        <field name="text" type="text" nullable="true" />
+<!--        <one-to-many field="comment" target-entity="EventComment" mapped-by="event" />-->
+
+    </mapped-superclass>
+
+</doctrine-mapping>
