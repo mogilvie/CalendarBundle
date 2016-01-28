@@ -1,0 +1,31 @@
+{
+    "name" : "specshaper/calendar-bundle",
+    "description" : "A bundle to integrate FullCalendar with Symfony2.",
+    "type" : "symfony-bundle",
+    "homepage": "https://github.com/mogilvie/CalendarBundle",
+    "authors" : [{
+        "name" : "Mark Ogilvie",
+        "email" : "mark.ogilvie@specshaper.com"
+    }],
+    "keywords" : [
+        "calendar bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "php": ">=5.3.9",
+        "symfony/framework-bundle": "~2.3|~3.0"
+    },
+    "autoload" : {
+        "psr-4": { "SpecShaper\\CalendarBundle\\": "" }
+    },
+    "target-dir" : "SpecShaper/CalendarBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "1.0.x-dev"
+        }
+    }
+}
