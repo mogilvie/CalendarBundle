@@ -20,7 +20,6 @@
     "autoload" : {
         "psr-4": { "SpecShaper\\CalendarBundle\\": "" }
     },
-    "target-dir" : "SpecShaper/CalendarBundle",
     "repositories" : [{
     }],
     "extra" : {
