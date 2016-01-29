@@ -3,14 +3,12 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 use DateTime;
-use SpecShaper\CalendarBundle\Model\InviteeInterface;
 
 /**
- * PersistedEvent
- *
+ * PersistedEvent.
  */
-interface PersistedEventInterface {
-
+interface PersistedEventInterface
+{
     const REPEAT_DAILY = 0;
     const REPEAT_WEEKLY = 1;
     const REPEAT_FORTNIGHTLY = 2;
@@ -22,19 +20,20 @@ interface PersistedEventInterface {
      * Set startDate.
      * 
      * @param DateTime $startDate
+     *
      * @return \SpecShaper\CalendarBundle\Entity\PersistedEvent
      */
     public function setStartDate(DateTime $startDate);
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return DateTime
      */
     public function getStartDate();
 
     /**
-     * Set startTime
+     * Set startTime.
      *
      * @param DateTime $startTime
      *
@@ -43,14 +42,14 @@ interface PersistedEventInterface {
     public function setStartTime(DateTime $startTime);
 
     /**
-     * Get startTime
+     * Get startTime.
      *
      * @return DateTime
      */
     public function getStartTime();
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param DateTime $endDate
      *
@@ -59,14 +58,14 @@ interface PersistedEventInterface {
     public function setEndDate(DateTime $endDate);
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return DateTime
      */
     public function getEndDate();
 
     /**
-     * Set endTime
+     * Set endTime.
      *
      * @param DateTime $endTime
      *
@@ -75,7 +74,7 @@ interface PersistedEventInterface {
     public function setEndTime(DateTime $endTime);
 
     /**
-     * Get endTime
+     * Get endTime.
      *
      * @return DateTime
      */
@@ -86,7 +85,6 @@ interface PersistedEventInterface {
      * 
      * Uses the nonpersisted parameters to create a
      * combined DateTime
-     * 
      */
     public function storeStartDatetime();
 
@@ -95,24 +93,23 @@ interface PersistedEventInterface {
      * 
      * Uses the nonpersisted parameters to create a
      * combined DateTime
-
      */
     public function storeEndDatetime();
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct();
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
@@ -121,7 +118,7 @@ interface PersistedEventInterface {
     public function setTitle($title);
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
@@ -130,7 +127,7 @@ interface PersistedEventInterface {
     public function onPreFlush();
 
     /**
-     * Set startDatetime
+     * Set startDatetime.
      *
      * @param \DateTime $startDatetime
      *
@@ -139,14 +136,14 @@ interface PersistedEventInterface {
     public function setStartDatetime($startDatetime);
 
     /**
-     * Get startDatetime
+     * Get startDatetime.
      *
      * @return \DateTime
      */
     public function getStartDatetime();
 
     /**
-     * Set endDatetime
+     * Set endDatetime.
      *
      * @param \DateTime $endDatetime
      *
@@ -155,14 +152,14 @@ interface PersistedEventInterface {
     public function setEndDatetime($endDatetime);
 
     /**
-     * Get endDatetime
+     * Get endDatetime.
      *
      * @return \DateTime
      */
     public function getEndDatetime();
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
      *
@@ -171,46 +168,46 @@ interface PersistedEventInterface {
     public function setUrl($url);
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
     public function getUrl();
 
     /**
-     * Set isAllDay
+     * Set isAllDay.
      *
-     * @param boolean $isAllDay
+     * @param bool $isAllDay
      *
      * @return PersistedEvent
      */
     public function setIsAllDay($isAllDay);
 
     /**
-     * Get isAllDay
+     * Get isAllDay.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsAllDay();
 
     /**
-     * Set isReoccuring
+     * Set isReoccuring.
      *
-     * @param boolean $isReoccuring
+     * @param bool $isReoccuring
      *
      * @return PersistedEvent
      */
     public function setIsReoccuring($isReoccuring);
 
     /**
-     * Get isReoccuring
+     * Get isReoccuring.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsReoccuring();
 
     /**
-     * Set repeatUntil
+     * Set repeatUntil.
      *
      * @param \DateTime $repeatUntil
      *
@@ -219,30 +216,30 @@ interface PersistedEventInterface {
     public function setRepeatUntil(DateTime $repeatUntil);
 
     /**
-     * Get repeatUntil
+     * Get repeatUntil.
      *
      * @return \DateTime
      */
     public function getRepeatUntil();
 
     /**
-     * Set period
+     * Set period.
      *
-     * @param integer $period
+     * @param int $period
      *
      * @return PersistedEvent
      */
     public function setPeriod($period);
 
     /**
-     * Get period
+     * Get period.
      *
-     * @return integer
+     * @return int
      */
     public function getPeriod();
 
     /**
-     * Set text
+     * Set text.
      *
      * @param string $text
      *
@@ -251,35 +248,34 @@ interface PersistedEventInterface {
     public function setText($text);
 
     /**
-     * Get text
+     * Get text.
      *
      * @return string
      */
     public function getText();
 
     /**
-     * Add invitee
-
+     * Add invitee.
+     
      *
      * @return PersistedEvent
      */
     public function addInvitee(InviteeInterface $invitee);
 
     /**
-     * Remove invitee
-
+     * Remove invitee.
      */
     public function removeInvitee(InviteeInterface $invitee);
 
     /**
-     * Get invitees
+     * Get invitees.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getInvitees();
 
     /**
-     * Add comment
+     * Add comment.
      *
      * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
      *
@@ -288,14 +284,14 @@ interface PersistedEventInterface {
     public function addComment(EventCommentInterface $comment);
 
     /**
-     * Remove comment
+     * Remove comment.
      *
      * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
      */
     public function removeComment(EventCommentInterface $comment);
 
     /**
-     * Get comment
+     * Get comment.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

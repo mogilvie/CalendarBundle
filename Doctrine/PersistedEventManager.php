@@ -1,11 +1,8 @@
 <?php
 
-
 namespace SpecShaper\CalendarBundle\Doctrine;
 
-
 use Doctrine\Common\Persistence\ObjectManager;
-use SpecShaper\CalendarBundle\Model\PersistedEventManager as BasePersistedEventManager;
 
 class PersistedEventManager
 {
@@ -31,31 +28,32 @@ class PersistedEventManager
         $this->class = $metadata->getName();
     }
 
-    public function createEvent() {
+    public function createEvent()
+    {
         $class = $this->class;
-        return new $class;
+
+        return new $class();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClass()
     {
         return $this->class;
     }
-    
-    public function getEvent($id) {
-        return $this->repository->find($id);        
+
+    public function getEvent($id)
+    {
+        return $this->repository->find($id);
     }
-    
-    public function save($event) {
-        
+
+    public function save($event)
+    {
         $om = $this->objectManager;
         $om->persist($event);
         $om->flush();
-        
-        return $event;
-        
-    }
 
+        return $event;
+    }
 }

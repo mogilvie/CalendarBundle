@@ -2,15 +2,13 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-use SpecShaper\CalendarBundle\Model\CalendarInterface;
 use DateTime;
 
 /**
- * Comment
+ * Comment.
  */
-abstract class Calendar implements CalendarInterface {
-
+abstract class Calendar implements CalendarInterface
+{
     /**
      * @var int
      */
@@ -18,13 +16,11 @@ abstract class Calendar implements CalendarInterface {
 
     /**
      * @var string
-     *
      */
     protected $event;
 
     /**
      * @var string
-     *
      */
     protected $country;
 
@@ -39,97 +35,120 @@ abstract class Calendar implements CalendarInterface {
     protected $createdOn;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getEvent() {
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setEvent(PersistedEventInterface $event) {
+    public function setEvent(PersistedEventInterface $event)
+    {
         $this->event = $event;
+
         return $this;
     }
 
-    public function getCountry() {
+    public function getCountry()
+    {
         return $this->country;
     }
 
-    public function setCountry($country) {
+    public function setCountry($country)
+    {
         $this->country = $country;
+
         return $this;
     }
 
-    public function setTimeZone($timeZone) {
+    public function setTimeZone($timeZone)
+    {
         $this->timeZone = $timeZone;
+
         return $this;
     }
 
-    public function getTimeZone() {
+    public function getTimeZone()
+    {
         return $this->timeZone;
     }
 
-    public function setDateFormat($dateFormat) {
+    public function setDateFormat($dateFormat)
+    {
         $this->dateFormat = $dateFormat;
+
         return $this;
     }
 
-    public function getDateFormat() {
+    public function getDateFormat()
+    {
         return $this->dateFormat;
     }
 
-    public function setTimeFormat($timeFormat) {
+    public function setTimeFormat($timeFormat)
+    {
         $this->timeFormat = $timeFormat;
+
         return $this;
     }
 
-    public function getTimeFormat() {
+    public function getTimeFormat()
+    {
         return $this->timeFormat;
     }
 
-    public function setDefaultDuration($defaultDuration) {
+    public function setDefaultDuration($defaultDuration)
+    {
         $this->defaultDuration = $defaultDuration;
+
         return $this;
     }
 
-    public function getDefaultDuration() {
+    public function getDefaultDuration()
+    {
         return $this->defaultDuration;
     }
 
-    public function setOtherCalendarFormat($otherCalendarFormat) {
+    public function setOtherCalendarFormat($otherCalendarFormat)
+    {
         $this->otherCalendarFormat = $otherCalendarFormat;
+
         return $this;
     }
 
-    public function getOtherCalendarFormat() {
+    public function getOtherCalendarFormat()
+    {
         return $this->otherCalendarFormat;
     }
 
     /**
-     * Set createdOn
+     * Set createdOn.
      *
      * @param \DateTime $createdOn
      *
      * @return Comment
      */
-    public function setCreatedOn(DateTime $createdOn) {
+    public function setCreatedOn(DateTime $createdOn)
+    {
         $this->createdOn = $createdOn;
 
         return $this;
     }
 
     /**
-     * Get createdOn
+     * Get createdOn.
      *
      * @return \DateTime
      */
-    public function getCreatedOn() {
+    public function getCreatedOn()
+    {
         return $this->createdOn;
     }
-
 }

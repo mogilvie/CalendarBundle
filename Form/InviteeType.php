@@ -4,38 +4,32 @@ namespace SpecShaper\CalendarBundle\Form;
 
 //use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use SpecShaper\CalendarBundle\Entity\PersistedEvent;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InvitieeType extends AbstractType {
-
+class InviteeType extends AbstractType
+{
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
                 ->add('organisation', TextType::class, array(
                     'required' => false,
-                    'label' => 'label.organisation',
+                    'label' => 'specshaper_caledarbundle.label.organisation',
                 ))
                 ->add('userName', TextType::class, array(
                     'class' => 'AppBundle:Entity:User',
                     'required' => true,
-                    'label' => 'label.chairPerson',
+                    'label' => 'specshaper_caledarbundle.label.chairPerson',
                 ))
                 ->add('emailAddress', EmailType::class, array(
                     'required' => false,
-                    'label' => 'label.emailAddress',
-                ))                      
+                    'label' => 'specshaper_caledarbundle.label.emailAddress',
+                ))
         ;
     }
 
@@ -46,8 +40,8 @@ class InvitieeType extends AbstractType {
      *
      * @return string 'appbundle_invitee'
      */
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return 'appbundle_invitee';
     }
-
 }

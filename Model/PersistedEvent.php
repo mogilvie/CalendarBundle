@@ -3,16 +3,12 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 use DateTime;
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-use SpecShaper\CalendarBundle\Model\InviteeInterface;
-use SpecShaper\CalendarBundle\Model\EventCommentInterface;
 
 /**
- * PersistedEvent
- * 
+ * PersistedEvent.
  */
-abstract class PersistedEvent implements PersistedEventInterface {
-
+abstract class PersistedEvent implements PersistedEventInterface
+{
     /**
      * @var int
      */
@@ -40,22 +36,23 @@ abstract class PersistedEvent implements PersistedEventInterface {
     protected $endDatetime;
 
     /**
-     * A url address associated with the event
+     * A url address associated with the event.
      * 
      * @todo Not implemented yet.
+     *
      * @var string
      */
     protected $url;
 
     /**
      * Is the event an allday event.
-     * @var bool
      *
+     * @var bool
      */
     protected $isAllDay;
 
     /**
-     * The invitees
+     * The invitees.
      * 
      * @todo Not implemented yet.
      */
@@ -72,6 +69,7 @@ abstract class PersistedEvent implements PersistedEventInterface {
      * Date to repeat the event until.
      * 
      * @todo Not implemented yet.
+     *
      * @var \Date
      */
     protected $repeatUntil;
@@ -85,6 +83,7 @@ abstract class PersistedEvent implements PersistedEventInterface {
 
     /**
      * The text content of the event.
+     *
      * @var string
      */
     protected $text;
@@ -98,13 +97,11 @@ abstract class PersistedEvent implements PersistedEventInterface {
 
     /**
      * @var string HTML color code for the bg color of the event label.
-     *
      */
     protected $bgColor;
 
     /**
      * @var string HTML color code for the foregorund color of the event label.
-     *
      */
     protected $fgColor;
 
@@ -114,25 +111,21 @@ abstract class PersistedEvent implements PersistedEventInterface {
     protected $cssClass;
 
     /**
-     *
      * @var DateTime
      */
     protected $startDate;
 
     /**
-     *
      * @var DateTime
      */
     protected $startTime;
 
     /**
-     *
      * @var DateTime
      */
     protected $endDate;
 
     /**
-     *
      * @var DateTime
      */
     protected $endTime;
@@ -144,10 +137,10 @@ abstract class PersistedEvent implements PersistedEventInterface {
      *
      * @return array $event
      */
-    public function toArray() {
+    public function toArray()
+    {
         $event = array();
         $event['id'] = $this->id;
-
 
         $event['title'] = $this->title;
         $event['start'] = $this->startDatetime->format("Y-m-d\TH:i:s\Z");
@@ -186,90 +179,100 @@ abstract class PersistedEvent implements PersistedEventInterface {
      * Set startDate.
      * 
      * @param DateTime $startDate
+     *
      * @return \SpecShaper\CalendarBundle\Entity\PersistedEvent
      */
-    public function setStartDate(DateTime $startDate) {
+    public function setStartDate(DateTime $startDate)
+    {
         $this->startDate = $startDate;
 
         return $this;
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return DateTime
      */
-    public function getStartDate() {
+    public function getStartDate()
+    {
         return $this->startDatetime;
     }
 
     /**
-     * Set startTime
+     * Set startTime.
      *
      * @param DateTime $startTime
      *
      * @return PersistedEvent
      */
-    public function setStartTime(DateTime $startTime) {
+    public function setStartTime(DateTime $startTime)
+    {
         $this->startTime = $startTime;
 
         return $this;
     }
 
     /**
-     * Get startTime
+     * Get startTime.
      *
      * @return DateTime
      */
-    public function getStartTime() {
+    public function getStartTime()
+    {
         return $this->startDatetime;
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param DateTime $endDate
      *
      * @return PersistedEvent
      */
-    public function setEndDate(DateTime $endDate) {
+    public function setEndDate(DateTime $endDate)
+    {
         $this->endDate = $endDate;
 
         return $this;
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return DateTime
      */
-    public function getEndDate() {
+    public function getEndDate()
+    {
         return $this->endDatetime;
     }
 
     /**
-     * Set endTime
+     * Set endTime.
      *
      * @param DateTime $endTime
      *
      * @return PersistedEvent
      */
-    public function setEndTime(DateTime $endTime) {
+    public function setEndTime(DateTime $endTime)
+    {
         $this->endTime = $endTime;
 
         return $this;
     }
 
     /**
-     * Get endTime
+     * Get endTime.
      *
      * @return DateTime
      */
-    public function getEndTime() {
+    public function getEndTime()
+    {
         return $this->endDatetime;
     }
 
-    public function onPreFlush() {
+    public function onPreFlush()
+    {
         $this->storeEndDatetime();
         $this->storeStartDatetime();
     }
@@ -279,10 +282,9 @@ abstract class PersistedEvent implements PersistedEventInterface {
      * 
      * Uses the nonpersisted parameters to create a
      * combined DateTime
-     * 
      */
-    public function storeStartDatetime() {
-
+    public function storeStartDatetime()
+    {
         if ($this->startTime === null) {
             return;
         }
@@ -301,10 +303,9 @@ abstract class PersistedEvent implements PersistedEventInterface {
      * 
      * Uses the nonpersisted parameters to create a
      * combined DateTime
-     * 
      */
-    public function storeEndDatetime() {
-
+    public function storeEndDatetime()
+    {
         if ($this->endTime === null) {
             return;
         }
@@ -321,280 +322,303 @@ abstract class PersistedEvent implements PersistedEventInterface {
     /* -------------------End of Custom Content------------------------------- */
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->invitees = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comment = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
      *
      * @return PersistedEvent
      */
-    public function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->title = $title;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get title.
      *
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
     /**
-     * Set startDatetime
+     * Set startDatetime.
      *
      * @param \DateTime $startDatetime
      *
      * @return PersistedEvent
      */
-    public function setStartDatetime($startDatetime) {
+    public function setStartDatetime($startDatetime)
+    {
         $this->startDatetime = $startDatetime;
 
         return $this;
     }
 
     /**
-     * Get startDatetime
+     * Get startDatetime.
      *
      * @return \DateTime
      */
-    public function getStartDatetime() {
+    public function getStartDatetime()
+    {
         return $this->startDatetime;
     }
 
     /**
-     * Set endDatetime
+     * Set endDatetime.
      *
      * @param \DateTime $endDatetime
      *
      * @return PersistedEvent
      */
-    public function setEndDatetime($endDatetime) {
+    public function setEndDatetime($endDatetime)
+    {
         $this->endDatetime = $endDatetime;
 
         return $this;
     }
 
     /**
-     * Get endDatetime
+     * Get endDatetime.
      *
      * @return \DateTime
      */
-    public function getEndDatetime() {
+    public function getEndDatetime()
+    {
         return $this->endDatetime;
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
      *
      * @return PersistedEvent
      */
-    public function setUrl($url) {
+    public function setUrl($url)
+    {
         $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->url;
     }
 
     /**
-     * Set isAllDay
+     * Set isAllDay.
      *
-     * @param boolean $isAllDay
+     * @param bool $isAllDay
      *
      * @return PersistedEvent
      */
-    public function setIsAllDay($isAllDay) {
+    public function setIsAllDay($isAllDay)
+    {
         $this->isAllDay = $isAllDay;
 
         return $this;
     }
 
     /**
-     * Get isAllDay
+     * Get isAllDay.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsAllDay() {
+    public function getIsAllDay()
+    {
         return $this->isAllDay;
     }
 
     /**
-     * Set isReoccuring
+     * Set isReoccuring.
      *
-     * @param boolean $isReoccuring
+     * @param bool $isReoccuring
      *
      * @return PersistedEvent
      */
-    public function setIsReoccuring($isReoccuring) {
+    public function setIsReoccuring($isReoccuring)
+    {
         $this->isReoccuring = $isReoccuring;
 
         return $this;
     }
 
     /**
-     * Get isReoccuring
+     * Get isReoccuring.
      *
-     * @return boolean
+     * @return bool
      */
-    public function getIsReoccuring() {
+    public function getIsReoccuring()
+    {
         return $this->isReoccuring;
     }
 
     /**
-     * Set repeatUntil
+     * Set repeatUntil.
      *
      * @param \DateTime $repeatUntil
      *
      * @return PersistedEvent
      */
-    public function setRepeatUntil(DateTime $repeatUntil) {
+    public function setRepeatUntil(DateTime $repeatUntil)
+    {
         $this->repeatUntil = $repeatUntil;
 
         return $this;
     }
 
     /**
-     * Get repeatUntil
+     * Get repeatUntil.
      *
      * @return \DateTime
      */
-    public function getRepeatUntil() {
+    public function getRepeatUntil()
+    {
         return $this->repeatUntil;
     }
 
     /**
-     * Set period
+     * Set period.
      *
-     * @param integer $period
+     * @param int $period
      *
      * @return PersistedEvent
      */
-    public function setPeriod($period) {
+    public function setPeriod($period)
+    {
         $this->period = $period;
 
         return $this;
     }
 
     /**
-     * Get period
+     * Get period.
      *
-     * @return integer
+     * @return int
      */
-    public function getPeriod() {
+    public function getPeriod()
+    {
         return $this->period;
     }
 
     /**
-     * Set text
+     * Set text.
      *
      * @param string $text
      *
      * @return PersistedEvent
      */
-    public function setText($text) {
+    public function setText($text)
+    {
         $this->text = $text;
 
         return $this;
     }
 
     /**
-     * Get text
+     * Get text.
      *
      * @return string
      */
-    public function getText() {
+    public function getText()
+    {
         return $this->text;
     }
 
     /**
-     * Add invitee
+     * Add invitee.
      *
-
+     
      *
      * @return PersistedEvent
      */
-    public function addInvitee(InviteeInterface $invitee) {
+    public function addInvitee(InviteeInterface $invitee)
+    {
         $this->invitees[] = $invitee;
 
         return $this;
     }
 
     /**
-     * Remove invitee
-     *
-
+     * Remove invitee.
      */
-    public function removeInvitee(InviteeInterface $invitee) {
+    public function removeInvitee(InviteeInterface $invitee)
+    {
         $this->invitees->removeElement($invitee);
     }
 
     /**
-     * Get invitees
+     * Get invitees.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getInvitees() {
+    public function getInvitees()
+    {
         return $this->invitees;
     }
 
     /**
-     * Add comment
+     * Add comment.
      *
      * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
      *
      * @return PersistedEvent
      */
-    public function addComment(EventCommentInterface $comment) {
+    public function addComment(EventCommentInterface $comment)
+    {
         $this->comment[] = $comment;
 
         return $this;
     }
 
     /**
-     * Remove comment
+     * Remove comment.
      *
      * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
      */
-    public function removeComment(EventCommentInterface $comment) {
+    public function removeComment(EventCommentInterface $comment)
+    {
         $this->comment->removeElement($comment);
     }
 
     /**
-     * Get comment
+     * Get comment.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getComment() {
+    public function getComment()
+    {
         return $this->comment;
     }
-
 }

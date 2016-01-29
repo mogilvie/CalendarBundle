@@ -2,51 +2,42 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-use SpecShaper\CalendarBundle\Model\InviteeInterface;
-
 /**
- * EventComment
- *
+ * EventComment.
  */
 interface EventCommentInterface
 {
-    
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct();
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
     /**
-     * Add event
-     *
+     * Add event.
      */
     public function addEvent(PersistedEventInterface $event);
 
     /**
-     * Remove event
+     * Remove event.
      *
      *\/
-    public function removeEvent(PersistedEventInterface $event)
-    {
-        $this->event->removeElement($event);
-    }
-
-    /**
+     public function removeEvent(PersistedEventInterface $event)
+     {
+     $this->event->removeElement($event);
+     }
+     
+     /**
      * Get event
-     *
-     * 
      */
     public function getEvent();
-    
+
     public function setInvitee(InviteeInterface $invitee);
 
     public function getInvitee();

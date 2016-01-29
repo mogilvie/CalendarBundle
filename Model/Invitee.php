@@ -2,12 +2,8 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use SpecShaper\CalendarBundle\Model\InviteeInterface;
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-
 /**
- * Invitee
- *
+ * Invitee.
  */
 class Invitee implements InviteeInterface
 {
@@ -17,51 +13,44 @@ class Invitee implements InviteeInterface
     protected $id;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $event;
-    
+
     /**
      * @var string
-     *
-     */ 
+     */
     protected $emailAddress;
 
     /**
      * @var string
-     *
      */
     protected $hasAccepted;
 
     /**
      * @var \DateTime
-     *
      */
     protected $acceptedOn;
 
     /**
      * @var string
-     *
      */
     protected $message;
 
     /**
      * @var string
-     *
      */
     protected $token;
 
     /**
      * @var \DateTime
-     *
      */
     protected $sentOn;
-       
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -69,7 +58,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set meeting
+     * Set meeting.
      *
      * @param string $meeting
      *
@@ -83,7 +72,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get meeting
+     * Get meeting.
      *
      * @return string
      */
@@ -93,7 +82,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set emailAddress
+     * Set emailAddress.
      *
      * @param string $emailAddress
      *
@@ -107,7 +96,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get emailAddress
+     * Get emailAddress.
      *
      * @return string
      */
@@ -117,7 +106,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set hasAccepted
+     * Set hasAccepted.
      *
      * @param string $hasAccepted
      *
@@ -131,7 +120,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get hasAccepted
+     * Get hasAccepted.
      *
      * @return string
      */
@@ -141,7 +130,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set acceptedOn
+     * Set acceptedOn.
      *
      * @param \DateTime $acceptedOn
      *
@@ -155,7 +144,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get acceptedOn
+     * Get acceptedOn.
      *
      * @return \DateTime
      */
@@ -165,7 +154,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set token
+     * Set token.
      *
      * @param string $token
      *
@@ -179,7 +168,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get token
+     * Get token.
      *
      * @return string
      */
@@ -188,9 +177,8 @@ class Invitee implements InviteeInterface
         return $this->token;
     }
 
-   
     /**
-     * Set sentOn
+     * Set sentOn.
      *
      * @param \DateTime $sentOn
      *
@@ -204,7 +192,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get sentOn
+     * Get sentOn.
      *
      * @return \DateTime
      */
@@ -214,7 +202,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set event
+     * Set event.
      *
      * @param PersistedEventInterface $event
      *
@@ -228,7 +216,7 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Get event
+     * Get event.
      *
      * @return PersistedEventInterface
      */

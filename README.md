@@ -96,13 +96,10 @@ class AppKernel extends Kernel
     {
         $bundles = array(
             // ...
-
             new SpecShaper\CalendarBundle\SpecShaperCalendarBundle(),
         );
-
         // ...
     }
-
     // ...
 }
 ```
@@ -260,8 +257,34 @@ class CalendarComment extends BaseCalendarComment{
 
 ## Step 3: Create listeners
 
-The CalendarEventListener provides the mechanism to intercept the loading
-of a calendar and modify the event entities before they are rendered.
+Create listeners in your application to intercept events fired by the bundle and
+modify / interact with the events.
+
+### CalendarLoadEventsListener
+Thrown when the calendar is first loaded and whenever the user changes the view
+date range.
+
+Used to query for and decorate CalendarEvents to be displayed in the calendar.
+
+### CalendarNewEventListener
+Thrown when a new event is created in the calendar.
+
+Used to populate and decorate the new CalendarEvent to customise it for your application.
+
+### CalendarRemoveEventListener
+Thrown when an event is deleted or removed.
+
+Used to modify or remove the CalendarEvent to customise it for your application.
+
+### CalendarUpdateEventListener
+Thrown when an event is modified.
+
+Used to modify or remove the CalendarEvent to customise it for your application. For
+example:
+- Send an email updating invitees.
+- Change relationships.
+
+See the documents section for more detail of the listeners available:
 
 
 ## Step 4: Configure the bundle
@@ -286,6 +309,14 @@ spec_shaper_calendar:
         comment_class:  AppBundle\Entity\CalendarComment
 ```
 
+You will also need to enable translations if not already configured:
+
+```yml
+// app/config/config.yml
+framework:
+    translator:      { fallbacks: ["%locale%"] }
+```
+
 ## Step 5: Define the routes
 
 Define any routing that you prefer. The controller can be placed behind a firewall
@@ -300,7 +331,7 @@ spec_shaper_calendar:
 
 ```
 
-## Step 5: Integrate into one of your twig templates
+## Step 6: Integrate into one of your twig templates
 
 The bundle requires:
 - Jquery
@@ -353,7 +384,7 @@ Networks to provide js and css would look like:
 {% endblock %}
 ```
 
-## Step 6: Customise
+## Step 7: Customise
 
 Use the entities to customise the persisted information and integrate the calendars with your
 application entities.

@@ -1,51 +1,51 @@
 <?php
 
-namespace SpecShaper\CalendarBundle\Event;
-
 /**
- * SpecShaperCalendarBundle\Event\CalendarEvent.php
- * 
- * LICENSE: Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential. SpecShaper is an SaaS product and no license is
- * granted to copy or distribute the source files.
- * 
+ * SpecShaperCalendarBundle\Event\CalendarLoadEvents.php
+ *  
  * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
- * @copyright  (c) 2016, SpecShaper - All rights reserved
- * @license    http://URL name
- * @version     Release: 1.0.0
- * @since       Available since Release 1.0.0
  */
+
+namespace SpecShaper\CalendarBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
 use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
 
 /**
- * Description of CalendarEvent
+ * CalendarLoadEvents is thrown to allow the AppBundle to load and set
+ * the events which fall between the view date range for the calendar.
  *
  * @author      Mark Ogilvie <mark.ogilvie@specshaper.com>
- * @copyright   (c) 2015, SpecShaper - All rights reserved
- * @license     http://URL name
- * @version     Release: 1.0.0
- * @since       Available since Release 1.0.0
  */
-class CalendarEvent extends Event
+class CalendarLoadEvents extends Event
 {
-    const CONFIGURE = 'specshaper_calendar.load_events';
-
+    /**
+     * @var \DateTime
+     */
     private $startDatetime;
-    
+
+    /**
+     * @var \DateTime
+     */
     private $endDatetime;
-    
+
+    /**
+     * @var Request
+     */
     private $request;
 
+    /**
+     * @var PersistedEventInterface[]
+     */
     private $events;
-    
+
     /**
      * Constructor method requires a start and end time for event listeners to use.
      * 
      * @param \DateTime $start Begin datetime to use
-     * @param \DateTime $end End datetime to use
+     * @param \DateTime $end   End datetime to use
+     * @param Request $request
      */
     public function __construct(\DateTime $start, \DateTime $end, Request $request = null)
     {
@@ -55,15 +55,29 @@ class CalendarEvent extends Event
         $this->events = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Get the events from the CalendarLoadEvents event.
+     * 
+     * PersistedEvents, or CalendarEvents, and added to this CalendarLoadEvents
+     * in the AppBundle EventListenr.
+     * 
+     * Use this method to get the loaded events in the CalendarController.
+     * 
+     * @return PersistedEventInterface[]
+     */
     public function getEvents()
     {
         return $this->events;
     }
-    
+
     /**
-     * If the event isn't already in the list, add it
+     * If the event isn't already in the list, add it.
+     * 
+     * Used in the AppBundle EventListener when adding queried events
+     * to the CalenderLoadEvents event.
      * 
      * @param EventEntity $event
+     *
      * @return CalendarEvent $this
      */
     public function addEvent(PersistedEventInterface $event)
@@ -71,12 +85,12 @@ class CalendarEvent extends Event
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
         }
-        
+
         return $this;
     }
-    
+
     /**
-     * Get start datetime 
+     * Get start datetime for the period to be loaded.
      * 
      * @return \DateTime
      */
@@ -86,7 +100,7 @@ class CalendarEvent extends Event
     }
 
     /**
-     * Get end datetime 
+     * Get end datetime for the period to be loaded.
      * 
      * @return \DateTime
      */
@@ -96,7 +110,7 @@ class CalendarEvent extends Event
     }
 
     /**
-     * Get request
+     * Get request.
      * 
      * @return Request
      */

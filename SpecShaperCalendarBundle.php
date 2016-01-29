@@ -9,15 +9,15 @@ use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMa
 use Doctrine\Bundle\CouchDBBundle\DependencyInjection\Compiler\DoctrineCouchDBMappingsPass;
 use Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass;
 
-class SpecShaperCalendarBundle extends Bundle {
-
-    public function build(ContainerBuilder $container) {
-
+class SpecShaperCalendarBundle extends Bundle
+{
+    public function build(ContainerBuilder $container)
+    {
         parent::build($container);
         // ...
 
         $mappings = array(
-            realpath(__DIR__ . '/Resources/config/doctrine-mapping/model') => 'SpecShaper\CalendarBundle\Model'
+            realpath(__DIR__.'/Resources/config/doctrine-mapping/model') => 'SpecShaper\CalendarBundle\Model',
         );
 
         $ormCompilerClass = 'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass';
@@ -29,7 +29,6 @@ class SpecShaperCalendarBundle extends Bundle {
                             array('SpecShaperCalendarBundle' => 'SpecShaper\CalendarBundle\Model')
             ));
         }
-
 
 //        $mongoCompilerClass = 'Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
 //        if (class_exists($mongoCompilerClass)) {
@@ -64,7 +63,4 @@ class SpecShaperCalendarBundle extends Bundle {
 //            ));
 //        }
     }
-
-   
-
 }

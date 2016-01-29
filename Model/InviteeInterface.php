@@ -3,19 +3,18 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 /**
- * InviteeInterface
+ * InviteeInterface.
  */
 interface InviteeInterface
-{    
-
+{
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
     /**
-     * Set meeting
+     * Set meeting.
      *
      * @param string $meeting
      *
@@ -24,14 +23,14 @@ interface InviteeInterface
     public function setMeeting($meeting);
 
     /**
-     * Get meeting
+     * Get meeting.
      *
      * @return string
      */
     public function getMeeting();
 
     /**
-     * Set emailAddress
+     * Set emailAddress.
      *
      * @param string $emailAddress
      *
@@ -40,14 +39,14 @@ interface InviteeInterface
     public function setEmailAddress($emailAddress);
 
     /**
-     * Get emailAddress
+     * Get emailAddress.
      *
      * @return string
      */
     public function getEmailAddress();
 
     /**
-     * Set hasAccepted
+     * Set hasAccepted.
      *
      * @param string $hasAccepted
      *
@@ -56,14 +55,14 @@ interface InviteeInterface
     public function setHasAccepted($hasAccepted);
 
     /**
-     * Get hasAccepted
+     * Get hasAccepted.
      *
      * @return string
      */
     public function getHasAccepted();
 
     /**
-     * Set acceptedOn
+     * Set acceptedOn.
      *
      * @param \DateTime $acceptedOn
      *
@@ -72,15 +71,14 @@ interface InviteeInterface
     public function setAcceptedOn($acceptedOn);
 
     /**
-     * Get acceptedOn
+     * Get acceptedOn.
      *
      * @return \DateTime
      */
     public function getAcceptedOn();
 
-
     /**
-     * Set token
+     * Set token.
      *
      * @param string $token
      *
@@ -89,14 +87,14 @@ interface InviteeInterface
     public function setToken($token);
 
     /**
-     * Get token
+     * Get token.
      *
      * @return string
      */
     public function getToken();
 
     /**
-     * Set sentOn
+     * Set sentOn.
      *
      * @param \DateTime $sentOn
      *
@@ -105,23 +103,21 @@ interface InviteeInterface
     public function setSentOn($sentOn);
 
     /**
-     * Get sentOn
+     * Get sentOn.
      *
      * @return \DateTime
      */
     public function getSentOn();
 
     /**
-     * Set event
+     * Set event.
      *
      * @return PersistedEventInterface
      */
     public function setEvent(PersistedEventInterface $event = null);
 
     /**
-     * Get event
-     *
-
+     * Get event.
      */
     public function getEvent();
 }

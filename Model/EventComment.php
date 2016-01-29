@@ -2,18 +2,13 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-use SpecShaper\CalendarBundle\Model\EventCommentInterface;
-
 /**
- * EventComment
- *
+ * EventComment.
  */
-abstract class EventComment implements EventCommentInterface {
-
+abstract class EventComment implements EventCommentInterface
+{
     /**
      * @var int
-     *
      */
     protected $id;
 
@@ -31,65 +26,70 @@ abstract class EventComment implements EventCommentInterface {
      * @var string
      */
     protected $comment;
-    
+
     protected $invitee;
 
     /**
-     * Constructor
+     * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->event = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Add event
+     * Add event.
      *
      * @param PersistedEventInterface $event
      *
      * @return EventComment
      */
-    public function addEvent(PersistedEventInterface $event) {
+    public function addEvent(PersistedEventInterface $event)
+    {
         $this->event[] = $event;
 
         return $this;
     }
 
     /**
-     * Remove event
+     * Remove event.
      *
      * @param PersistedEventInterface $event
      */
-    public function removeEvent(PersistedEventInterface $event) {
+    public function removeEvent(PersistedEventInterface $event)
+    {
         $this->event->removeElement($event);
     }
 
     /**
-     * Get event
+     * Get event.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEvent() {
+    public function getEvent()
+    {
         return $this->event;
     }
 
-    public function setInvitee(InviteeInterface $invitee) {
-
+    public function setInvitee(InviteeInterface $invitee)
+    {
         $this->invitee = $invitee;
 
         return $this;
     }
 
-    public function getInvitee() {
+    public function getInvitee()
+    {
         return $this->invitee;
     }
-
 }

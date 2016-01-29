@@ -1,29 +1,25 @@
 <?php
 
-
 namespace SpecShaper\CalendarBundle\Model;
 
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
 use DateTime;
 
 /**
- * Comment
- *
+ * Comment.
  */
-interface CalendarInterface {
-
-    
+interface CalendarInterface
+{
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
     public function getEvent();
 
     public function setEvent(PersistedEventInterface $event);
-    
+
     public function getCountry();
 
     public function setCountry($country);
@@ -35,7 +31,7 @@ interface CalendarInterface {
     public function setDateFormat($dateFormat);
 
     public function getDateFormat();
-    
+
     public function setTimeFormat($timeFormat);
 
     public function getTimeFormat();
@@ -49,7 +45,7 @@ interface CalendarInterface {
     public function getOtherCalendarFormat();
 
     /**
-     * Set createdOn
+     * Set createdOn.
      *
      * @param \DateTime $createdOn
      *
@@ -58,10 +54,9 @@ interface CalendarInterface {
     public function setCreatedOn(DateTime $createdOn);
 
     /**
-     * Get createdOn
+     * Get createdOn.
      *
      * @return \DateTime
      */
     public function getCreatedOn();
-
 }
