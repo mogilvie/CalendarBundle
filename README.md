@@ -11,12 +11,25 @@ Features include:
 - Events are generated to permit listener classes to intercept entities.
 - FullCalendar jquery front end that can create, update and resize events via ajax.
 
-**Warning - This bundle has not been unit tested**
-**Warning - It has only been running on a Symfony v3.0.1 project, and not backward
-compatibility tested**
+**Warning
+- This bundle has not been unit tested.
+- It has only been running on a Symfony2 v3.0.1 project, and not backward
+compatibility tested.
+**
 
-Features to be added:
+Features road map:
 
+- [x] Modal popup to create and modify events
+- [ ] A sidebar comments summary in modal
+- [ ] An optional sidebar monthly summary in main page.
+- [ ] Expand the events fired
+- [ ] Integrate with a mailer
+
+Work to complete:
+
+- Fully comment docBlocks
+- Integrate invitees and comments
+- Implement event series
 - Unit tests to be added
 - Translation files are required for both backend and frontend 
 - Support for MongoDB/CouchDB ODM or Propel
@@ -289,9 +302,9 @@ spec_shaper_calendar:
 ## Step 5: Integrate into one of your twig templates
 
 The bundle requires:
-- jquery
-- moment
-- Bootstrap
+- Jquery
+- Moment
+- Bootstrap 
 - DatePicker
 - FullCalendar
 

@@ -1,6 +1,6 @@
 {
     "name" : "specshaper/calendar-bundle",
-    "description" : "A bundle to integrate FullCalendar with Symfony2.",
+    "description" : "A bundle to integrate FullCalendar jquery plugin with Symfony2.",
     "type" : "symfony-bundle",
     "homepage": "https://github.com/mogilvie/CalendarBundle",
     "authors" : [{
@@ -15,7 +15,7 @@
     ],
     "require" : {
         "php": ">=5.3.9",
-        "symfony/framework-bundle": "~2.3|~3.0"
+        "symfony/framework-bundle": "~2.8|~3.0"
     },
     "autoload" : {
         "psr-4": { "SpecShaper\\CalendarBundle\\": "" }
