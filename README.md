@@ -12,6 +12,7 @@ Features include:
 - FullCalendar jquery front end that can create, update and resize events via ajax.
 
 **Warning**
+- Only the calendar and events are currently implemented.
 - This bundle has not been unit tested.
 - It has only been running on a Symfony2 v3.0.1 project, and not backward
 compatibility tested.
@@ -26,6 +27,7 @@ Features road map:
 
 Work to complete:
 
+- Create Managers for entities.
 - Provide custom validators on forms
 - Fully comment docBlocks
 - Integrate invitees and comments
@@ -237,14 +239,14 @@ entity code as required to suit your application.
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\EventComment as BaseCalendarcomment;
+use SpecShaper\CalendarBundle\Model\EventComment as BaseCalendarComment;
 
 /**
  * A invitee entity to contain the invited user information and status.
  *
  * @ORM\Entity
  */
-class CalendarComment extends BaseCalendarcomment{
+class CalendarComment extends BaseCalendarComment{
 
     // Extend the calendar comments with additional application specific code...
 

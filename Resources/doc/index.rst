@@ -237,14 +237,14 @@ entity code as required to suit your application.
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\EventComment as BaseCalendarcomment;
+use SpecShaper\CalendarBundle\Model\EventComment as BaseCalendarComment;
 
 /**
  * A invitee entity to contain the invited user information and status.
  *
  * @ORM\Entity
  */
-class CalendarComment extends BaseCalendarcomment{
+class CalendarComment extends BaseCalendarComment{
 
     // Extend the calendar comments with additional application specific code...
 
