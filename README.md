@@ -244,9 +244,98 @@ class CalendarComment extends BaseCalendar{
 }
 ```
 
-##Step 3: Create a listener
+## Step 3: Create a listener
 
 The CalendarEventListener provides the mechanism to intercept the loading
 of a calendar and modify the event entities before they are rendered.
 
+
+## Step 4: Configure the bundle
+
+To configure the minimum settings you need to define the orm. Only Doctrine is
+supported at the moment.
+
+Then point the bundle at your custom Calendar entities.
+
+See the full documentation for a full list of options.
+
+```yml
+// app/config/config.yml
+
+# Calendar configuration
+spec_shaper_calendar:
+    db_driver: orm
+    custom_classes:
+        calendar_class: AppBundle\Entity\Calendar
+        event_class:    AppBundle\Entity\CalendarEvent     
+        invitee_class:  AppBundle\Entity\CalendarInvitee
+        comment_class:  AppBundle\Entity\CalendarComment
+```
+
+## Step 5: Define the routes
+
+Define any routing that you prefer. The controller can be placed behind a firewall
+by defining a prefix protected by your security firewalls.
+
+```yml
+// app/config/routing.yml
+
+spec_shaper_calendar:
+    resource: "@SpecShaperCalendarBundle/Resources/config/routing.yml"
+    prefix:   /
+
+```
+
+## Step 5: Integrate into one of your twig templates.
+
+The bundle requires:
+- jquery
+- moment
+- Bootstrap
+- DatePicker
+- FullCalendar
+
+A typical twig template extending a bundle base.html.twig and using Content Delivery
+Networks to provide js and css would look like:
+
+```twig
+{# app/Resources/views/calendar/calendar.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ asset('bundles/specshapercalendar/css/fullcalendar.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker.min.css" />
+    <style>
+      #calendar-holder{
+          width: 50%;
+          height: 200px;
+      }
+    </style>
+{% endblock %}
+
+{% block body %}
+    {% include 'SpecShaperCalendarBundle:Calendar:calendar.html.twig' %}    
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('bundles/specshapercalendar/js/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/specshapercalendar/js/fullcalendar-settings.js') }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
+
+    <script>
+        Calendar.init({
+            loader: "{{ url('calendar_loader') }}",
+            update: "{{ url('calendar_updateevent', {'id' : 'PLACEHOLDER'} ) }}",
+            updateDateTime: "{{ url('calendar_updatedatetime', {'id' : 'PLACEHOLDER'} ) }}"
+        });
+    </script>
+
+{% endblock %}
+```
 
