@@ -286,7 +286,7 @@ spec_shaper_calendar:
 
 ```
 
-## Step 5: Integrate into one of your twig templates.
+## Step 5: Integrate into one of your twig templates
 
 The bundle requires:
 - jquery
@@ -338,4 +338,18 @@ Networks to provide js and css would look like:
 
 {% endblock %}
 ```
+
+## Step 6: Customise
+
+Use the entities to customise the persisted information and integrate the calendars with your
+application entities.
+
+Apply security via the route firewalls, or for more granular security control use the event
+listeners to manage access.
+
+Overwrite the twig modal and calendar template in your own app\Resources\SpecShaperCalendarBundle
+directory to change the modal displays.
+
+Copy and modify the fullcalendar-settings.js file to provide custom javascript functionality.
+Or simply extend your twig template javascript block.
 
