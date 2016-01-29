@@ -1,24 +1,25 @@
 # SpecShaperCalendarBundle
 
-The SpecShaperCalendarBundle provides a calendar and appointment package for the Symfony2 system.
+The SpecShaperCalendarBundle provides a calendar and appointment package for the Symfony2 
+framework utilising the [fullcalendar](http://fullcalendar.io/) jquery plugin.
 
 Features include:
 
 - Written for Symfony verison 3.0.x
-- Calendar entities can be stored via Doctrine ORM
-- Entities are mapped superclasses to allow the AppBundle to add additional relationships.
+- Calendar entities can be stored via Doctrine ORM.
+- Entities are mapped-superclasses to allow your AppBundle to add additional relationships.
 - Events are generated to permit listener classes to intercept entities.
-- FullCalendar.js front end
-- Create, update and resize events from the calendar via ajax.
+- FullCalendar jquery front end that can create, update and resize events via ajax.
+
+**Warning - This bundle has not been unit tested**
+**Warning - It has only been running on a Symfony v3.0.1 project, and not backward
+compatibility tested**
 
 Features to be added:
 
-- Support for MongoDB/CouchDB ODM or Propel
 - Unit tests to be added
-- Translation files
-
-
-[![Build Status](https://travis-ci.org/FriendsOfSymfony/FOSUserBundle.svg?branch=master)](https://travis-ci.org/FriendsOfSymfony/FOSUserBundle) [![Total Downloads](https://poser.pugx.org/friendsofsymfony/user-bundle/downloads.svg)](https://packagist.org/packages/friendsofsymfony/user-bundle) [![Latest Stable Version](https://poser.pugx.org/friendsofsymfony/user-bundle/v/stable.svg)](https://packagist.org/packages/friendsofsymfony/user-bundle)
+- Translation files are required for both backend and frontend 
+- Support for MongoDB/CouchDB ODM or Propel
 
 ## Documentation
 
@@ -39,7 +40,6 @@ appointments.
 It is based on the [adesigns/calendar-bundle](https://github.com/adesigns/calendar-bundle) modified
 and extended with additional functionality.
 
-
 ## Reporting an issue or a feature request
 
 Issues and feature requests are tracked in the [Github issue tracker](https://github.com/mogilvie/CalendarBundle/issues).
@@ -52,7 +52,7 @@ and following some steps.
 # Installation
 
 
-## Step 1: Download the Bundle
+## Step 1: Download the bundle
 
 Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
@@ -65,7 +65,7 @@ This command requires you to have Composer installed globally, as explained
 in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
 of the Composer documentation.
 
-## Step 2: Enable the Bundle
+## Step 2: Enable the bundle
 
 
 Then, enable the bundle by adding it to the list of registered bundles
@@ -101,7 +101,7 @@ The bundle requires entities to interact with the database and store information
 - Invitee
 - Comment
 
-### Calendar Entity
+### Calendar entity
 
 The bundle allows many calendars to be created with different properties such as:
 - Local time zone
@@ -136,7 +136,7 @@ class Calendar extends BaseCalendar{
 }
 ```
 
-### CalendarEvent Entity
+### CalendarEvent entity
 
 The CalendarEvent entity contains all the information about a particular event
 or event series. Information such as:
@@ -173,7 +173,7 @@ class CalendarEvent extends BaseCalendar{
 }
 ```
 
-### CalendarInvitee Entity
+### CalendarInvitee entity
 
 The entity contains information about an event invitee, such as:
 - The email address of the invitee.
@@ -210,7 +210,7 @@ class CalendarInvitee extends BaseCalendar{
 }
 ```
 
-### CalendarComent Entity
+### CalendarComent entity
 
 The entity contains any comments or messages made about an event:
 - The email address of the invitee who commented.
@@ -244,7 +244,7 @@ class CalendarComment extends BaseCalendar{
 }
 ```
 
-## Step 3: Create a listener
+## Step 3: Create listeners
 
 The CalendarEventListener provides the mechanism to intercept the loading
 of a calendar and modify the event entities before they are rendered.
