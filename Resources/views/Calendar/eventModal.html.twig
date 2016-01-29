@@ -1,6 +1,7 @@
 {% trans_default_domain "messages" %}
 
-{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme form with ['bootstrap_3_layout.html.twig'] %}
+
 
 <div class="modal" id="eventModal" name="eventModal" tabindex="-1" role="dialog" aria-labelledby="searchModal" aria-hidden="true" >
   <div class="modal-dialog modal-lg">
@@ -16,7 +17,7 @@
       <div class="modal-body">
         <div class="container-fluid">
           {{ form_start (form) }}
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="form-group-sm well well-sm">
               {{ form_row(form.isAllDay)}}
               {{ form_row(form.startDate) }}
@@ -30,8 +31,9 @@
               {{ form_row(form.repeatUntil) }}
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-7">   
             {{ form_errors (form) }}
+            {{ form_widget(form.bgColor)}}
             {{ form_row(form.title)}}
             {{ form_row(form.text)}}
           </div>
@@ -41,22 +43,29 @@
               <div class="panel-heading">
                 <h3 class="panel-title">Panel title</h3>
               </div>
-              <div class="panel-body">
-                Panel content
+              <div class="panel-table">
+                <ul class="tags" data-prototype="{{ form_widget(form.invitees.vars.prototype)|e }}">
+                  {%- for invitee in form.invitees %}
+                  <li>{{ form_row(invitee)}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
               </div>
             </div>
+
+            <input id="eventSubmitButton" type="submit" class="hidden" />      
+            {{ form_end(form)}}
+
+            {#            {%- for invitee in entity.invitees %}
+                        <li>{{ invitee.emailAddress}}</li>
+                          {% endfor %}#}
+
           </div>
-
-          <input id="eventSubmitButton" type="submit" class="hidden" />
-          
-          {{ form_end(form)}}
-
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="submitButton" class="btn btn-primary pull-right">{{ "specshaper_caledarbundle.button.submit" | trans }}</button>
-      </div>
+        <div class="modal-footer">
+          <button id="submitButton" class="btn btn-primary pull-right">{{ "specshaper_caledarbundle.button.submit" | trans }}</button>
+        </div>
 
+      </div>
     </div>
   </div>
-</div>

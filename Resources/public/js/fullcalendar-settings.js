@@ -1,4 +1,11 @@
-
+/**
+ * Custom class to initialise and interact with the FullCalendar.js plugin.
+ * 
+ * The class sets up the FullCalendar plugin, and contains all the event
+ * handlers and ajax calls back to the Symfony2 controller.
+ * 
+ * @type type
+ */
 Calendar = {
     settings: {
         loader: null,
@@ -24,6 +31,7 @@ Calendar = {
     onReady: function () {
 
         Calendar.bindDatePickers();
+        Calendar.bindColorPicker();
 
         Calendar.settings.calendar = $('#calendar-holder');
 
@@ -71,6 +79,9 @@ Calendar = {
         });
 
     },
+    bindColorPicker: function() {
+        $('#specshaper_calendar_persisted_event_bgColor').simplecolorpicker({theme: 'fontawesome'});
+    },
     /**
      * Bind the datepickers to the modal datetime inputs.
      * 
@@ -90,6 +101,7 @@ Calendar = {
             autoclose: true
         });
     },
+    
     /**
      * Function called when calendar dates are selected.
      * 
@@ -106,10 +118,10 @@ Calendar = {
 
         $eventModal.find('#specshaper_calendar_persisted_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
         $eventModal.find('#specshaper_calendar_persisted_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
-       
+
         $eventModal.find('#specshaper_calendar_persisted_event_startTime').val(start.format('HH:MM'));
         $eventModal.find('#specshaper_calendar_persisted_event_endTime').val(end.format('HH:MM'));
-      
+
         $eventModal.modal('show');
     },
     /**
@@ -127,10 +139,10 @@ Calendar = {
      */
     eventClickHandler: function (calEvent, jsEvent, view) {
 
-    jsEvent.preventDefault();
+        jsEvent.preventDefault();
 
         var route = Calendar.settings.update;
-        
+
         var url = route.replace('PLACEHOLDER', calEvent.id);
 
         $.ajax(
@@ -141,6 +153,7 @@ Calendar = {
                     {
                         $("#eventModal").find('div.modal-body').replaceWith($(html).find('div.modal-body'));
                         Calendar.bindDatePickers();
+                        Calendar.bindColorPicker();
                         $("#eventModal").modal('show');
 
                     },
@@ -255,7 +268,7 @@ Calendar = {
 //            revertFunc();
 //        }
         Calendar.updateDateTime(event);
-        
+
 
     },
     /**
@@ -267,16 +280,15 @@ Calendar = {
      * @param {type} revertFunc
      * @returns {undefined}
      */
-    eventDropHandler: function(event, delta, revertFunc) {
+    eventDropHandler: function (event, delta, revertFunc) {
 
 //        alert(event.title + " was dropped on " + event.start.format());
 //
 //        if (!confirm("Are you sure about this change?")) {
 //            revertFunc();
 //        }
-        
+
         Calendar.updateDateTime(event);
-        
 
     },
     /**
@@ -291,11 +303,11 @@ Calendar = {
         var route = Calendar.settings.updateDateTime;
 
         var url = route.replace('PLACEHOLDER', event.id);
-        
-        var postData = { 
-                "start": event.start.format(),
-                "end": event.end.format()
-            };
+
+        var postData = {
+            "start": event.start.format(),
+            "end": event.end.format()
+        };
 
         $.ajax(
                 {
@@ -319,10 +331,6 @@ Calendar = {
                 }
         );
     }
-
-
-
-
 
 };
 

@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use SpecShaper\CalendarBundle\Event\CalendarEvent;
 use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
 use SpecShaper\CalendarBundle\Form\PersistedEventType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,8 +14,7 @@ use DateTime;
 use SpecShaper\CalendarBundle\Doctrine\PersistedEventManager;
 use SpecShaper\CalendarBundle\Event\CalendarEvents;
 use SpecShaper\CalendarBundle\Event\CalendarLoadEvents;
-use SpecShaper\CalendarBundle\Event\CalendarNewEvent;
-use SpecShaper\CalendarBundle\Event\CalendarUpdateEvent;
+use SpecShaper\CalendarBundle\Event\CalendarEditEvent;
 
 
 /**
@@ -86,7 +84,7 @@ class CalendarController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $newEvent = new CalendarNewEvent($event);
+            $newEvent = new CalendarEditEvent($event);
 
             $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
                     ->dispatch(CalendarEvents::CALENDAR_NEW_EVENT, $newEvent)
@@ -95,7 +93,7 @@ class CalendarController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($modifiedEventEntity);
             $em->flush();
-            
+                       
             return new JsonResponse($modifiedEventEntity->toArray());
         }
 
@@ -107,33 +105,42 @@ class CalendarController extends Controller {
     /**
      * Update an event with changes from the modal.
      * 
-     * @param Request                 $request
-     * @param PersistedEventInterface $event
+     * @param Request $request
+     * @param integer $id
      *
      * @return JsonResponse
      * @Route("/{id}/updateevent", name="calendar_updateevent")
      * @Method({"GET","PUT"})
      */
     public function updateEventAction(Request $request, $id) {
+        
         $event = $this->getEventManager()->getEvent($id);
 
         $form = $this->createForm(PersistedEventType::class, $event, array(
-            'action' => $this->generateUrl('calendar_updateevent', array('id' => $event->getId())),
+            'action' => $this->generateUrl('calendar_updateevent', array('id' => $id)),
             'method' => 'PUT',
         ));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
+            $newEvent = new CalendarEditEvent($event);
+
+            $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
+                    ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
+                    ->getEventEntity();
+            
             $em = $this->getDoctrine()->getManager();
-            $em->persist($event);
+            $em->persist($modifiedEventEntity);
             $em->flush();
 
-            return new JsonResponse($event->toArray());
+            return new JsonResponse($modifiedEventEntity->toArray());
         }
 
         return $this->render('SpecShaperCalendarBundle:Calendar:eventModal.html.twig', array(
                     'form' => $form->createView(),
+                    'entity' => $event
         ));
     }
 

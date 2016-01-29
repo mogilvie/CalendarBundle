@@ -46,6 +46,14 @@ class Invitee implements InviteeInterface
      * @var \DateTime
      */
     protected $sentOn;
+    
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+
+    }
 
     /**
      * Get id.

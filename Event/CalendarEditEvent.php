@@ -1,7 +1,7 @@
 <?php
 
 /**
- * SpecShaperCalendarBundle\Event\CalendarNewEvent.php
+ * SpecShaperCalendarBundle\Event\CalendarEditEvent.php
  *  
  * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
  */
@@ -12,54 +12,54 @@ use Symfony\Component\EventDispatcher\Event;
 use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
 
 /**
- * CalendarNewEvent dispatched whenever a new CalendarEvent is created.
+ * CalendarEditEvent dispatched whenever a new CalendarEvent is created or modified.
  * 
  * Note that the CalendarEvent startDatetime and endDateTime properties are only
  * created when the CalendarEvent is about to be flushed, via an entity lifecycle
- * event PreFlush method. Thisis called in the constructure to ensure its ready.
+ * event PreFlush method. This is called in the construct method to ensure its ready.
  *
  * @author      Mark Ogilvie <mark.ogilvie@specshaper.com>
  */
-class CalendarNewEvent extends Event
+class CalendarEditEvent extends Event
 {
     /**
      * @var PersistedEventInterface
      */
-    private $newEvent;
+    private $calendarEvent;
 
     /**
      * Construct the Event and store the CalendarEvent.
      * 
-     * @param PersistedEventInterface $newEvent
+     * @param PersistedEventInterface $calendarEvent
      */
-    public function __construct(PersistedEventInterface $newEvent)
+    public function __construct(PersistedEventInterface $calendarEvent)
     {
-        $this->newEvent = $newEvent;
+        $this->calendarEvent = $calendarEvent;
         
         // Make sure that the start and end dates are created.
-        $newEvent->onPreFlush();
+        $calendarEvent->onPreFlush();
     }
 
     /**
-     * Get the newly created event.
+     * Get the CalendarEvent.
      * 
      * @return PersistedEventInterface
      */
     public function getEventEntity()
     {
-        return $this->newEvent;
+        return $this->calendarEvent;
     }
     
     /**
      * Set a different event if required.
      * 
-     * @param PersistedEventInterface
+     * @param PersistedEventInterface $calendarEvent
      * 
-     * @return \SpecShaper\CalendarBundle\Event\CalendarNewEvent
+     * @return \SpecShaper\CalendarBundle\Event\CalendarEditEvent
      */
-    public function setEventEntity(PersistedEventInterface $newEvent)
+    public function setEventEntity(PersistedEventInterface $calendarEvent)
     {
-        $this->newEvent = $newEvent;
+        $this->calendarEvent = $calendarEvent;
         
         return $this;
     }

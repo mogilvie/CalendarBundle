@@ -5,7 +5,7 @@
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <mapped-superclass name="SpecShaper\CalendarBundle\Model\Invitee">
      
-        <many-to-one field="event" target-entity="PersistedEvent" orphan-removal="true"/>
+        <many-to-one field="event" target-entity="PersistedEvent" inversed-by="invitees" orphan-removal="true"/>
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>

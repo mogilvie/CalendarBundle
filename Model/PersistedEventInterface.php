@@ -255,17 +255,34 @@ interface PersistedEventInterface
     public function getText();
 
     /**
+     * Set background color.
+     *
+     * @param string $bgColor
+     *
+     * @return PersistedEvent
+     */
+    public function setBgColor($bgColor);
+
+    /**
+     * Get background color.
+     *
+     * @return string
+     */
+    public function getBgColor();
+    
+    
+    /**
      * Add invitee.
      
      *
      * @return PersistedEvent
      */
-    public function addInvitee(InviteeInterface $invitee);
+    public function addInvitee($invitee);
 
     /**
      * Remove invitee.
      */
-    public function removeInvitee(InviteeInterface $invitee);
+    public function removeInvitee($invitee);
 
     /**
      * Get invitees.

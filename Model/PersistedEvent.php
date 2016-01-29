@@ -3,6 +3,7 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * PersistedEvent.
@@ -54,7 +55,7 @@ abstract class PersistedEvent implements PersistedEventInterface
     /**
      * The invitees.
      * 
-     * @todo Not implemented yet.
+     * @var integer[]
      */
     protected $invitees;
 
@@ -555,6 +556,30 @@ abstract class PersistedEvent implements PersistedEventInterface
     {
         return $this->text;
     }
+    
+    /**
+     * Set background color.
+     *
+     * @param string $bgColor
+     *
+     * @return PersistedEvent
+     */
+    public function setBgColor($bgColor)
+    {
+        $this->bgColor = $bgColor;
+
+        return $this;
+    }
+
+    /**
+     * Get background color.
+     *
+     * @return string
+     */
+    public function getBgColor()
+    {
+        return $this->bgColor;
+    }
 
     /**
      * Add invitee.
@@ -563,7 +588,7 @@ abstract class PersistedEvent implements PersistedEventInterface
      *
      * @return PersistedEvent
      */
-    public function addInvitee(InviteeInterface $invitee)
+    public function addInvitee($invitee)
     {
         $this->invitees[] = $invitee;
 
@@ -573,9 +598,16 @@ abstract class PersistedEvent implements PersistedEventInterface
     /**
      * Remove invitee.
      */
-    public function removeInvitee(InviteeInterface $invitee)
+    public function removeInvitee($invitee)
     {
-        $this->invitees->removeElement($invitee);
+        $invitees = new ArrayCollection($this->invitees);
+        
+        $invitees->removeElement($invitee);
+
+        $this->invitees = $invitees->toArray();
+        
+        return $this;
+        
     }
 
     /**

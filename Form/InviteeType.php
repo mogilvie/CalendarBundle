@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InviteeType extends AbstractType
 {
@@ -17,20 +18,27 @@ class InviteeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('organisation', TextType::class, array(
-                    'required' => false,
-                    'label' => 'specshaper_caledarbundle.label.organisation',
-                ))
-                ->add('userName', TextType::class, array(
-                    'class' => 'AppBundle:Entity:User',
-                    'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.chairPerson',
-                ))
+                ->add('hasAccepted')
                 ->add('emailAddress', EmailType::class, array(
                     'required' => false,
                     'label' => 'specshaper_caledarbundle.label.emailAddress',
                 ))
         ;
+    }
+    
+    /**
+     * Configure options.
+     *
+     * @since Available since Release 1.0.0
+     *
+     * @param OptionsResolverInterface $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            //'data_class' => 'SpecShaper\CalendarBundle\Model\InviteeInterface',
+            'data_class' => 'AppBundle\Entity\CalendarInvitee',
+        ));
     }
 
     /**
@@ -42,6 +50,6 @@ class InviteeType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_invitee';
+        return 'specshaper_calendar_invitee';
     }
 }
