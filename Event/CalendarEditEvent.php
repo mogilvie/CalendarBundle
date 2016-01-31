@@ -34,10 +34,7 @@ class CalendarEditEvent extends Event
      */
     public function __construct(CalendarEventInterface $calendarEvent)
     {
-        $this->calendarEvent = $calendarEvent;
-        
-        // Make sure that the start and end dates are created.
-        $calendarEvent->onPreFlush();
+        $this->calendarEvent = $calendarEvent;        
     }
 
     /**
@@ -60,7 +57,7 @@ class CalendarEditEvent extends Event
     public function setEventEntity(CalendarEventInterface $calendarEvent)
     {
         $this->calendarEvent = $calendarEvent;
-        
+                
         return $this;
     }
 

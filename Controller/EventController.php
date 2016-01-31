@@ -19,47 +19,10 @@ use SpecShaper\CalendarBundle\Event\CalendarGetAddressesEvent;
 
 
 /**
- * @Route("/calendar")
+ * @Route("/event")
  */
-class CalendarController extends Controller {
+class EventController extends Controller {
 
-    /**
-     * Dispatch a CalendarEvent and return a JSON Response of any events returned.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @todo remove GET
-     * @Route("/loader", name="calendar_loader")
-     * @Method({"GET","POST"})
-     */
-    public function loadCalendarAction(Request $request) {
-        $viewStartDatetime = new \DateTime();
-        $viewStartDatetime->setTimestamp(strtotime($request->get('start')));
-
-        $viewEndDatetime = new \DateTime();
-        $viewEndDatetime->setTimestamp(strtotime($request->get('end')));
-
-        $loadEvent = new CalendarLoadEvents($viewStartDatetime, $viewEndDatetime, $request);
-
-        $loadedEvents = $this->getDispatcher()
-                ->dispatch(CalendarEvents::CALENDAR_LOAD_EVENTS, $loadEvent)
-                ->getEvents();
-
-        $response = new Response();
-        $response->headers->set('Content-Type', 'application/json');
-
-        $return_events = array();
-
-        foreach ($loadedEvents as $calendarEvent) {
-            $return_events[] = $calendarEvent->toArray();
-        }
-
-        $response->setContent(json_encode($return_events));
-
-        return $response;
-    }
 
     /**
      * Add a new calendar event.
@@ -87,19 +50,19 @@ class CalendarController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {
 
             $newEvent = new CalendarEditEvent($event);
+            
+            $this->getEventManager()->updateDateTimes($form, $event);
 
             $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
                     ->dispatch(CalendarEvents::CALENDAR_NEW_EVENT, $newEvent)
                     ->getEventEntity();
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($modifiedEventEntity);
-            $em->flush();
+            $this->getEventManager()->save($modifiedEventEntity);
 
             return new JsonResponse($modifiedEventEntity->toArray());
         }
 
-        return $this->render('SpecShaperCalendarBundle:Calendar:eventModal.html.twig', array(
+        return $this->render('SpecShaperCalendarBundle:Event:eventModal.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -117,7 +80,7 @@ class CalendarController extends Controller {
     public function updateEventAction(Request $request, $id) {
 
         $event = $this->getEventManager()->getEvent($id);
-        
+                
         $orgionalInvitees = $this->getEventManager()->storeOrigionalInvitees($event->getCalendarInvitees());
 
         $form = $this->createForm(CalendarEventType::class, $event, array(
@@ -128,19 +91,21 @@ class CalendarController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $event = $this->getEventManager()->updateEvent($event, $orgionalInvitees);
             
+            $this->getEventManager()->updateDateTimes($form, $event);
+
             $newEvent = new CalendarEditEvent($event);
 
             $modifiedEventEntity = $this->getDispatcher()
                     ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
                     ->getEventEntity();
-                    
+
+            $modifiedEventEntity = $this->getEventManager()->updateEvent($modifiedEventEntity, $orgionalInvitees);
+            
             return new JsonResponse($modifiedEventEntity->toArray());
         }
 
-        return $this->render('SpecShaperCalendarBundle:Calendar:eventModal.html.twig', array(
+        return $this->render('SpecShaperCalendarBundle:Event:eventModal.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -172,7 +137,9 @@ class CalendarController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->persist($event);
         $em->flush();
+        
 
+        
         return new JsonResponse($event->toArray());
     }
 
@@ -186,6 +153,24 @@ class CalendarController extends Controller {
         $this->getEventManager()->deleteEvent($id);
         
         return new JsonResponse("deleted");
+    }
+
+    /**
+     *
+     * @Route("/getaddresses", name="calendar_getaddresses")
+     * @Method("GET")
+     */
+    public function getEmailAddressesAction() {
+
+        $addressEvent = new CalendarGetAddressesEvent();
+
+        $addressArray = $this->getDispatcher()
+                ->dispatch(CalendarEvents::CALENDAR_GET_ADDRESSES, $addressEvent)
+                ->toArray();
+
+        return $this->render('SpecShaperCalendarBundle:Calendar:emailAddressDatalist.html.twig', array(
+                    'emailAddresses' => $addressArray
+        ));
     }
 
     /**

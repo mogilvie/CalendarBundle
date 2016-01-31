@@ -343,7 +343,7 @@ Networks to provide js and css would look like:
     <script>
         Calendar.init({
             loader: "{{ url('calendar_loader') }}",
-            update: "{{ url('calendar_updateevent', {'id' : 'PLACEHOLDER'} ) }}",
+            update: "{{ url('event_update', {'id' : 'PLACEHOLDER'} ) }}",
             updateDateTime: "{{ url('calendar_updatedatetime', {'id' : 'PLACEHOLDER'} ) }}"
         });
     </script>

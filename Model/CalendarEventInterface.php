@@ -2,7 +2,7 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use DateTime;
+use DateTimeInterface;
 
 /**
  * CalendarEvent.
@@ -15,86 +15,6 @@ interface CalendarEventInterface
     const REPEAT_MONTHLY = 3;
 
     public function toArray();
-
-    /**
-     * Set startDate.
-     * 
-     * @param DateTime $startDate
-     *
-     * @return \SpecShaper\CalendarBundle\Entity\CalendarEvent
-     */
-    public function setStartDate(DateTime $startDate);
-
-    /**
-     * Get startDate.
-     *
-     * @return DateTime
-     */
-    public function getStartDate();
-
-    /**
-     * Set startTime.
-     *
-     * @param DateTime $startTime
-     *
-     * @return CalendarEvent
-     */
-    public function setStartTime(DateTime $startTime);
-
-    /**
-     * Get startTime.
-     *
-     * @return DateTime
-     */
-    public function getStartTime();
-
-    /**
-     * Set endDate.
-     *
-     * @param DateTime $endDate
-     *
-     * @return CalendarEvent
-     */
-    public function setEndDate(DateTime $endDate);
-
-    /**
-     * Get endDate.
-     *
-     * @return DateTime
-     */
-    public function getEndDate();
-
-    /**
-     * Set endTime.
-     *
-     * @param DateTime $endTime
-     *
-     * @return CalendarEvent
-     */
-    public function setEndTime(DateTime $endTime);
-
-    /**
-     * Get endTime.
-     *
-     * @return DateTime
-     */
-    public function getEndTime();
-
-    /**
-     * Process and store the StartDatetime.
-     * 
-     * Uses the nonpersisted parameters to create a
-     * combined DateTime
-     */
-    public function storeStartDatetime();
-
-    /**
-     * Process and store the EndDatetime.
-     * 
-     * Uses the nonpersisted parameters to create a
-     * combined DateTime
-     */
-    public function storeEndDatetime();
 
     /**
      * Constructor.
@@ -113,7 +33,7 @@ interface CalendarEventInterface
      *
      * @param string $title
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setTitle($title);
 
@@ -124,14 +44,12 @@ interface CalendarEventInterface
      */
     public function getTitle();
 
-    public function onPreFlush();
-
     /**
      * Set startDatetime.
      *
-     * @param \DateTime $startDatetime
+     * @param \DateTimeInterface $startDatetime
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setStartDatetime($startDatetime);
 
@@ -145,9 +63,9 @@ interface CalendarEventInterface
     /**
      * Set endDatetime.
      *
-     * @param \DateTime $endDatetime
+     * @param \DateTimeInterface $endDatetime
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setEndDatetime($endDatetime);
 
@@ -163,7 +81,7 @@ interface CalendarEventInterface
      *
      * @param string $url
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setUrl($url);
 
@@ -179,14 +97,14 @@ interface CalendarEventInterface
      *
      * @param bool $isAllDay
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setIsAllDay($isAllDay);
 
     /**
      * Get isAllDay.
      *
-     * @return bool
+     * @return boolean
      */
     public function getIsAllDay();
 
@@ -195,7 +113,7 @@ interface CalendarEventInterface
      *
      * @param bool $isReoccuring
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setIsReoccuring($isReoccuring);
 
@@ -209,11 +127,11 @@ interface CalendarEventInterface
     /**
      * Set repeatUntil.
      *
-     * @param \DateTime $repeatUntil
+     * @param \DateTimeInterface $repeatUntil
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
-    public function setRepeatUntil(DateTime $repeatUntil);
+    public function setRepeatUntil(DateTimeInterface $repeatUntil);
 
     /**
      * Get repeatUntil.
@@ -227,7 +145,7 @@ interface CalendarEventInterface
      *
      * @param int $period
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setPeriod($period);
 
@@ -243,7 +161,7 @@ interface CalendarEventInterface
      *
      * @param string $text
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setText($text);
 
@@ -259,7 +177,7 @@ interface CalendarEventInterface
      *
      * @param string $bgColor
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setBgColor($bgColor);
 
@@ -275,7 +193,7 @@ interface CalendarEventInterface
      *
      * @param CalendarInterface $calendar
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function setCalendar(CalendarInterface $calendar = null);
 
@@ -291,7 +209,7 @@ interface CalendarEventInterface
      *
      * @param CalendarInviteeInterface $invitee
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function addCalendarInvitee(CalendarInviteeInterface $invitee);
 
@@ -325,7 +243,7 @@ interface CalendarEventInterface
      *
      * @param CalendarCommentInterface $comment
      *
-     * @return CalendarEvent
+     * @return CalendarEventInterface
      */
     public function addCalendarComment(CalendarCommentInterface $comment);
 

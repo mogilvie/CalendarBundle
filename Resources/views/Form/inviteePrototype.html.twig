@@ -7,13 +7,13 @@
 
       {% if form.vars.data != null %}
           {% if form.vars.data.hasAccepted == true %}
-              <i class="glyphicon glyphicon-ok-sign" title="{% trans %}specshaper_calendarbundle.button.hasAccepted{% endtrans %}"></i>
+              <i class="glyphicon glyphicon-ok-sign" title="{% trans %}specshaper_calendarbundle.tooltip.hasAccepted{% endtrans %}"></i>
           {% endif %}
           {% if form.vars.data.hasDenied == true %}
-              <i class="glyphicon glyphicon-remove-sign" title="{% trans %}specshaper_calendarbundle.button.hasDenied{% endtrans %}"></i>
+              <i class="glyphicon glyphicon-remove-sign" title="{% trans %}specshaper_calendarbundle.tooltip.hasDenied{% endtrans %}"></i>
           {% endif %}
       {% endif %}
-      <i class="removeInviteeButton glyphicon glyphicon-trash" title="{% trans %}specshaper_calendarbundle.button.remove{% endtrans %}"></i>
+      <i class="removeInviteeButton glyphicon glyphicon-trash" title="{% trans %}specshaper_calendarbundle.tooltip.remove{% endtrans %}"></i>
   </td>
 </tr>
 

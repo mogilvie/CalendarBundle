@@ -2,15 +2,15 @@
 
 namespace SpecShaper\CalendarBundle\Model;
 
-use DateTime;
+use DateTimeInterface;
 use SpecShaper\CalendarBundle\Model\CalendarInviteeInterface;
 use SpecShaper\CalendarBundle\Model\CalendarCommentInterface;
 
 /**
  * CalendarEvent.
  */
-abstract class CalendarEvent implements CalendarEventInterface
-{
+abstract class CalendarEvent implements CalendarEventInterface {
+
     /**
      * @var int
      */
@@ -18,28 +18,28 @@ abstract class CalendarEvent implements CalendarEventInterface
 
     /**
      * The title of the calendar event.
-     * 
+     *
      * @var string
      */
     protected $title;
 
     /**
      * The calendar event start date and time.
-     * 
-     * @var \DateTime
+     *
+     * @var DateTimeInterface
      */
     protected $startDatetime;
 
     /**
      * The calendar event end date and time.
-     * 
-     * @var \DateTime
+     *
+     * @var DateTimeInterface
      */
     protected $endDatetime;
 
     /**
      * A url address associated with the event.
-     * 
+     *
      * @todo Not implemented yet.
      *
      * @var string
@@ -55,14 +55,14 @@ abstract class CalendarEvent implements CalendarEventInterface
 
     /**
      * Is the event a reoccuring event.
-     * 
+     *
      * @todo Not implemented yet.
      */
     protected $isReoccuring = false;
 
     /**
      * Date to repeat the event until.
-     * 
+     *
      * @todo Not implemented yet.
      *
      * @var \Date
@@ -71,7 +71,7 @@ abstract class CalendarEvent implements CalendarEventInterface
 
     /**
      * The period of reoccuring meetings.
-     * 
+     *
      * @todo Not implemented yet.
      */
     protected $period;
@@ -99,42 +99,27 @@ abstract class CalendarEvent implements CalendarEventInterface
     protected $cssClass;
 
     /**
-     * @var DateTime
-     */
-    protected $startDate;
-
-    /**
-     * @var DateTime
-     */
-    protected $startTime;
-
-    /**
-     * @var DateTime
-     */
-    protected $endDate;
-
-    /**
-     * @var DateTime
-     */
-    protected $endTime;
-
-    /**
      * Convert calendar event details to an array.
-     * 
+     *
      * Format is required to transmit the array to the FullCalendar javascript.
      *
+     * @todo look at timezones.
      * @return array $event
      */
-    public function toArray()
-    {
+    public function toArray() {
         $event = array();
         $event['id'] = $this->id;
 
         $event['title'] = $this->title;
-        $event['start'] = $this->startDatetime->format("Y-m-d\TH:i:s\Z");
+
+        if ($this->startDatetime !== null) {
+            $event['start'] = $this->startDatetime->format("Y-m-d\TH:i:s");
+//        $event['start'] = $this->startDatetime->format("Y-m-d\TH:i:s\Z");
+        }
 
         if ($this->endDatetime !== null) {
-            $event['end'] = $this->endDatetime->format("Y-m-d\TH:i:s\Z");
+            $event['end'] = $this->endDatetime->format("Y-m-d\TH:i:s");
+//            $event['end'] = $this->endDatetime->format("Y-m-d\TH:i:s\Z");
         }
 
         if ($this->url !== null) {
@@ -163,157 +148,13 @@ abstract class CalendarEvent implements CalendarEventInterface
         return $event;
     }
 
-    /**
-     * Set startDate.
-     * 
-     * @param DateTime $startDate
-     *
-     * @return \SpecShaper\CalendarBundle\Entity\CalendarEvent
-     */
-    public function setStartDate(DateTime $startDate)
-    {
-        $this->startDate = $startDate;
-
-        return $this;
-    }
-
-    /**
-     * Get startDate.
-     *
-     * @return DateTime
-     */
-    public function getStartDate()
-    {
-        return $this->startDatetime;
-    }
-
-    /**
-     * Set startTime.
-     *
-     * @param DateTime $startTime
-     *
-     * @return CalendarEvent
-     */
-    public function setStartTime(DateTime $startTime)
-    {
-        $this->startTime = $startTime;
-
-        return $this;
-    }
-
-    /**
-     * Get startTime.
-     *
-     * @return DateTime
-     */
-    public function getStartTime()
-    {
-        return $this->startDatetime;
-    }
-
-    /**
-     * Set endDate.
-     *
-     * @param DateTime $endDate
-     *
-     * @return CalendarEvent
-     */
-    public function setEndDate(DateTime $endDate)
-    {
-        $this->endDate = $endDate;
-
-        return $this;
-    }
-
-    /**
-     * Get endDate.
-     *
-     * @return DateTime
-     */
-    public function getEndDate()
-    {
-        return $this->endDatetime;
-    }
-
-    /**
-     * Set endTime.
-     *
-     * @param DateTime $endTime
-     *
-     * @return CalendarEvent
-     */
-    public function setEndTime(DateTime $endTime)
-    {
-        $this->endTime = $endTime;
-
-        return $this;
-    }
-
-    /**
-     * Get endTime.
-     *
-     * @return DateTime
-     */
-    public function getEndTime()
-    {
-        return $this->endDatetime;
-    }
-
-    public function onPreFlush()
-    {
-        $this->storeEndDatetime();
-        $this->storeStartDatetime();
-    }
-
-    /**
-     * Process and store the StartDatetime.
-     * 
-     * Uses the nonpersisted parameters to create a
-     * combined DateTime
-     */
-    public function storeStartDatetime()
-    {
-        if ($this->startTime === null) {
-            return;
-        }
-
-        $hour = $this->startTime->format('H');
-        $minute = $this->startTime->format('i');
-        $second = $this->startTime->format('s');
-        
-        $startDate = $this->startDate->setTime($hour, $minute, $second);
-
-        $this->startDatetime = $startDate;
-    }
-
-    /**
-     * Process and store the EndDatetime.
-     * 
-     * Uses the nonpersisted parameters to create a
-     * combined DateTime
-     */
-    public function storeEndDatetime()
-    {
-        if ($this->endTime === null) {
-            return;
-        }
-
-        $hour = $this->endTime->format('H');
-        $minute = $this->endTime->format('i');
-        $second = $this->endTime->format('s');
-
-        $endDate = $this->endDate->setTime($hour, $minute, $second);
-
-        $this->endDatetime = $endDate;
-    }
 
     /* -------------------End of Custom Content------------------------------- */
 
     /**
      * Constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->calendarinvitees = new \Doctrine\Common\Collections\ArrayCollection();
         $this->calendarComments = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -323,8 +164,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -335,8 +175,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -347,20 +186,18 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
     /**
      * Set startDatetime.
      *
-     * @param \DateTime $startDatetime
+     * @param \DateTimeInterface $startDatetime
      *
      * @return CalendarEvent
      */
-    public function setStartDatetime($startDatetime)
-    {
+    public function setStartDatetime($startDatetime) {
         $this->startDatetime = $startDatetime;
 
         return $this;
@@ -371,20 +208,18 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return \DateTime
      */
-    public function getStartDatetime()
-    {
+    public function getStartDatetime() {
         return $this->startDatetime;
     }
 
     /**
      * Set endDatetime.
      *
-     * @param \DateTime $endDatetime
+     * @param \DateTimeInterface $endDatetime
      *
      * @return CalendarEvent
      */
-    public function setEndDatetime($endDatetime)
-    {
+    public function setEndDatetime($endDatetime) {
         $this->endDatetime = $endDatetime;
 
         return $this;
@@ -395,8 +230,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return \DateTime
      */
-    public function getEndDatetime()
-    {
+    public function getEndDatetime() {
         return $this->endDatetime;
     }
 
@@ -407,8 +241,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setUrl($url)
-    {
+    public function setUrl($url) {
         $this->url = $url;
 
         return $this;
@@ -419,8 +252,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return string
      */
-    public function getUrl()
-    {
+    public function getUrl() {
         return $this->url;
     }
 
@@ -431,8 +263,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setIsAllDay($isAllDay)
-    {
+    public function setIsAllDay($isAllDay) {
         $this->isAllDay = $isAllDay;
 
         return $this;
@@ -443,8 +274,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return bool
      */
-    public function getIsAllDay()
-    {
+    public function getIsAllDay() {
         return $this->isAllDay;
     }
 
@@ -455,8 +285,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setIsReoccuring($isReoccuring)
-    {
+    public function setIsReoccuring($isReoccuring) {
         $this->isReoccuring = $isReoccuring;
 
         return $this;
@@ -467,20 +296,18 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return bool
      */
-    public function getIsReoccuring()
-    {
+    public function getIsReoccuring() {
         return $this->isReoccuring;
     }
 
     /**
      * Set repeatUntil.
      *
-     * @param \DateTime $repeatUntil
+     * @param \DateTimeInterface $repeatUntil
      *
      * @return CalendarEvent
      */
-    public function setRepeatUntil(DateTime $repeatUntil)
-    {
+    public function setRepeatUntil(DateTimeInterface $repeatUntil) {
         $this->repeatUntil = $repeatUntil;
 
         return $this;
@@ -491,8 +318,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return \DateTime
      */
-    public function getRepeatUntil()
-    {
+    public function getRepeatUntil() {
         return $this->repeatUntil;
     }
 
@@ -503,8 +329,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setPeriod($period)
-    {
+    public function setPeriod($period) {
         $this->period = $period;
 
         return $this;
@@ -515,8 +340,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return int
      */
-    public function getPeriod()
-    {
+    public function getPeriod() {
         return $this->period;
     }
 
@@ -527,8 +351,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setText($text)
-    {
+    public function setText($text) {
         $this->text = $text;
 
         return $this;
@@ -539,11 +362,10 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return string
      */
-    public function getText()
-    {
+    public function getText() {
         return $this->text;
     }
-    
+
     /**
      * Set background color.
      *
@@ -551,8 +373,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setBgColor($bgColor)
-    {
+    public function setBgColor($bgColor) {
         $this->bgColor = $bgColor;
 
         return $this;
@@ -563,8 +384,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return string
      */
-    public function getBgColor()
-    {
+    public function getBgColor() {
         return $this->bgColor;
     }
 
@@ -575,8 +395,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function setCalendar(CalendarInterface $calendar = null)
-    {
+    public function setCalendar(CalendarInterface $calendar = null) {
         $this->calendar = $calendar;
 
         return $this;
@@ -587,8 +406,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarInterface
      */
-    public function getCalendar()
-    {
+    public function getCalendar() {
         return $this->calendar;
     }
 
@@ -599,9 +417,8 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function addCalendarInvitee(CalendarInviteeInterface $invitee)
-    {
-        $this->calendarInvitees->add($invitee);     
+    public function addCalendarInvitee(CalendarInviteeInterface $invitee) {
+        $this->calendarInvitees->add($invitee);
         $invitee->setCalendarEvent($this);
 
         return $this;
@@ -612,8 +429,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @param CalendarInviteeInterface $invitee
      */
-    public function removeCalendarInvitee(CalendarInviteeInterface $invitee)
-    {
+    public function removeCalendarInvitee(CalendarInviteeInterface $invitee) {
         $this->calendarInvitees->removeElement($invitee);
     }
 
@@ -622,8 +438,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCalendarInvitees()
-    {
+    public function getCalendarInvitees() {
         return $this->calendarInvitees;
     }
 
@@ -632,11 +447,10 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCalendarComments()
-    {
+    public function getCalendarComments() {
         return $this->calendarComments;
     }
-    
+
     /**
      * Add comments
      *
@@ -644,8 +458,7 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @return CalendarEvent
      */
-    public function addCalendarComment(CalendarCommentInterface $comment)
-    {
+    public function addCalendarComment(CalendarCommentInterface $comment) {
         $this->calendarComments->add($comment);
         $comment->getCalendarEvent($this);
 
@@ -657,8 +470,8 @@ abstract class CalendarEvent implements CalendarEventInterface
      *
      * @param CalendarCommentInterface $comment
      */
-    public function removeCalendarComment(CalendarCommentInterface $comment)
-    {
+    public function removeCalendarComment(CalendarCommentInterface $comment) {
         $this->calendarComments->removeElement($comment);
     }
+
 }

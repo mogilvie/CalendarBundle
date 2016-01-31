@@ -4,8 +4,8 @@ namespace SpecShaper\CalendarBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
-use AppBundle\Entity\CalendarInvitee;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormInterface;
 
 class CalendarEventManager
 {
@@ -16,12 +16,9 @@ class CalendarEventManager
 
     /**
      * Constructor.
-     *
-     * @param EncoderFactoryInterface $encoderFactory
-     * @param CanonicalizerInterface  $usernameCanonicalizer
-     * @param CanonicalizerInterface  $emailCanonicalizer
-     * @param ObjectManager           $om
-     * @param string                  $class
+     * 
+     * @param ObjectManager $om
+     * @param string $class
      */
     public function __construct(ObjectManager $om, $class)
     {
@@ -54,18 +51,36 @@ class CalendarEventManager
 
     public function save(CalendarEventInterface $event)
     {
-        $om = $this->objectManager;
-        
-//        foreach($event->getCalendarInvitees() as $invitee)
-//            
-//            $invitee->setCalendarEvent($event);
-//        
-        
-        
+        $om = $this->objectManager;                
         $om->persist($event);
         $om->flush();
 
         return $event;
+    }
+    
+    public function updateDateTimes(FormInterface $form, CalendarEventInterface $event) {
+        $startDate = $form->get('startDate')->getData();
+        $startTime = $form->get('startTime')->getData();
+        
+        $startDatetime = $this->processTime($startDate, $startTime);
+        $event->setStartDatetime($startDatetime);
+        
+        $endDate = $form->get('endDate')->getData();
+        $endTtime = $form->get('endTime')->getData();
+        
+        $endDatetime = $this->processTime($endDate, $endTtime);
+        $event->setEndDatetime($endDatetime);   
+    }
+   
+    public function processTime($date, $time) {
+
+        $hour = $time->format('H');
+        $minute = $time->format('i');
+        $second = $time->format('s');
+
+        $datetime = $date->setTime($hour, $minute, $second);
+
+        return $datetime;
     }
     
     public function storeOrigionalInvitees($invitees) {
@@ -83,21 +98,13 @@ class CalendarEventManager
     public function updateEvent(CalendarEventInterface $event, $originalInvitees) {
         
         $om = $this->objectManager;
-        
-         // remove the relationship between the tag and the Task
+
         foreach ($originalInvitees as $invitee) {
             if (false === $event->getCalendarInvitees()->contains($invitee)) {
-                
-
-                // if it was a many-to-one relationship, remove the relationship like this
-                // $tag->setTask(null);
-
                 $om->remove($invitee);
-
-                // if you wanted to delete the Tag entirely, you can also do that
-                // $em->remove($tag);
             }
         }
+        
         $om->persist($event);
         $om->flush();
         

@@ -31,8 +31,10 @@ class CalendarEventType extends AbstractType {
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        //$eventId = $builder->getData()->getId();
-
+        $event = $builder->getData();
+        
+        
+        
         $builder
                 ->add('bgColor', ChoiceType::class, array(
                     'choices' => array(
@@ -64,12 +66,16 @@ class CalendarEventType extends AbstractType {
                     'required' => true,
                     'label' => 'specshaper_calendarbundle.label.startDate',
                     'label' => false,
+                    'mapped' => false,
+                    'data' => $event->getStartDatetime()
                 ))
-                ->add('startTime', TimeType::class, array(
+                ->add('startTime', TimeType::class, array(                    
                     'widget' => 'single_text',
                     'required' => true,
                     'label' => 'specshaper_calendarbundle.label.startTime',
                     'label' => false,
+                    'mapped' => false,
+                    'data' => $event->getStartDatetime()
                 ))
                 ->add('endDate', DateType::class, array(
                     'widget' => 'single_text',
@@ -78,12 +84,17 @@ class CalendarEventType extends AbstractType {
                     'required' => true,
                     'label' => 'specshaper_calendarbundle.label.endDate',
                     'label' => false,
+                    'mapped' => false,
+                    'data' => $event->getEndDatetime()
+
                 ))
                 ->add('endTime', TimeType::class, array(
                     'widget' => 'single_text',
                     'required' => true,
                     'label' => 'specshaper_calendarbundle.label.endTime',
                     'label' => false,
+                    'mapped' => false,
+                    'data' => $event->getEndDatetime()
                 ))
                 ->add('isAllDay', CheckboxType::class, array(
                     'required' => false,

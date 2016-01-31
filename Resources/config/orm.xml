@@ -5,9 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="spec_shaper_calender.manager.calendar_event" class="SpecShaper\CalendarBundle\Doctrine\CalendarEventManager" public="true">
+        <service id="spec_shaper_calender.manager.event" class="SpecShaper\CalendarBundle\Doctrine\CalendarEventManager" public="true">
             <argument type="service" id="spec_shaper_calender.entity_manager" />
             <argument>%spec_shaper_calendar.event_class%</argument>
+        </service>
+        <service id="spec_shaper_calender.manager.calendar" class="SpecShaper\CalendarBundle\Doctrine\CalendarManager" public="true">
+            <argument type="service" id="spec_shaper_calender.entity_manager" />
+            <argument>%spec_shaper_calendar.calendar_class%</argument>
         </service>
 
 

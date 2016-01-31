@@ -369,7 +369,7 @@ A typical twig template extending a bundle base.html.twig.
     <script>
         Calendar.init({
             loader: "{{ url('calendar_loader') }}",
-            update: "{{ url('calendar_updateevent', {'id' : 'PLACEHOLDER'} ) }}",
+            update: "{{ url('event_update', {'id' : 'PLACEHOLDER'} ) }}",
             updateDateTime: "{{ url('calendar_updatedatetime', {'id' : 'PLACEHOLDER'} ) }}"
         });
     </script>

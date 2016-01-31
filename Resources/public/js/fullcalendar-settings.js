@@ -46,6 +46,7 @@ Calendar = {
             },
             editable: true,
             droppable: true,
+            allDay: true,
             lazyFetching: true,
 //            timeFormat: {
 //                // for agendaWeek and agendaDay
@@ -114,16 +115,16 @@ Calendar = {
         }
 
         var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        
+
         var is_email = re.test(input.val());
-        
+
         if (is_email) {
             input.removeClass("invalid").addClass("valid");
         }
         else {
             input.removeClass("valid").addClass("invalid");
         }
-        
+
         Calendar.addInvitee(input.val());
     },
     addInvitee: function (newAddress) {
@@ -142,11 +143,11 @@ Calendar = {
 
 //        newForm = prototype.replace('<td class="emailAddress">', '<td class="emailAddress">' + newAddress + );
 
-        var html = $.parseHTML( newForm );
+        var html = $.parseHTML(newForm);
 
         // increase the index with one for the next item
         $collectionHolder.data('index', index + 1);
-        
+
         $(html).find("span.emailAddress").text(newAddress);
         $(html).find("input.hiddenEmailAddress").val(newAddress);
 
@@ -155,7 +156,7 @@ Calendar = {
 
 
     },
-    removeInviteeClickHandler: function(e){
+    removeInviteeClickHandler: function (e) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();
 
@@ -173,9 +174,7 @@ Calendar = {
                     type: "GET",
                     success: function (html, textStatus, jqXHR)
                     {
-
                         $("#emailAddresses").html();
-
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -195,7 +194,7 @@ Calendar = {
      * @param {type} allDay
      * @returns {undefined}
      */
-    select: function (start, end, allDay) {
+    select: function (start, end) {
 
         var url = Calendar.settings.new;
 
@@ -205,17 +204,23 @@ Calendar = {
                     type: "GET",
                     success: function (html, textStatus, jqXHR)
                     {
-                        $("#eventModal").find('div.modal-body').replaceWith($(html).find('div.modal-body'));
+                        var $eventModal = $('#eventModal');
+                        $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
 
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
 
-                        var $eventModal = $('#eventModal');
+                        if (start.hasTime() === false) {
+                            alert('boo');
+                            $eventModal.find('#specshaper_calendar_event_isAllDay').prop('checked', true);                           
+                        }
 
                         $eventModal.find('#specshaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
+
                         $eventModal.find('#specshaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
 
                         $eventModal.find('#specshaper_calendar_event_startTime').val(start.format('HH:mm'));
+
                         $eventModal.find('#specshaper_calendar_event_endTime').val(end.format('HH:mm'));
 
                         $eventModal.modal('show');
@@ -258,7 +263,7 @@ Calendar = {
                     type: "GET",
                     success: function (html, textStatus, jqXHR)
                     {
-                        $("#eventModal").find('div.modal-body').replaceWith($(html).find('div.modal-body'));
+                        $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
                         $("#eventModal").modal('show');

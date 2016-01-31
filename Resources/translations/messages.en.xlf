@@ -57,11 +57,11 @@
             <trans-unit id="92df6ddd941aa27317" resname="specshaper_calendarbundle.choice.conversation">
                 <source>Conversation</source>
                 <target>Conversation</target>
-            </trans-unit>   
+            </trans-unit>
             <trans-unit id="92df6dddd941aa273s17" resname="specshaper_calendarbundle.label.isAllDay">
                 <source>All day</source>
                 <target>All day</target>
-            </trans-unit> 
+            </trans-unit>
             <trans-unit id="92df6dddd941aa27d3s17" resname="specshaper_calendarbundle.label.repeatUntil">
                 <source>Repeat until</source>
                 <target>Repeat until</target>
@@ -74,20 +74,32 @@
                 <source>Reccuring</source>
                 <target>Reccuring</target>
             </trans-unit>
-            <trans-unit id="92df6dddaas27317" resname="specshaper_calendarbundle.button.deleteSeries">
+            <trans-unit id="92df6dddaas27317" resname="specshaper_calendarbundle.button.delete">
                 <source>Delete</source>
                 <target>Delete</target>
-            </trans-unit>  
-            <trans-unit id="92df6ddds7317" resname="specshaper_calendarbundle.button.delete">
+            </trans-unit>
+            <trans-unit id="92df6ddds7317" resname="specshaper_calendarbundle.button.deleteSeries">
                 <source>Delete series</source>
                 <target>Delete series</target>
-            </trans-unit>    
-            
-             <trans-unit id="92ds7317" resname="specshaper_calendarbundle.button.remove">
+            </trans-unit>
+            <trans-unit id="92ds7ss317" resname="specshaper_calendarbundle.tooltip.remove">
                 <source>Remove</source>
                 <target>Remove</target>
-            </trans-unit>  
-     
+            </trans-unit>
+            <trans-unit id="92ds7gga317" resname="specshaper_calendarbundle.tooltip.hasDenied">
+                <source>Has denied event</source>
+                <target>Has denied event</target>
+            </trans-unit>
+            <trans-unit id="92dssss7317" resname="specshaper_calendarbundle.tooltip.hasAccepted">
+                <source>Has accepted event</source>
+                <target>Has accepted event</target>
+            </trans-unit>
+            
+            <trans-unit id="92dssss73d17" resname="specshaper_calendarbundle.heading.guests">
+                <source>Guests</source>
+                <target>Guests</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>
