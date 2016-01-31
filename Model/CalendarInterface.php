@@ -16,10 +16,6 @@ interface CalendarInterface
      */
     public function getId();
 
-    public function getEvent();
-
-    public function setEvent(PersistedEventInterface $event);
-
     public function getCountry();
 
     public function setCountry($country);
@@ -59,4 +55,27 @@ interface CalendarInterface
      * @return \DateTime
      */
     public function getCreatedOn();
+    
+        /**
+     * Add calendarEvent
+     *
+     * @param CalendarEventInterface $calendarEvent
+     *
+     * @return Calendar
+     */
+    public function addCalendarEvent(CalendarEventInterface $calendarEvent);
+
+    /**
+     * Remove calendarEvent
+     *
+     * @param CalendarEventInterface $calendarEvent
+     */
+    public function removeCalendarEvent(CalendarEventInterface $calendarEvent);
+
+    /**
+     * Get calendarEvents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCalendarEvents();
 }

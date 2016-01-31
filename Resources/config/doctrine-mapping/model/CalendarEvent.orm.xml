@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="SpecShaper\CalendarBundle\Model\PersistedEvent">
+    <mapped-superclass name="SpecShaper\CalendarBundle\Model\CalendarEvent">
 
         <lifecycle-callbacks>
             <lifecycle-callback type="preFlush" method="onPreFlush" />
@@ -21,7 +21,6 @@
         <field name="repeatUntil" type="datetime" nullable="true" />
         <field name="period" type="integer" nullable="true" />
         <field name="text" type="text" nullable="true" />
-        <field name="invitees" type="array" nullable="true" />
         <field name="bgColor" type="string" />
 
     </mapped-superclass>

@@ -3,19 +3,14 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 /**
- * EventComment.
+ * CalendarComment.
  */
-abstract class EventComment implements EventCommentInterface
+abstract class CalendarComment implements CalendarCommentInterface
 {
     /**
      * @var int
      */
     protected $id;
-
-    /**
-     * @var string
-     */
-    protected $event;
 
     /**
      * @var \DateTime
@@ -27,6 +22,9 @@ abstract class EventComment implements EventCommentInterface
      */
     protected $comment;
 
+    /**
+     * @var string
+     */
     protected $invitee;
 
     /**
@@ -34,7 +32,7 @@ abstract class EventComment implements EventCommentInterface
      */
     public function __construct()
     {
-        $this->event = new \Doctrine\Common\Collections\ArrayCollection();
+        
     }
 
     /**
@@ -50,13 +48,13 @@ abstract class EventComment implements EventCommentInterface
     /**
      * Add event.
      *
-     * @param PersistedEventInterface $event
+     * @param CalendarEventInterface $event
      *
-     * @return EventComment
+     * @return CalendarComment
      */
-    public function addEvent(PersistedEventInterface $event)
+    public function addCalendarEvent(CalendarEventInterface $event)
     {
-        $this->event[] = $event;
+        $this->calendarEvent[] = $event;
 
         return $this;
     }
@@ -64,11 +62,11 @@ abstract class EventComment implements EventCommentInterface
     /**
      * Remove event.
      *
-     * @param PersistedEventInterface $event
+     * @param CalendarEventInterface $event
      */
-    public function removeEvent(PersistedEventInterface $event)
+    public function removeCalendarEvent(CalendarEventInterface $event)
     {
-        $this->event->removeElement($event);
+        $this->calendarEvent->removeElement($event);
     }
 
     /**
@@ -76,20 +74,22 @@ abstract class EventComment implements EventCommentInterface
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEvent()
+    public function getCalendarEvent()
     {
-        return $this->event;
+        return $this->calendarEvent;
     }
 
-    public function setInvitee(InviteeInterface $invitee)
+    public function setCalendarInvitee(CalendarInviteeInterface $invitee)
     {
         $this->invitee = $invitee;
 
         return $this;
     }
 
-    public function getInvitee()
+    public function getCalendarInvitee()
     {
         return $this->invitee;
     }
+     
+    
 }

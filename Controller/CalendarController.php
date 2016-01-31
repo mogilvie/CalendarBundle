@@ -6,15 +6,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
-use SpecShaper\CalendarBundle\Form\PersistedEventType;
+use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
+use SpecShaper\CalendarBundle\Form\CalendarEventType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use DateTime;
-use SpecShaper\CalendarBundle\Doctrine\PersistedEventManager;
+use SpecShaper\CalendarBundle\Doctrine\CalendarEventManager;
 use SpecShaper\CalendarBundle\Event\CalendarEvents;
 use SpecShaper\CalendarBundle\Event\CalendarLoadEvents;
 use SpecShaper\CalendarBundle\Event\CalendarEditEvent;
+use SpecShaper\CalendarBundle\Event\CalendarGetAddressesEvent;
 
 
 /**
@@ -24,7 +25,7 @@ class CalendarController extends Controller {
 
     /**
      * Dispatch a CalendarEvent and return a JSON Response of any events returned.
-     * 
+     *
      * @param Request $request
      *
      * @return Response
@@ -62,20 +63,21 @@ class CalendarController extends Controller {
 
     /**
      * Add a new calendar event.
-     * 
+     *
      * @param Request $request
      *
      * @return JsonResponse
-     * 
+     *
      * @Route("/addevent", name="calendar_addevent")
      * @Method({"GET","POST"})
      */
     public function addEventAction(Request $request) {
-        $eventManager = $this->get('spec_shaper_calender.manager.persisted_event');
+
+        $eventManager = $this->get('spec_shaper_calender.manager.calendar_event');
 
         $event = $eventManager->createEvent();
 
-        $form = $this->createForm(PersistedEventType::class, $event, array(
+        $form = $this->createForm(CalendarEventType::class, $event, array(
             'action' => $this->generateUrl('calendar_addevent'),
             'method' => 'POST',
         ));
@@ -93,7 +95,7 @@ class CalendarController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($modifiedEventEntity);
             $em->flush();
-                       
+
             return new JsonResponse($modifiedEventEntity->toArray());
         }
 
@@ -104,7 +106,7 @@ class CalendarController extends Controller {
 
     /**
      * Update an event with changes from the modal.
-     * 
+     *
      * @param Request $request
      * @param integer $id
      *
@@ -113,10 +115,12 @@ class CalendarController extends Controller {
      * @Method({"GET","PUT"})
      */
     public function updateEventAction(Request $request, $id) {
-        
-        $event = $this->getEventManager()->getEvent($id);
 
-        $form = $this->createForm(PersistedEventType::class, $event, array(
+        $event = $this->getEventManager()->getEvent($id);
+        
+        $orgionalInvitees = $this->getEventManager()->storeOrigionalInvitees($event->getCalendarInvitees());
+
+        $form = $this->createForm(CalendarEventType::class, $event, array(
             'action' => $this->generateUrl('calendar_updateevent', array('id' => $id)),
             'method' => 'PUT',
         ));
@@ -124,16 +128,24 @@ class CalendarController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $event = $this->getEventManager()->updateEvent($event, $orgionalInvitees);
             
             $newEvent = new CalendarEditEvent($event);
 
-            $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
+            $modifiedEventEntity = $this->getDispatcher()
                     ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
                     ->getEventEntity();
-            
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($modifiedEventEntity);
-            $em->flush();
+                    
+//            $newEvent = new CalendarEditEvent($event);
+//
+//            $modifiedEventEntity = $this->getDispatcher()
+//                    ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
+//                    ->getEventEntity();
+//
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($modifiedEventEntity);
+//            $em->flush();
 
             return new JsonResponse($modifiedEventEntity->toArray());
         }
@@ -146,17 +158,18 @@ class CalendarController extends Controller {
 
     /**
      * Update the date and times of an event.
-     * 
+     *
      * Used when resizing or dragging a calendar event in the calendar.
-     * 
+     *
      * @param Request                 $request
-     * @param PersistedEventInterface $event
+     * @param CalendarEventInterface $event
      *
      * @return JsonResponse
      * @Route("/{id}/updatedatetime", name="calendar_updatedatetime")
      * @Method("PUT")
      */
     public function updateDateTimeAction(Request $request, $id) {
+        
         $event = $this->getEventManager()->getEvent($id);
 
         $start = $request->request->get('start');
@@ -183,22 +196,36 @@ class CalendarController extends Controller {
         
     }
 
-    public function getEvent($param) {
-        
+    /**
+     *
+     * @Route("/getaddresses", name="calendar_getaddresses")
+     * @Method("GET")
+     */
+    public function getEmailAddressesAction() {
+
+        $addressEvent = new CalendarGetAddressesEvent();
+
+        $addressArray = $this->getDispatcher()
+                ->dispatch(CalendarEvents::CALENDAR_GET_ADDRESSES, $addressEvent)
+                ->toArray();
+
+        return $this->render('SpecShaperCalendarBundle:Calendar:emailAddressDatalist.html.twig', array(
+                    'emailAddresses' => $addressArray
+        ));
     }
 
     /**
-     * Get the Calendar Event PersistedEventManager.
-     * 
-     * @return PersistedEventManager
+     * Get the Calendar Event CalendarEventManager.
+     *
+     * @return CalendarEventManager
      */
     protected function getEventManager() {
-        return $this->get('spec_shaper_calender.manager.persisted_event');
+        return $this->get('spec_shaper_calender.manager.calendar_event');
     }
 
     /**
      * Get the EventDispatcher.
-     * 
+     *
      * @return \Symfony\Component\EventDispatcher\EventDispatcher
      */
     protected function getDispatcher() {

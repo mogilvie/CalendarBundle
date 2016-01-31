@@ -4,12 +4,12 @@ namespace SpecShaper\CalendarBundle\Form;
 
 //use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InviteeType extends AbstractType
+class CalendarInviteeType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,11 +18,16 @@ class InviteeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('hasAccepted')
-                ->add('emailAddress', EmailType::class, array(
+                ->add('isOptional', CheckboxType::class, array(
                     'required' => false,
-                    'label' => 'specshaper_caledarbundle.label.emailAddress',
+                    'label' => false,
                 ))
+                ->add('emailAddress', HiddenType::class, array(
+                    'required' => true,
+                    'label' => false,
+                    'attr' => array('class' => 'hiddenEmailAddress')
+                ))
+                
         ;
     }
     
@@ -36,7 +41,7 @@ class InviteeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            //'data_class' => 'SpecShaper\CalendarBundle\Model\InviteeInterface',
+            //'data_class' => 'SpecShaper\CalendarBundle\Model\CalendarInviteeInterface',
             'data_class' => 'AppBundle\Entity\CalendarInvitee',
         ));
     }

@@ -3,9 +3,9 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 /**
- * Invitee.
+ * CalendarInvitee.
  */
-class Invitee implements InviteeInterface
+class CalendarInvitee implements CalendarInviteeInterface
 {
     /**
      * @var int
@@ -13,19 +13,24 @@ class Invitee implements InviteeInterface
     protected $id;
 
     /**
-     * @var int
-     */
-    protected $event;
-
-    /**
      * @var string
      */
     protected $emailAddress;
 
     /**
-     * @var string
+     * @var boolean
      */
-    protected $hasAccepted;
+    protected $hasAccepted = false;
+    
+    /**
+     * @var boolean
+     */
+    protected $hasDenied = false;
+    
+    /**
+     * @var boolean
+     */
+    protected $isOptional = false;
 
     /**
      * @var \DateTime
@@ -40,20 +45,20 @@ class Invitee implements InviteeInterface
     /**
      * @var string
      */
-    protected $token;
+    protected $token = "sadfadsf";
 
     /**
      * @var \DateTime
      */
     protected $sentOn;
     
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-
-    }
+//    /**
+//     * Constructor.
+//     */
+//    public function __construct()
+//    {
+//
+//    }
 
     /**
      * Get id.
@@ -70,7 +75,7 @@ class Invitee implements InviteeInterface
      *
      * @param string $meeting
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setMeeting($meeting)
     {
@@ -94,7 +99,7 @@ class Invitee implements InviteeInterface
      *
      * @param string $emailAddress
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setEmailAddress($emailAddress)
     {
@@ -112,13 +117,37 @@ class Invitee implements InviteeInterface
     {
         return $this->emailAddress;
     }
+    
+    /**
+     * Set isOptional.
+     *
+     * @param isOptional $isOptional
+     *
+     * @return CalendarInvitee
+     */
+    public function setIsOptional($isOptional)
+    {
+        $this->isOptional = $isOptional;
+
+        return $this;
+    }
+
+    /**
+     * Get isOptional.
+     *
+     * @return boolean
+     */
+    public function getIsOptional()
+    {
+        return $this->isOptional;
+    }
 
     /**
      * Set hasAccepted.
      *
      * @param string $hasAccepted
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setHasAccepted($hasAccepted)
     {
@@ -136,13 +165,37 @@ class Invitee implements InviteeInterface
     {
         return $this->hasAccepted;
     }
+    
+    /**
+     * Set hasDenied.
+     *
+     * @param string $hasDenied
+     *
+     * @return CalendarInvitee
+     */
+    public function setHasDenied($hasDenied)
+    {
+        $this->hasDenied = $hasDenied;
+
+        return $this;
+    }
+
+    /**
+     * Get hasDenied.
+     *
+     * @return string
+     */
+    public function getHasDenied()
+    {
+        return $this->hasDenied;
+    }
 
     /**
      * Set acceptedOn.
      *
      * @param \DateTime $acceptedOn
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setAcceptedOn($acceptedOn)
     {
@@ -166,7 +219,7 @@ class Invitee implements InviteeInterface
      *
      * @param string $token
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setToken($token)
     {
@@ -190,7 +243,7 @@ class Invitee implements InviteeInterface
      *
      * @param \DateTime $sentOn
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setSentOn($sentOn)
     {
@@ -210,26 +263,27 @@ class Invitee implements InviteeInterface
     }
 
     /**
-     * Set event.
+     * Set calendarEvent
      *
-     * @param PersistedEventInterface $event
+     * @param CalendarEventInterface $calendarEvent
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
-    public function setEvent(PersistedEventInterface $event = null)
+    public function setCalendarEvent(CalendarEventInterface $calendarEvent = null)
     {
-        $this->event = $event;
+        $this->calendarEvent = $calendarEvent;
 
         return $this;
     }
 
     /**
-     * Get event.
+     * Get calendarEvent
      *
-     * @return PersistedEventInterface
+     * @return CalendarEventInterface
      */
-    public function getEvent()
+    public function getCalendarEvent()
     {
-        return $this->event;
+        return $this->calendarEvent;
     }
+    
 }

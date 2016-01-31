@@ -9,7 +9,7 @@
 namespace SpecShaper\CalendarBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
+use SpecShaper\CalendarBundle\Model\EmailAddress;
 
 /**
  * CalendarEditEvent dispatched whenever a new CalendarEvent is created or modified.
@@ -20,24 +20,21 @@ use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
  *
  * @author      Mark Ogilvie <mark.ogilvie@specshaper.com>
  */
-class CalendarEditEvent extends Event
+class CalendarGetAddressesEvent extends Event
 {
     /**
      * @var CalendarEventInterface
      */
-    private $calendarEvent;
+    private $emailAddress;
 
     /**
      * Construct the Event and store the CalendarEvent.
      * 
      * @param CalendarEventInterface $calendarEvent
      */
-    public function __construct(CalendarEventInterface $calendarEvent)
+    public function __construct()
     {
-        $this->calendarEvent = $calendarEvent;
-        
-        // Make sure that the start and end dates are created.
-        $calendarEvent->onPreFlush();
+        $this->emailAddress = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -45,23 +42,29 @@ class CalendarEditEvent extends Event
      * 
      * @return CalendarEventInterface
      */
-    public function getEventEntity()
+    public function getAddresses()
     {
-        return $this->calendarEvent;
+        return $this->emailAddress;
     }
     
-    /**
-     * Set a different event if required.
-     * 
-     * @param CalendarEventInterface $calendarEvent
-     * 
-     * @return \SpecShaper\CalendarBundle\Event\CalendarEditEvent
-     */
-    public function setEventEntity(CalendarEventInterface $calendarEvent)
+    public function addAddress(EmailAddress $address)
     {
-        $this->calendarEvent = $calendarEvent;
-        
-        return $this;
+         $this->emailAddress[] = $address;
+         
+         return $this;
     }
+    public function toArray() {
+        
+        $addressArray = [];
+        
+        foreach ($this->emailAddress as $address){
+            $addressArray[] = $address->toArray();
+        }
+        
+        return $addressArray;
+        
+    }
+    
+    
 
 }

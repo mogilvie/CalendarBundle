@@ -6,18 +6,12 @@
 
 
     <services>
-        
-
-        <service id="spec_shaper_calendar.form.type.persisted_event" class="SpecShaper\CalendarBundle\Form\PersistedEventType">
+        <service id="spec_shaper_calendar.form.type.calendar_event" class="SpecShaper\CalendarBundle\Form\CalendarEventType">
             <tag name="form.type" />
             <argument type="service" id="spec_shaper_calender.entity_manager" />
         </service>
-
-        
     </services>
     
-
-
     <!--    <parameters>
         <parameter key="fullcalendar.event.class">SpecShaper\CalendarBundle\Entity\EventEntity</parameter>
         <parameter key="fullcalendar.loader.event">calendar.load_events</parameter>

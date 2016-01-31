@@ -110,7 +110,7 @@ class AppKernel extends Kernel
 The bundle requires entities to interact with the database and store information.
 - Calendar
 - Event
-- Invitee
+- CalendarInvitee
 - Comment
 
 ### Calendar entity
@@ -166,7 +166,7 @@ entity code as required to suit your application.
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\PersistedEvent as BaseCalendarEvent;
+use SpecShaper\CalendarBundle\Model\CalendarEvent as BaseCalendarEvent;
 
 /**
  * A calendar event entity to contain the event information
@@ -203,7 +203,7 @@ entity code as required to suit your application.
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\Invitee as BaseCalendarInvitee;
+use SpecShaper\CalendarBundle\Model\CalendarInvitee as BaseCalendarInvitee;
 
 /**
  * A invitee entity to contain the invited user information and status.
@@ -237,7 +237,7 @@ entity code as required to suit your application.
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\EventComment as BaseCalendarComment;
+use SpecShaper\CalendarBundle\Model\CalendarComment as BaseCalendarComment;
 
 /**
  * A invitee entity to contain the invited user information and status.

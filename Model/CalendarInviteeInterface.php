@@ -3,9 +3,9 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 /**
- * InviteeInterface.
+ * CalendarInviteeInterface.
  */
-interface InviteeInterface
+interface CalendarInviteeInterface
 {
     /**
      * Get id.
@@ -18,7 +18,7 @@ interface InviteeInterface
      *
      * @param string $meeting
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setMeeting($meeting);
 
@@ -34,7 +34,7 @@ interface InviteeInterface
      *
      * @param string $emailAddress
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setEmailAddress($emailAddress);
 
@@ -44,13 +44,30 @@ interface InviteeInterface
      * @return string
      */
     public function getEmailAddress();
+    
+        
+    /**
+     * Set isOptional.
+     *
+     * @param isOptional $isOptional
+     *
+     * @return CalendarInvitee
+     */
+    public function setIsOptional($isOptional);
+
+    /**
+     * Get isOptional.
+     *
+     * @return boolean
+     */
+    public function getIsOptional();
 
     /**
      * Set hasAccepted.
      *
      * @param string $hasAccepted
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setHasAccepted($hasAccepted);
 
@@ -60,13 +77,31 @@ interface InviteeInterface
      * @return string
      */
     public function getHasAccepted();
+    
+        /**
+     * Set hasDenied.
+     *
+     * @param string $hasDenied
+     *
+     * @return CalendarInvitee
+     */
+    public function setHasDenied($hasDenied);
+
+    /**
+     * Get hasDenied.
+     *
+     * @return string
+     */
+    public function getHasDenied();
+    
+    
 
     /**
      * Set acceptedOn.
      *
      * @param \DateTime $acceptedOn
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setAcceptedOn($acceptedOn);
 
@@ -82,7 +117,7 @@ interface InviteeInterface
      *
      * @param string $token
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setToken($token);
 
@@ -98,7 +133,7 @@ interface InviteeInterface
      *
      * @param \DateTime $sentOn
      *
-     * @return Invitee
+     * @return CalendarInvitee
      */
     public function setSentOn($sentOn);
 
@@ -112,12 +147,12 @@ interface InviteeInterface
     /**
      * Set event.
      *
-     * @return PersistedEventInterface
+     * @return CalendarEventInterface
      */
-    public function setEvent(PersistedEventInterface $event = null);
+    public function setCalendarEvent(CalendarEventInterface $event = null);
 
     /**
      * Get event.
      */
-    public function getEvent();
+    public function getCalendarEvent();
 }

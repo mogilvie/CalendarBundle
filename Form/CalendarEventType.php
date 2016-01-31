@@ -2,7 +2,6 @@
 
 namespace SpecShaper\CalendarBundle\Form;
 
-//use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -10,17 +9,16 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use SpecShaper\CalendarBundle\Form\InviteeType;
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
+use SpecShaper\CalendarBundle\Form\CalendarInviteeType;
+use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use SpecShaper\CalendarBundle\Repository\InviteeRepository;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use SpecShaper\CalendarBundle\Form\DataTransformer\IntegerInviteeTransformer;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class PersistedEventType extends AbstractType {
+class CalendarEventType extends AbstractType {
 
     private $manager;
 
@@ -57,20 +55,20 @@ class PersistedEventType extends AbstractType {
                 ))
                 ->add('title', TextType::class, array(
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.title',
+                    'label' => 'specshaper_calendarbundle.label.title',
                 ))
                 ->add('startDate', DateType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd MMM yyyy',
                     'html5' => false,
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.startDate',
+                    'label' => 'specshaper_calendarbundle.label.startDate',
                     'label' => false,
                 ))
                 ->add('startTime', TimeType::class, array(
                     'widget' => 'single_text',
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.startTime',
+                    'label' => 'specshaper_calendarbundle.label.startTime',
                     'label' => false,
                 ))
                 ->add('endDate', DateType::class, array(
@@ -78,51 +76,51 @@ class PersistedEventType extends AbstractType {
                     'format' => 'dd MMM yyyy',
                     'html5' => false,
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.endDate',
+                    'label' => 'specshaper_calendarbundle.label.endDate',
                     'label' => false,
                 ))
                 ->add('endTime', TimeType::class, array(
                     'widget' => 'single_text',
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.endTime',
+                    'label' => 'specshaper_calendarbundle.label.endTime',
                     'label' => false,
                 ))
                 ->add('isAllDay', CheckboxType::class, array(
                     'required' => false,
-                    'label' => 'specshaper_caledarbundle.label.isAllDay',
+                    'label' => 'specshaper_calendarbundle.label.isAllDay',
                 ))
                 ->add('isReoccuring', CheckboxType::class, array(
                     'required' => false,
-                    'label' => 'specshaper_caledarbundle.label.isReoccuring',
+                    'label' => 'specshaper_calendarbundle.label.isReoccuring',
                 ))
                 ->add('period', ChoiceType::class, array(
                     'choices' => array(
-                        'specshaper_caledarbundle.choice.daily' => PersistedEventInterface::REPEAT_DAILY,
-                        'specshaper_caledarbundle.choice.weekly' => PersistedEventInterface::REPEAT_WEEKLY,
-                        'specshaper_caledarbundle.choice.fortnightly' => PersistedEventInterface::REPEAT_FORTNIGHTLY,
-                        'specshaper_caledarbundle.choice.monthly' => PersistedEventInterface::REPEAT_MONTHLY,
+                        'specshaper_calendarbundle.choice.daily' => CalendarEventInterface::REPEAT_DAILY,
+                        'specshaper_calendarbundle.choice.weekly' => CalendarEventInterface::REPEAT_WEEKLY,
+                        'specshaper_calendarbundle.choice.fortnightly' => CalendarEventInterface::REPEAT_FORTNIGHTLY,
+                        'specshaper_calendarbundle.choice.monthly' => CalendarEventInterface::REPEAT_MONTHLY,
                     ),
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.period',
+                    'label' => 'specshaper_calendarbundle.label.period',
                 ))
                 ->add('repeatUntil', TextType::class, array(
                     'required' => false,
                     'mapped' => false,
-                    'label' => 'specshaper_caledarbundle.label.repeatUntil',
+                    'label' => 'specshaper_calendarbundle.label.repeatUntil',
                 ))
                 ->add('text', TextareaType::class, array(
                     'attr' => array('rows' => 12),
                     'required' => true,
-                    'label' => 'specshaper_caledarbundle.label.text',
+                    'label' => 'specshaper_calendarbundle.label.text',
                 ))
-                ->add('invitees', CollectionType::class, array(
-                    'entry_type' => InviteeType::class,
+                
+                ->add('calendarInvitees', CollectionType::class, array(
+                    'entry_type' => CalendarInviteeType::class,
+                    'by_reference' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
-        ));
-
-        $builder->get('invitees')
-                ->addModelTransformer(new IntegerInviteeTransformer($this->manager))
+                ))
+                
         ;
     }
 
@@ -135,7 +133,7 @@ class PersistedEventType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'SpecShaper\CalendarBundle\Model\PersistedEventInterface',
+            'data_class' => 'SpecShaper\CalendarBundle\Model\CalendarEventInterface',
         ));
     }
 
@@ -144,10 +142,10 @@ class PersistedEventType extends AbstractType {
      *
      * @since  Available since Release 1.0.0
      *
-     * @return string 'appbundle_persisted_event'
+     * @return string 'appbundle_calendar_event'
      */
     public function getBlockPrefix() {
-        return 'specshaper_calendar_persisted_event';
+        return 'specshaper_calendar_event';
     }
 
 }

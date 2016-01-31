@@ -3,15 +3,17 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
-    <mapped-superclass name="SpecShaper\CalendarBundle\Model\Invitee">
-     
-        <many-to-one field="event" target-entity="PersistedEvent" inversed-by="invitees" orphan-removal="true"/>
+    
+    <mapped-superclass name="SpecShaper\CalendarBundle\Model\CalendarInvitee">
+        
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
         <field name="emailAddress" type="string" />
         <field name="sentOn" type="datetime" nullable="true" />
+        <field name="isOptional" type="boolean" />
         <field name="hasAccepted" type="boolean" />
+        <field name="hasDenied" type="boolean" />
         <field name="acceptedOn" type="datetime" nullable="true" />
         <field name="token" type="string" length="20" />
         <field name="message" type="text" nullable="true" />

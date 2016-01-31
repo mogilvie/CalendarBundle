@@ -1,0 +1,25 @@
+
+/* 
+    Created on : 31/01/2016, 5:11:28 AM
+    Author     : Mark Ogilvie <mark.ogilvie@specshaper.com>
+*/
+#specshaper_calendar_event_calendarInvitees >tbody> tr > td {
+    font-size: 9px;
+}
+
+td.isOptional > div, td.isOptional > div > div{
+    padding: 0px;
+    margin: 0px;
+}
+
+td.isOptional > div > div > label{
+    display:block
+}
+
+.inviteeIcons{
+    display: inline-block;
+}
+
+.inviteeIcons > i {
+   cursor: pointer;
+}

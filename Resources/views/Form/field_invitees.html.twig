@@ -1,0 +1,26 @@
+{# empty Twig template #}
+{% block _specshaper_calendar_event_calendarInvitees_widget %}
+
+    <table {{ block('widget_container_attributes') }} class="table table-condensed inviteeTable">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      {{ form_errors(form) }}
+
+      <tbody id="inviteeContainer"
+             data-prototype="{% filter escape -%}
+             {{ include('SpecShaperCalendarBundle:Form:inviteePrototype.html.twig', { 'form': form.vars.prototype | e }) }}
+             {%- endfilter %}">
+
+        {% for child in form.children %}
+            {{ include('SpecShaperCalendarBundle:Form:inviteePrototype.html.twig', { 'form': child | e }) }}
+        {% endfor %}
+
+      </tbody>
+    </table>
+{% endblock %}

@@ -57,4 +57,15 @@ final class CalendarEvents {
      */
     const CALENDAR_EVENT_UPDATED = 'specshaper_calendar.event_updated';
     
+    /**
+     * The specshaper_calendar.event_updated is thrown when an event is
+     * about to be updated.
+     *  
+     * Hook into this event to modify the CalendarEvent proir to flushing.
+     * 
+     * @var string
+     */
+    const CALENDAR_GET_ADDRESSES = 'specshaper_calendar.get_addresses';
+    
+    
 }

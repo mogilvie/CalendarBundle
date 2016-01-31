@@ -10,7 +10,7 @@ namespace SpecShaper\CalendarBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpFoundation\Request;
-use SpecShaper\CalendarBundle\Model\PersistedEventInterface;
+use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
 
 /**
  * CalendarLoadEvents is thrown to allow the AppBundle to load and set
@@ -36,7 +36,7 @@ class CalendarLoadEvents extends Event
     private $request;
 
     /**
-     * @var PersistedEventInterface[]
+     * @var CalendarEventInterface[]
      */
     private $events;
 
@@ -58,12 +58,12 @@ class CalendarLoadEvents extends Event
     /**
      * Get the events from the CalendarLoadEvents event.
      * 
-     * PersistedEvents, or CalendarEvents, and added to this CalendarLoadEvents
+     * CalendarEvents, or CalendarEvents, and added to this CalendarLoadEvents
      * in the AppBundle EventListenr.
      * 
      * Use this method to get the loaded events in the CalendarController.
      * 
-     * @return PersistedEventInterface[]
+     * @return CalendarEventInterface[]
      */
     public function getEvents()
     {
@@ -80,7 +80,7 @@ class CalendarLoadEvents extends Event
      *
      * @return CalendarEvent $this
      */
-    public function addEvent(PersistedEventInterface $event)
+    public function addEvent(CalendarEventInterface $event)
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;

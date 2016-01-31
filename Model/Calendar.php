@@ -17,11 +17,6 @@ abstract class Calendar implements CalendarInterface
     /**
      * @var string
      */
-    protected $event;
-
-    /**
-     * @var string
-     */
     protected $country;
 
     /**
@@ -42,18 +37,6 @@ abstract class Calendar implements CalendarInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getEvent()
-    {
-        return $this->event;
-    }
-
-    public function setEvent(PersistedEventInterface $event)
-    {
-        $this->event = $event;
-
-        return $this;
     }
 
     public function getCountry()
@@ -151,4 +134,39 @@ abstract class Calendar implements CalendarInterface
     {
         return $this->createdOn;
     }
+    
+    /**
+     * Add calendarEvent
+     *
+     * @param CalendarEventInterface $calendarEvent
+     *
+     * @return Calendar
+     */
+    public function addCalendarEvent(CalendarEventInterface $calendarEvent)
+    {
+        $this->calendarEvents[] = $calendarEvent;
+
+        return $this;
+    }
+
+    /**
+     * Remove calendarEvent
+     *
+     * @param CalendarEventInterface $calendarEvent
+     */
+    public function removeCalendarEvent(CalendarEventInterface $calendarEvent)
+    {
+        $this->calendarEvents->removeElement($calendarEvent);
+    }
+
+    /**
+     * Get calendarEvents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCalendarEvents()
+    {
+        return $this->calendarEvents;
+    }
+    
 }

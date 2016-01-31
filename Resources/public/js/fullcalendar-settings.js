@@ -9,6 +9,7 @@
 Calendar = {
     settings: {
         loader: null,
+        new : null,
         update: null,
         updateDateTime: null,
         calendar: null,
@@ -21,7 +22,9 @@ Calendar = {
     bindUIActions: function () {
         $(document).on('ready', Calendar.onReady);
         $(document).on('click', '#submitButton', Calendar.submitButtonClickHander);
-        $(document).on('submit', 'form[name="specshaper_calendar_persisted_event"]', Calendar.eventSubmitHandler);
+        $(document).on('submit', 'form[name="specshaper_calendar_event"]', Calendar.eventSubmitHandler);
+        $(document).on('click', '#addInviteeButton', Calendar.addInviteeButtonClickHander);
+        $(document).on('click', '.removeInviteeButton', Calendar.removeInviteeClickHandler);
     },
     /**
      * Prepare the calendar and modals.
@@ -79,8 +82,8 @@ Calendar = {
         });
 
     },
-    bindColorPicker: function() {
-        $('#specshaper_calendar_persisted_event_bgColor').simplecolorpicker({theme: 'fontawesome'});
+    bindColorPicker: function () {
+        $('#specshaper_calendar_event_bgColor').simplecolorpicker({theme: 'fontawesome'});
     },
     /**
      * Bind the datepickers to the modal datetime inputs.
@@ -88,20 +91,100 @@ Calendar = {
      * @returns {undefined}
      */
     bindDatePickers: function () {
-        $('input#specshaper_calendar_persisted_event_startDate').datepicker({
+        $('input#specshaper_calendar_event_startDate').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
-        $('input#specshaper_calendar_persisted_event_endDate').datepicker({
+        $('input#specshaper_calendar_event_endDate').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
-        $('input#specshaper_calendar_persisted_event_repeatUntil').datepicker({
+        $('input#specshaper_calendar_event_repeatUntil').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
     },
-    
+    addInviteeButtonClickHander: function (e) {
+        e.preventDefault();
+
+        var input = $('#emailAddressesInput');
+
+        if (input.val().length === 0) {
+            return;
+        }
+
+        var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        
+        var is_email = re.test(input.val());
+        
+        if (is_email) {
+            input.removeClass("invalid").addClass("valid");
+        }
+        else {
+            input.removeClass("valid").addClass("invalid");
+        }
+        
+        Calendar.addInvitee(input.val());
+    },
+    addInvitee: function (newAddress) {
+
+
+        var $collectionHolder = $('#inviteeContainer');
+
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+
+//        newForm = prototype.replace('<td class="emailAddress">', '<td class="emailAddress">' + newAddress + );
+
+        var html = $.parseHTML( newForm );
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+        
+        $(html).find("span.emailAddress").text(newAddress);
+        $(html).find("input.hiddenEmailAddress").val(newAddress);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        $collectionHolder.append(html);
+
+
+    },
+    removeInviteeClickHandler: function(e){
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // remove the li for the tag form
+        $(this).closest('tr').remove();
+
+    },
+    getAddressesFromServer: function () {
+
+        var url = Calendar.settings.addresses;
+
+        $.ajax(
+                {
+                    url: url,
+                    type: "GET",
+                    success: function (html, textStatus, jqXHR)
+                    {
+
+                        $("#emailAddresses").html();
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        var w = window.open();
+                        var html = XMLHttpRequest.responseText;
+                        $(w.document.body).html(html);
+                    }
+                });
+    },
     /**
      * Function called when calendar dates are selected.
      * 
@@ -114,15 +197,39 @@ Calendar = {
      */
     select: function (start, end, allDay) {
 
-        var $eventModal = $('#eventModal');
+        var url = Calendar.settings.new;
 
-        $eventModal.find('#specshaper_calendar_persisted_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
-        $eventModal.find('#specshaper_calendar_persisted_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
+        $.ajax(
+                {
+                    url: url,
+                    type: "GET",
+                    success: function (html, textStatus, jqXHR)
+                    {
+                        $("#eventModal").find('div.modal-body').replaceWith($(html).find('div.modal-body'));
 
-        $eventModal.find('#specshaper_calendar_persisted_event_startTime').val(start.format('HH:MM'));
-        $eventModal.find('#specshaper_calendar_persisted_event_endTime').val(end.format('HH:MM'));
+                        Calendar.bindDatePickers();
+                        Calendar.bindColorPicker();
 
-        $eventModal.modal('show');
+                        var $eventModal = $('#eventModal');
+
+                        $eventModal.find('#specshaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
+                        $eventModal.find('#specshaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
+
+                        $eventModal.find('#specshaper_calendar_event_startTime').val(start.format('HH:mm'));
+                        $eventModal.find('#specshaper_calendar_event_endTime').val(end.format('HH:mm'));
+
+                        $eventModal.modal('show');
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        var w = window.open();
+                        var html = XMLHttpRequest.responseText;
+                        $(w.document.body).html(html);
+                    }
+                });
+
+
     },
     /**
      * Function fired when a user selected a calendar event.
@@ -187,7 +294,7 @@ Calendar = {
 
         e.preventDefault();
 
-        var $form = $('form[name="specshaper_calendar_persisted_event"]');
+        var $form = $('form[name="specshaper_calendar_event"]');
 
         // Serialize the form.
         var postData = $form.serializeArray();

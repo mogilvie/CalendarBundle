@@ -5,9 +5,9 @@ namespace SpecShaper\CalendarBundle\Model;
 use DateTime;
 
 /**
- * PersistedEvent.
+ * CalendarEvent.
  */
-interface PersistedEventInterface
+interface CalendarEventInterface
 {
     const REPEAT_DAILY = 0;
     const REPEAT_WEEKLY = 1;
@@ -21,7 +21,7 @@ interface PersistedEventInterface
      * 
      * @param DateTime $startDate
      *
-     * @return \SpecShaper\CalendarBundle\Entity\PersistedEvent
+     * @return \SpecShaper\CalendarBundle\Entity\CalendarEvent
      */
     public function setStartDate(DateTime $startDate);
 
@@ -37,7 +37,7 @@ interface PersistedEventInterface
      *
      * @param DateTime $startTime
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setStartTime(DateTime $startTime);
 
@@ -53,7 +53,7 @@ interface PersistedEventInterface
      *
      * @param DateTime $endDate
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setEndDate(DateTime $endDate);
 
@@ -69,7 +69,7 @@ interface PersistedEventInterface
      *
      * @param DateTime $endTime
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setEndTime(DateTime $endTime);
 
@@ -113,7 +113,7 @@ interface PersistedEventInterface
      *
      * @param string $title
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setTitle($title);
 
@@ -131,7 +131,7 @@ interface PersistedEventInterface
      *
      * @param \DateTime $startDatetime
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setStartDatetime($startDatetime);
 
@@ -147,7 +147,7 @@ interface PersistedEventInterface
      *
      * @param \DateTime $endDatetime
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setEndDatetime($endDatetime);
 
@@ -163,7 +163,7 @@ interface PersistedEventInterface
      *
      * @param string $url
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setUrl($url);
 
@@ -179,7 +179,7 @@ interface PersistedEventInterface
      *
      * @param bool $isAllDay
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setIsAllDay($isAllDay);
 
@@ -195,7 +195,7 @@ interface PersistedEventInterface
      *
      * @param bool $isReoccuring
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setIsReoccuring($isReoccuring);
 
@@ -211,7 +211,7 @@ interface PersistedEventInterface
      *
      * @param \DateTime $repeatUntil
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setRepeatUntil(DateTime $repeatUntil);
 
@@ -227,7 +227,7 @@ interface PersistedEventInterface
      *
      * @param int $period
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setPeriod($period);
 
@@ -243,7 +243,7 @@ interface PersistedEventInterface
      *
      * @param string $text
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setText($text);
 
@@ -259,7 +259,7 @@ interface PersistedEventInterface
      *
      * @param string $bgColor
      *
-     * @return PersistedEvent
+     * @return CalendarEvent
      */
     public function setBgColor($bgColor);
 
@@ -270,47 +270,69 @@ interface PersistedEventInterface
      */
     public function getBgColor();
     
-    
-    /**
-     * Add invitee.
-     
+       /**
+     * Set calendar
      *
-     * @return PersistedEvent
+     * @param CalendarInterface $calendar
+     *
+     * @return CalendarEvent
      */
-    public function addInvitee($invitee);
+    public function setCalendar(CalendarInterface $calendar = null);
 
     /**
-     * Remove invitee.
+     * Get calendar
+     *
+     * @return CalendarInterface
      */
-    public function removeInvitee($invitee);
+    public function getCalendar();
 
     /**
-     * Get invitees.
+     * Add invitee
+     *
+     * @param CalendarInviteeInterface $invitee
+     *
+     * @return CalendarEvent
+     */
+    public function addCalendarInvitee(CalendarInviteeInterface $invitee);
+
+    /**
+     * Remove invitees
+     *
+     * @param CalendarInviteeInterface $invitee
+     */
+    public function removeCalendarInvitee(CalendarInviteeInterface $invitee);
+
+    /**
+     * Get invitees
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getInvitees();
+    public function getCalendarInvitees();
 
     /**
-     * Add comment.
-     *
-     * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
-     *
-     * @return PersistedEvent
-     */
-    public function addComment(EventCommentInterface $comment);
-
-    /**
-     * Remove comment.
-     *
-     * @param \SpecShaper\CalendarBundle\Entity\EventComment $comment
-     */
-    public function removeComment(EventCommentInterface $comment);
-
-    /**
-     * Get comment.
+     * Get comments
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getComment();
+        /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCalendarComments();    
+    /**
+     * Add comments
+     *
+     * @param CalendarCommentInterface $comment
+     *
+     * @return CalendarEvent
+     */
+    public function addCalendarComment(CalendarCommentInterface $comment);
+
+    /**
+     * Remove comment
+     *
+     * @param CalendarCommentInterface $comment
+     */
+    public function removeCalendarComment(CalendarCommentInterface $comment);
 }
