@@ -13,7 +13,9 @@ Calendar = {
         update: null,
         updateDateTime: null,
         calendar: null,
-        currentEvent: null
+        currentEvent: null,
+        delete: null,
+        deleteSeries: null
     },
     init: function (options) {
         Calendar.settings = $.extend(Calendar.settings, options);
@@ -25,6 +27,9 @@ Calendar = {
         $(document).on('submit', 'form[name="specshaper_calendar_event"]', Calendar.eventSubmitHandler);
         $(document).on('click', '#addInviteeButton', Calendar.addInviteeButtonClickHander);
         $(document).on('click', '.removeInviteeButton', Calendar.removeInviteeClickHandler);
+        
+        $(document).on('click', '#deleteButton', Calendar.deleteButtonClickHandler);
+        //$(document).on('click', '#deleteSeriesButton', Calendar.deleteSeriesButtonClickHandler);
     },
     /**
      * Prepare the calendar and modals.
@@ -205,13 +210,13 @@ Calendar = {
                     success: function (html, textStatus, jqXHR)
                     {
                         var $eventModal = $('#eventModal');
+                        
                         $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
 
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
 
                         if (start.hasTime() === false) {
-                            alert('boo');
                             $eventModal.find('#specshaper_calendar_event_isAllDay').prop('checked', true);                           
                         }
 
@@ -263,10 +268,18 @@ Calendar = {
                     type: "GET",
                     success: function (html, textStatus, jqXHR)
                     {
-                        $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
+                        var $eventModal = $("#eventModal");                        
+                        var $newModalContent = $(html).find('div.modal-content')
+            
+                        $eventModal
+                                .find('div.modal-content')
+                                .replaceWith($newModalContent);                        
+                        ;
+
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
-                        $("#eventModal").modal('show');
+                        
+                        $eventModal.modal('show');
 
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -433,6 +446,37 @@ Calendar = {
 //                        Calendar.bindDatePickers();
 //                        $("#eventModal").modal('show');
 
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        var w = window.open();
+                        var html = XMLHttpRequest.responseText;
+                        $(w.document.body).html(html);
+                    }
+                }
+        );
+    },
+    
+    deleteButtonClickHandler: function (e) {
+
+        e.preventDefault();
+
+        var route = Calendar.settings.delete;
+
+        var id = $(e.target).closest('.modal-content').data('eventid');
+
+        var url = route.replace('PLACEHOLDER', id);
+
+
+        $.ajax(
+                {
+                    url: url,
+
+                    type: "DELETE",
+                    success: function (html, textStatus, jqXHR)
+                    {
+                       $('#calendar-holder').fullCalendar('removeEvents', [id]);                      
+                       $("#eventModal").modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
 

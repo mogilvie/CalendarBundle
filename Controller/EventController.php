@@ -119,7 +119,7 @@ class EventController extends Controller {
      * @param CalendarEventInterface $event
      *
      * @return JsonResponse
-     * @Route("/{id}/updatedatetime", name="calendar_updatedatetime")
+     * @Route("/{id}/updatedatetime", name="event_updatedatetime")
      * @Method("PUT")
      */
     public function updateDateTimeAction(Request $request, $id) {
@@ -145,10 +145,30 @@ class EventController extends Controller {
 
     /**
      * @param Request $request
-     * @Route("/{id}/deleteevent", name="event_delete")
+     * @Route("/{id}/delete", name="event_delete")
+     * @Method({"DELETE"})
+     */
+    public function deleteEventAction(Request $request, $id) {
+        
+        $event = $this->getEventManager()->getEvent($id);
+        
+        $removeEvent = new CalendarEditEvent($event);
+
+        $this->getDispatcher()
+                ->dispatch(CalendarEvents::CALENDAR_EVENT_REMOVED, $removeEvent)
+                ->getEventEntity();
+        
+        $this->getEventManager()->deleteEvent($event);
+        
+        return new JsonResponse("deleted");
+    }
+    
+    /**
+     * @param Request $request
+     * @Route("/{id}/deleteseries", name="event_deleteseries")
      * @Method({"POST"})
      */
-    public function deleteEventAction(Request $request) {
+    public function deleteSeriesEventAction(Request $request) {
         
         $this->getEventManager()->deleteEvent($id);
         

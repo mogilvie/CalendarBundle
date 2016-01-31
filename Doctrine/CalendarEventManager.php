@@ -113,6 +113,14 @@ class CalendarEventManager
         
     }
     
+    public function deleteEvent(CalendarEventInterface $event) {
+                
+        $om = $this->objectManager;
+        $om->remove($event);
+        $om->flush();
+        
+    }
+    
     
     
 }

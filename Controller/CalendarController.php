@@ -146,37 +146,6 @@ class CalendarController extends Controller {
     }
 
     /**
-     * Update the date and times of an event.
-     *
-     * Used when resizing or dragging a calendar event in the calendar.
-     *
-     * @param Request                 $request
-     * @param CalendarEventInterface $event
-     *
-     * @return JsonResponse
-     * @Route("/{id}/updatedatetime", name="calendar_updatedatetime")
-     * @Method("PUT")
-     */
-    public function updateDateTimeAction(Request $request, $id) {
-        
-        $event = $this->getEventManager()->getEvent($id);
-
-        $start = $request->request->get('start');
-        $end = $request->request->get('end');
-
-        $event
-                ->setStartDatetime(new DateTime($start))
-                ->setEndDatetime(new DateTime($end))
-        ;
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($event);
-        $em->flush();
-
-        return new JsonResponse($event->toArray());
-    }
-
-    /**
      * @param Request $request
      * @Route("/{id}/deleteevent", name="event_delete")
      * @Method({"POST"})
