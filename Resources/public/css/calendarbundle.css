@@ -3,7 +3,7 @@
     Created on : 31/01/2016, 5:11:28 AM
     Author     : Mark Ogilvie <mark.ogilvie@specshaper.com>
 */
-#specshaper_calendar_event_calendarInvitees >tbody> tr > td {
+#spec_shaper_calendar_event_calendarAttendees >tbody> tr > td {
     font-size: 9px;
 }
 
@@ -16,10 +16,14 @@ td.isOptional > div > div > label{
     display:block
 }
 
-.inviteeIcons{
+.attendeeIcons{
     display: inline-block;
 }
 
-.inviteeIcons > i {
+.attendeeIcons > i {
    cursor: pointer;
+}
+
+.modal-xl{
+    width: 80%; 
 }

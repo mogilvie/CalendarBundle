@@ -3,9 +3,9 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 /**
- * CalendarInvitee.
+ * CalendarAttendee.
  */
-class CalendarInvitee implements CalendarInviteeInterface
+class CalendarAttendee implements CalendarAttendeeInterface
 {
     /**
      * @var int
@@ -75,7 +75,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param string $meeting
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setMeeting($meeting)
     {
@@ -99,7 +99,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param string $emailAddress
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setEmailAddress($emailAddress)
     {
@@ -123,7 +123,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param isOptional $isOptional
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setIsOptional($isOptional)
     {
@@ -147,7 +147,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param string $hasAccepted
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setHasAccepted($hasAccepted)
     {
@@ -171,7 +171,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param string $hasDenied
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setHasDenied($hasDenied)
     {
@@ -195,7 +195,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param \DateTime $acceptedOn
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setAcceptedOn($acceptedOn)
     {
@@ -219,7 +219,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param string $token
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setToken($token)
     {
@@ -243,7 +243,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param \DateTime $sentOn
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setSentOn($sentOn)
     {
@@ -267,7 +267,7 @@ class CalendarInvitee implements CalendarInviteeInterface
      *
      * @param CalendarEventInterface $calendarEvent
      *
-     * @return CalendarInvitee
+     * @return CalendarAttendee
      */
     public function setCalendarEvent(CalendarEventInterface $calendarEvent = null)
     {

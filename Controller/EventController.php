@@ -16,13 +16,48 @@ use SpecShaper\CalendarBundle\Event\CalendarEvents;
 use SpecShaper\CalendarBundle\Event\CalendarLoadEvents;
 use SpecShaper\CalendarBundle\Event\CalendarEditEvent;
 use SpecShaper\CalendarBundle\Event\CalendarGetAddressesEvent;
-
+use SpecShaper\CalendarBundle\Utils\SimpleICS;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @Route("/event")
  */
 class EventController extends Controller {
 
+    /**
+     * Add a new calendar event.
+     *
+     * @param Request $request
+     *
+
+     *
+     * @Route("/download", name="event_download")
+     * @Method("GET")
+     */
+    public function downloadAction() {
+
+        $vCalendar = new \Eluceo\iCal\Component\Calendar('www.example.com');
+        $vEvent = new \Eluceo\iCal\Component\Event();
+        $vEvent
+                ->setDtStart(new \DateTime('2012-12-24'))
+                ->setDtEnd(new \DateTime('2012-12-24'))
+                ->setNoTime(true)
+                ->setSummary('Christmas')
+        ;
+        $vCalendar->addComponent($vEvent);
+
+        $response = new Response();
+
+        $response->setContent($vCalendar->render())
+                ->setCharset('ISO-8859-1')
+                ->setStatusCode(Response::HTTP_OK)
+        ;
+        $response->headers->set('Content-Type', 'multipart/alternative');
+        $response->headers->set('Content-Disposition', 'attachment; filename="cal.ics"');
+        
+        return $response;
+    }
 
     /**
      * Add a new calendar event.
@@ -36,7 +71,7 @@ class EventController extends Controller {
      */
     public function addEventAction(Request $request) {
 
-        $eventManager = $this->get('spec_shaper_calender.manager.event');
+        $eventManager = $this->get('spec_shaper_calendar.manager.event');
 
         $event = $eventManager->createEvent();
 
@@ -50,7 +85,7 @@ class EventController extends Controller {
         if ($form->isSubmitted() && $form->isValid()) {
 
             $newEvent = new CalendarEditEvent($event);
-            
+
             $this->getEventManager()->updateDateTimes($form, $event);
 
             $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
@@ -80,8 +115,8 @@ class EventController extends Controller {
     public function updateEventAction(Request $request, $id) {
 
         $event = $this->getEventManager()->getEvent($id);
-                
-        $orgionalInvitees = $this->getEventManager()->storeOrigionalInvitees($event->getCalendarInvitees());
+
+        $this->getEventManager()->storeOrigionalData($event);
 
         $form = $this->createForm(CalendarEventType::class, $event, array(
             'action' => $this->generateUrl('event_update', array('id' => $id)),
@@ -91,7 +126,7 @@ class EventController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $this->getEventManager()->updateDateTimes($form, $event);
 
             $newEvent = new CalendarEditEvent($event);
@@ -100,8 +135,8 @@ class EventController extends Controller {
                     ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
                     ->getEventEntity();
 
-            $modifiedEventEntity = $this->getEventManager()->updateEvent($modifiedEventEntity, $orgionalInvitees);
-            
+            $modifiedEventEntity = $this->getEventManager()->updateEvent($modifiedEventEntity);
+
             return new JsonResponse($modifiedEventEntity->toArray());
         }
 
@@ -123,7 +158,7 @@ class EventController extends Controller {
      * @Method("PUT")
      */
     public function updateDateTimeAction(Request $request, $id) {
-        
+
         $event = $this->getEventManager()->getEvent($id);
 
         $start = $request->request->get('start');
@@ -137,9 +172,9 @@ class EventController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $em->persist($event);
         $em->flush();
-        
 
-        
+
+
         return new JsonResponse($event->toArray());
     }
 
@@ -149,29 +184,29 @@ class EventController extends Controller {
      * @Method({"DELETE"})
      */
     public function deleteEventAction(Request $request, $id) {
-        
+
         $event = $this->getEventManager()->getEvent($id);
-        
+
         $removeEvent = new CalendarEditEvent($event);
 
         $this->getDispatcher()
                 ->dispatch(CalendarEvents::CALENDAR_EVENT_REMOVED, $removeEvent)
                 ->getEventEntity();
-        
+
         $this->getEventManager()->deleteEvent($event);
-        
+
         return new JsonResponse("deleted");
     }
-    
+
     /**
      * @param Request $request
      * @Route("/{id}/deleteseries", name="event_deleteseries")
      * @Method({"POST"})
      */
     public function deleteSeriesEventAction(Request $request) {
-        
+
         $this->getEventManager()->deleteEvent($id);
-        
+
         return new JsonResponse("deleted");
     }
 
@@ -199,7 +234,7 @@ class EventController extends Controller {
      * @return CalendarEventManager
      */
     protected function getEventManager() {
-        return $this->get('spec_shaper_calender.manager.event');
+        return $this->get('spec_shaper_calendar.manager.event');
     }
 
     /**

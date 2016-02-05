@@ -20,52 +20,52 @@ final class CalendarEvents {
 
     
     /**
-     * The specshaper_calendar.load_events is thrown each time a request is
+     * The spec_shaper_calendar.load_events is thrown each time a request is
      * made to load event enties. 
      * 
      * @var string
      */
-    const CALENDAR_LOAD_EVENTS = 'specshaper_calendar.load_events';
+    const CALENDAR_LOAD_EVENTS = 'spec_shaper_calendar.load_events';
     
     /**
-     * The specshaper_calendar.new_event is thrown when a new event is about
+     * The spec_shaper_calendar.new_event is thrown when a new event is about
      * to be persisted.
      * 
      * Hook into this event to modify the CalendarEvent proir to flushing.
      * 
      * @var string
      */
-    const CALENDAR_NEW_EVENT = 'specshaper_calendar.new_event';
+    const CALENDAR_NEW_EVENT = 'spec_shaper_calendar.new_event';
     
     /**
-     * The specshaper_calendar.event_removed is thrown when an event is
+     * The spec_shaper_calendar.event_removed is thrown when an event is
      * about to be removed from the database.
      * 
      * Hook into this event to modify the CalendarEvent proir to flushing.
      * 
      * @var string
      */
-    const CALENDAR_EVENT_REMOVED = 'specshaper_calendar.event_removed';
+    const CALENDAR_EVENT_REMOVED = 'spec_shaper_calendar.event_removed';
     
     /**
-     * The specshaper_calendar.event_updated is thrown when an event is
+     * The spec_shaper_calendar.event_updated is thrown when an event is
      * about to be updated.
      *  
      * Hook into this event to modify the CalendarEvent proir to flushing.
      * 
      * @var string
      */
-    const CALENDAR_EVENT_UPDATED = 'specshaper_calendar.event_updated';
+    const CALENDAR_EVENT_UPDATED = 'spec_shaper_calendar.event_updated';
     
     /**
-     * The specshaper_calendar.event_updated is thrown when an event is
+     * The spec_shaper_calendar.event_updated is thrown when an event is
      * about to be updated.
      *  
      * Hook into this event to modify the CalendarEvent proir to flushing.
      * 
      * @var string
      */
-    const CALENDAR_GET_ADDRESSES = 'specshaper_calendar.get_addresses';
+    const CALENDAR_GET_ADDRESSES = 'spec_shaper_calendar.get_addresses';
     
     
 }

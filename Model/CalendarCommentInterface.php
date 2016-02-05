@@ -35,7 +35,7 @@ interface CalendarCommentInterface
      */
     public function getCalendarEvent();
 
-    public function setCalendarInvitee(CalendarInviteeInterface $invitee);
+    public function setCalendarAttendee(CalendarAttendeeInterface $attendee);
 
-    public function getCalendarInvitee();
+    public function getCalendarAttendee();
 }

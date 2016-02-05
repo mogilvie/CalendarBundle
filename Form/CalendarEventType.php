@@ -11,12 +11,16 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use SpecShaper\CalendarBundle\Form\CalendarInviteeType;
-use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
+use SpecShaper\CalendarBundle\Form\CalendarReoccuranceType;
+use SpecShaper\CalendarBundle\Form\CalendarAttendeeType;
+
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use SpecShaper\CalendarBundle\Form\DataTransformer\IntegerInviteeTransformer;
+
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
 
 class CalendarEventType extends AbstractType {
 
@@ -32,9 +36,11 @@ class CalendarEventType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $event = $builder->getData();
-        
-        
-        
+
+        $isReoccuring = $event->getIsReoccuring();
+
+        dump($isReoccuring);
+
         $builder
                 ->add('bgColor', ChoiceType::class, array(
                     'choices' => array(
@@ -55,24 +61,62 @@ class CalendarEventType extends AbstractType {
                     'required' => true,
                     'label' => false,
                 ))
+                ->add('location', TextType::class, array(
+                    'required' => false,
+                    'label' => 'spec_shaper_calendarbundle.label.location',
+                ))
                 ->add('title', TextType::class, array(
                     'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.title',
+                    'label' => 'spec_shaper_calendarbundle.label.title',
                 ))
+                ->add('isAllDay', CheckboxType::class, array(
+                    'required' => false,
+                    'label' => 'spec_shaper_calendarbundle.label.isAllDay',
+                ))
+                ->add('isReoccuring', CheckboxType::class, array(
+                    'required' => false,
+                    'label' => 'spec_shaper_calendarbundle.label.isReoccuring',
+                ))
+                ->add('text', TextareaType::class, array(
+                    'attr' => array('rows' => 12),
+                    'required' => true,
+                    'label' => 'spec_shaper_calendarbundle.label.text',
+                ))
+                ->add('calendarAttendees', CollectionType::class, array(
+                    'entry_type' => CalendarAttendeeType::class,
+                    'by_reference' => false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                ))
+                ->addEventListener(
+                        FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                    $this->selectInitialFormView($event);
+                })
+
+        ;
+    }
+
+    private function selectInitialFormView(FormEvent $formEvent) {
+
+        $form = $formEvent->getForm();
+
+        $event = $formEvent->getData();
+
+        $form
                 ->add('startDate', DateType::class, array(
                     'widget' => 'single_text',
                     'format' => 'dd MMM yyyy',
                     'html5' => false,
                     'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.startDate',
+                    'label' => 'spec_shaper_calendarbundle.label.startDate',
                     'label' => false,
                     'mapped' => false,
                     'data' => $event->getStartDatetime()
                 ))
-                ->add('startTime', TimeType::class, array(                    
+                ->add('startTime', TimeType::class, array(
                     'widget' => 'single_text',
                     'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.startTime',
+                    'label' => 'spec_shaper_calendarbundle.label.startTime',
                     'label' => false,
                     'mapped' => false,
                     'data' => $event->getStartDatetime()
@@ -82,56 +126,22 @@ class CalendarEventType extends AbstractType {
                     'format' => 'dd MMM yyyy',
                     'html5' => false,
                     'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.endDate',
+                    'label' => 'spec_shaper_calendarbundle.label.endDate',
                     'label' => false,
                     'mapped' => false,
                     'data' => $event->getEndDatetime()
-
                 ))
                 ->add('endTime', TimeType::class, array(
                     'widget' => 'single_text',
                     'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.endTime',
+                    'label' => 'spec_shaper_calendarbundle.label.endTime',
                     'label' => false,
                     'mapped' => false,
                     'data' => $event->getEndDatetime()
                 ))
-                ->add('isAllDay', CheckboxType::class, array(
-                    'required' => false,
-                    'label' => 'specshaper_calendarbundle.label.isAllDay',
+                ->add('calendarReoccurance', CalendarReoccuranceType::class, array(
+                    'disabled' => !$event->getIsReoccuring()
                 ))
-                ->add('isReoccuring', CheckboxType::class, array(
-                    'required' => false,
-                    'label' => 'specshaper_calendarbundle.label.isReoccuring',
-                ))
-                ->add('period', ChoiceType::class, array(
-                    'choices' => array(
-                        'specshaper_calendarbundle.choice.daily' => CalendarEventInterface::REPEAT_DAILY,
-                        'specshaper_calendarbundle.choice.weekly' => CalendarEventInterface::REPEAT_WEEKLY,
-                        'specshaper_calendarbundle.choice.fortnightly' => CalendarEventInterface::REPEAT_FORTNIGHTLY,
-                        'specshaper_calendarbundle.choice.monthly' => CalendarEventInterface::REPEAT_MONTHLY,
-                    ),
-                    'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.period',
-                ))
-                ->add('repeatUntil', TextType::class, array(
-                    'required' => false,
-                    'mapped' => false,
-                    'label' => 'specshaper_calendarbundle.label.repeatUntil',
-                ))
-                ->add('text', TextareaType::class, array(
-                    'attr' => array('rows' => 12),
-                    'required' => true,
-                    'label' => 'specshaper_calendarbundle.label.text',
-                ))
-                
-                ->add('calendarInvitees', CollectionType::class, array(
-                    'entry_type' => CalendarInviteeType::class,
-                    'by_reference' => false,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                ))
-                
         ;
     }
 
@@ -145,6 +155,7 @@ class CalendarEventType extends AbstractType {
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'SpecShaper\CalendarBundle\Model\CalendarEventInterface',
+            'cascade_validation' => true,
         ));
     }
 
@@ -156,7 +167,7 @@ class CalendarEventType extends AbstractType {
      * @return string 'appbundle_calendar_event'
      */
     public function getBlockPrefix() {
-        return 'specshaper_calendar_event';
+        return 'spec_shaper_calendar_event';
     }
 
 }

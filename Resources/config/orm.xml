@@ -5,21 +5,21 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="spec_shaper_calender.manager.event" class="SpecShaper\CalendarBundle\Doctrine\CalendarEventManager" public="true">
-            <argument type="service" id="spec_shaper_calender.entity_manager" />
+        <service id="spec_shaper_calendar.manager.event" class="SpecShaper\CalendarBundle\Doctrine\CalendarEventManager" public="true">
+            <argument type="service" id="spec_shaper_calendar.entity_manager" />
             <argument>%spec_shaper_calendar.event_class%</argument>
         </service>
-        <service id="spec_shaper_calender.manager.calendar" class="SpecShaper\CalendarBundle\Doctrine\CalendarManager" public="true">
-            <argument type="service" id="spec_shaper_calender.entity_manager" />
+        <service id="spec_shaper_calendar.manager.calendar" class="SpecShaper\CalendarBundle\Doctrine\CalendarManager" public="true">
+            <argument type="service" id="spec_shaper_calendar.entity_manager" />
             <argument>%spec_shaper_calendar.calendar_class%</argument>
         </service>
 
 
-        <service id="spec_shaper_calender.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
-<!--            <argument>%spec_shaper_calender.model_manager_name%</argument>-->
+        <service id="spec_shaper_calendar.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
+<!--            <argument>%spec_shaper_calendar.model_manager_name%</argument>-->
         </service>
 
-<!--        <service id="spec_shaper_calender.user_listener" class="FOS\UserBundle\Doctrine\Orm\UserListener" public="false">
+<!--        <service id="spec_shaper_calendar.user_listener" class="FOS\UserBundle\Doctrine\Orm\UserListener" public="false">
             <argument type="service" id="service_container" />
         </service>-->
     </services>

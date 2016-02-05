@@ -9,8 +9,24 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CalendarInviteeType extends AbstractType
+class CalendarAttendeeType extends AbstractType
 {
+    /**
+     * The class name of the entity as defined in the config.
+     * 
+     * @var string $entityClass
+     */
+    private $entityClass;
+
+    /**
+     * Constructor to get the class name passed from the service xml.
+     * 
+     * @param string $entityClass
+     */
+    public function __construct($entityClass) {
+        $this->entityClass = $entityClass;
+    }
+    
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -41,8 +57,7 @@ class CalendarInviteeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            //'data_class' => 'SpecShaper\CalendarBundle\Model\CalendarInviteeInterface',
-            'data_class' => 'AppBundle\Entity\CalendarInvitee',
+            'data_class' => $this->entityClass,
         ));
     }
 
@@ -51,10 +66,10 @@ class CalendarInviteeType extends AbstractType
      *
      * @since  Available since Release 1.0.0
      *
-     * @return string 'appbundle_invitee'
+     * @return string 'appbundle_attendee'
      */
     public function getBlockPrefix()
     {
-        return 'specshaper_calendar_invitee';
+        return 'spec_shaper_calendar_attendee';
     }
 }

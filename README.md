@@ -31,8 +31,7 @@ Work to complete:
 - Create Managers for entities.
 - Provide custom validators on forms
 - Fully comment docBlocks
-- Integrate invitees and comments
-- Implement event series
+- Integrate comments
 - Unit tests to be added
 - Translation files are required for both backend and frontend 
 - Support for MongoDB/CouchDB ODM or Propel
@@ -109,9 +108,10 @@ class AppKernel extends Kernel
 
 The bundle requires entities to interact with the database and store information.
 - Calendar
-- Event
-- CalendarInvitee
-- Comment
+- CalendarEvent
+- CalendarReoccurance
+- CalendarAttendee
+- CalendarComment
 
 ### Calendar entity
 
@@ -125,27 +125,57 @@ entity code as required to suit your application.
 
 ```php
 <?php
-// src/AppBundle/Entity/Calendar.php
+
+/**
+ * AppBundle\Entity\Calendar.php
+ * 
+ * @copyright  (c) 2016, SpecShaper - All rights reserved
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\CalendarEvent;
 use SpecShaper\CalendarBundle\Model\Calendar as BaseCalendar;
 
 /**
- * A calendar to house events and define calendar properties. 
- *
+ * A calendar entity to house information on the calendar container itself.
+ * 
+ * The class extends the model class in the SpecShaperCalendarBundle. See link.
+ * 
+ * @link    https://github.com/mogilvie/CalendarBundle/blob/master/Model/Calendar.php
+ * @author  Mark Ogilvie <mark.ogilvie@specshaper.com>
+ * 
+ * @ORM\Table(name="calendar_calendar")
  * @ORM\Entity
  */
-class Calendar extends BaseCalendar{
+class Calendar extends BaseCalendar {
+    // Add your own relationships and properties here...
 
-    // Extend the calendar with additional application specific code...
+    /**
+     * The events that belong in this Calendar.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @ORM\ManyToMany(targetEntity="CalendarEvent", mappedBy="calendar")
+     */
+    protected $calendarEvents;
 
-    public function __construct()
-    {        
+    /**
+     * Constructor.
+     * 
+     * Required by SpecShaperCalendarBundle to call the parent constructor on the
+     * mapped superclass.
+     * 
+     * Modify to suit your needs.
+     */
+    public function __construct() {
         parent::__construct();
-        //...
     }
+
+
 }
+
 ```
 
 ### CalendarEvent entity
@@ -154,7 +184,7 @@ The CalendarEvent entity contains all the information about a particular event
 or event series. Information such as:
 - The time and duration of the event.
 - The text content
-- Any invitees
+- Any attendees
 - Display properties
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -162,36 +192,164 @@ entity code as required to suit your application.
 
 ```php
 <?php
-// src/AppBundle/Entity/CalendarEvent.php
+
+/**
+ * AppBundle\Entity\CalendarEvent.php
+ * 
+ * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\CalendarEvent as BaseCalendarEvent;
+use AppBundle\Entity\CalendarAttendee;
+use AppBundle\Entity\CalendarComment;
+use AppBundle\Entity\Calendar;
+use Symfony\Component\Validator\Constraints\Valid;
+use SpecShaper\CalendarBundle\Model\CalendarEvent as BaseEvent;
+use AppBundle\Entity\CalendarReoccurance;
 
 /**
- * A calendar event entity to contain the event information
+ * A CalendarEvent is an appointment/meeting etc belonging to a Calendar.
+ * 
+ * Be wary of confusion between a CalendarEvent entity and a thown events.
  *
+ * @link    https://github.com/mogilvie/CalendarBundle/blob/master/Model/CalendarComment.php
+ * @author  Mark Ogilvie <mark.ogilvie@specshaper.com>
+ * 
+ * @ORM\Table(name="calendar_event")
  * @ORM\Entity
  */
-class CalendarEvent extends BaseCalendarEvent{
+class CalendarEvent extends BaseEvent
+{
 
-    // Extend the calendar event with additional application specific code...
-
+    /**
+     * The calendar that this event belongs in.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @ORM\ManyToMany(targetEntity="Calendar", inversedBy="calendarEvents")
+     */
+    protected $calendar;
+    
+    /**
+     * The people invited to this event.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @Valid
+     * @ORM\OneToMany(targetEntity="CalendarAttendee", mappedBy="calendarEvent", cascade={"persist", "remove"})
+     */
+    protected $calendarAttendees;
+    
+    /**
+     * Comments posted in response to this event.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @Valid
+     * @ORM\OneToMany(targetEntity="CalendarComment", mappedBy="calendarEvent", cascade={"persist", "remove"})
+     */
+    protected $calendarComments;
+    
+    /**
+     * Comments posted in response to this event.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @Valid
+     * @ORM\ManyToOne(targetEntity="CalendarReoccurance", inversedBy="calendarEvent", cascade={"persist", "remove"})
+     */
+    protected $calendarReoccurance;
+        
+    /**
+     * Constructor.
+     * 
+     * Required by SpecShaperCalendarBundle to call the parent constructor on the
+     * mapped superclass.
+     * 
+     * Note that constructor for the arrays defined in this entity are already in the
+     * parent mapped superclass construct and do not need to be created here.
+     * 
+     * Modify to suit your needs.
+     */
     public function __construct()
-    {        
-        parent::__construct();
-        //...
+    {
+       parent::__construct();   
     }
+    
+    // Add your own relationships and properties below here..
+
 }
 ```
 
-### CalendarInvitee entity
+### CalendarReoccurance entity
 
-The entity contains information about an event invitee, such as:
-- The email address of the invitee.
+An entity that contains the reoccurance information for a series of 
+CalendarEvents.
+
+```php
+<?php
+
+/**
+ * AppBundle\Entity\CalendarEvent.php
+ * 
+ * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
+ */
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\CalendarAttendee;
+use AppBundle\Entity\CalendarComment;
+use AppBundle\Entity\Calendar;
+use SpecShaper\CalendarBundle\Model\CalendarReoccurance as BaseReoccurance;
+
+/**
+ *
+ * @link    https://github.com/mogilvie/CalendarBundle/blob/master/Model/CalendarComment.php
+ * @author  Mark Ogilvie <mark.ogilvie@specshaper.com>
+ * 
+ * @ORM\Table(name="calendar_reoccurance")
+ * @ORM\Entity
+ */
+class CalendarReoccurance extends BaseReoccurance
+{
+    /**
+     * @ORM\OneToMany(targetEntity="CalendarEvent", mappedBy="calendarReoccurance")
+     */
+    protected $calendarEvents;
+        
+    /**
+     * Constructor.
+     * 
+     * Required by SpecShaperCalendarBundle to call the parent constructor on the
+     * mapped superclass.
+     * 
+     * Note that constructor for the arrays defined in this entity are already in the
+     * parent mapped superclass construct and do not need to be created here.
+     * 
+     * Modify to suit your needs.
+     */
+    public function __construct()
+    {
+       parent::__construct();        
+    }
+    
+    // Add your own relationships and properties below here..
+   
+
+}
+
+```
+
+### CalendarAttendee entity
+
+The entity contains information about an event attendee, such as:
+- The email address of the attendee.
 - The invitation status
 
-The invitee should be modified to include a reference to your user entity if
+The attendee should be modified to include a reference to your user entity if
 you have one.
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -199,33 +357,62 @@ entity code as required to suit your application.
 
 ```php
 <?php
-// src/AppBundle/Entity/CalendarInvitee.php
+
+/**
+ * AppBundle\Entity\CalendarAttendee.php
+ * 
+ * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\CalendarInvitee as BaseCalendarInvitee;
+use AppBundle\Entity\CalendarEvent;
+use SpecShaper\CalendarBundle\Model\CalendarAttendee as BaseAttendee;
 
 /**
- * A invitee entity to contain the invited user information and status.
+ * A CalendarAttendee is a entity who has been invited to a CalendarEvent.
+ * 
+ * The class holds information relating to the status of the invitation.
  *
+ * @link    https://github.com/mogilvie/CalendarBundle/blob/master/Model/CalendarAttendee.php
+ * @author  Mark Ogilvie <mark.ogilvie@specshaper.com>
+ * 
+ * @ORM\Table(name="calendar_attendee")
  * @ORM\Entity
  */
-class CalendarInvitee extends BaseCalendarInvitee{
-
-    // Extend the calendar invitee with additional application specific code...
-
-    public function __construct()
-    {        
-        parent::__construct();
-        //...
-    }
+class CalendarAttendee extends BaseAttendee
+{
+    /**
+     * The calendar that this event belongs in.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @ORM\ManyToOne(targetEntity="CalendarEvent", inversedBy="calendarAttendees")
+     */
+    protected $calendarEvent;
+//    
+//    /**
+//     * Constructor.
+//     * 
+//     * Required by SpecShaperCalendarBundle to call the parent constructor on the
+//     * mapped superclass.
+//     * 
+//     * Modify to suit your needs.
+//     */
+//    public function __construct()
+//    {
+//        parent::__construct();
+//    }
+    
+    // Add your own relationships and properties below here..
 }
+
 ```
 
-### CalendarComent entity
+### CalendarComment entity
 
 The entity contains any comments or messages made about an event:
-- The email address of the invitee who commented.
+- The email address of the attendee who commented.
 - The message
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -233,27 +420,56 @@ entity code as required to suit your application.
 
 ```php
 <?php
-// src/AppBundle/Entity/CalendarComment.php
+
+/**
+ * AppBundle\Entity\CalendarComment.php
+ * 
+ * @author     Written by Mark Ogilvie <mark.ogilvie@specshaper.com>, 1 2016
+ */
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\CalendarComment as BaseCalendarComment;
+use AppBundle\Entity\CalendarEvent;
+use SpecShaper\CalendarBundle\Model\CalendarComment as BaseComment;
 
 /**
- * A invitee entity to contain the invited user information and status.
+ * Calendar comments are messages left on the CalendarEvent.
  *
- * @ORM\Entity
+ * @link    https://github.com/mogilvie/CalendarBundle/blob/master/Model/CalendarComment.php
+ * @author  Mark Ogilvie <mark.ogilvie@specshaper.com>
+ * 
+ * @ORM\Table(name="calendar_comment")
+ * @ORM\Entity 
  */
-class CalendarComment extends BaseCalendarComment{
-
-    // Extend the calendar comments with additional application specific code...
-
+class CalendarComment extends BaseComment
+{
+    /**
+     * The calendar that this event belongs in.
+     * 
+     * Required by SpecShaperCalendarBundle.
+     * 
+     * @ORM\ManyToOne(targetEntity="CalendarEvent", inversedBy="calendarAttendees")
+     */
+    protected $calendarEvent;
+    
+    /**
+     * Constructor.
+     * 
+     * Required by SpecShaperCalendarBundle to call the parent constructor on the
+     * mapped superclass.
+     * 
+     * Modify to suit your needs.
+     */
     public function __construct()
-    {        
+    {
         parent::__construct();
-        //...
     }
+    
+    // Add your own relationships and properties below here..
+
+
 }
+
 ```
 
 ## Step 3: Create listeners
@@ -262,31 +478,34 @@ Create listeners in your application to intercept events fired by the bundle and
 modify / interact with the events.
 
 ### CalendarLoadEventsListener
-Thrown when the calendar is first loaded and whenever the user changes the view
+The event is thrown when an CalendarEvent is first loaded and whenever the user changes the view
 date range.
 
 Used to query for and decorate CalendarEvents to be displayed in the calendar.
 
 ### CalendarNewEventListener
-Thrown when a new event is created in the calendar.
+The event is thrown when an CalendarEvent in the calendar.
 
 Used to populate and decorate the new CalendarEvent to customise it for your application.
 
 ### CalendarRemoveEventListener
-Thrown when an event is deleted or removed.
+The event is thrown when an CalendarEvent is deleted or removed.
 
 Used to modify or remove the CalendarEvent to customise it for your application.
 
 ### CalendarUpdateEventListener
-Thrown when an event is modified.
+The event is thrown when an CalendarEvent is updated.
 
 Used to modify or remove the CalendarEvent to customise it for your application. For
 example:
-- Send an email updating invitees.
+- Send an email updating attendees.
 - Change relationships.
 
 See the documents section for more detail of the listeners available:
 
+### CalendarGetAddressListener
+The event is thrown when a the calendar is loaded. It allows the opportunity to
+provide email addresses to the autocomplete attendee email input.
 
 ## Step 4: Configure the bundle
 
@@ -306,8 +525,9 @@ spec_shaper_calendar:
     custom_classes:
         calendar_class: AppBundle\Entity\Calendar
         event_class:    AppBundle\Entity\CalendarEvent     
-        invitee_class:  AppBundle\Entity\CalendarInvitee
+        attendee_class:  AppBundle\Entity\CalendarAttendee
         comment_class:  AppBundle\Entity\CalendarComment
+        reoccurance_class:  AppBundle\Entity\CalendarReoccurance
 ```
 
 You will also need to enable translations if not already configured:
@@ -350,29 +570,40 @@ A typical twig template extending a bundle base.html.twig.
 
 {% extends 'base.html.twig' %}
 
+
 {% block stylesheets %}
-    {% include 'SpecShaperCalendarBundle:Calendar:styles.html.twig' %}   
+    
+    {% include 'SpecShaperCalendarBundle:Calendar:styles.html.twig' %}    
     <style>
       #calendar-holder{
           width: 50%;
           height: 200px;
       }
     </style>
+    
 {% endblock %}
 
 {% block body %}
+
     {% include 'SpecShaperCalendarBundle:Calendar:calendar.html.twig' %}    
+
 {% endblock %}
 
 {% block javascripts %}
-    {% include 'SpecShaperCalendarBundle:Calendar:javascript.html.twig' %}
+
+    {% include 'SpecShaperCalendarBundle:Calendar:javascript.html.twig' %} 
+ 
     <script>
         Calendar.init({
             loader: "{{ url('calendar_loader') }}",
+            new: "{{url('event_new')}}",
             update: "{{ url('event_update', {'id' : 'PLACEHOLDER'} ) }}",
-            updateDateTime: "{{ url('event_updatedatetime', {'id' : 'PLACEHOLDER'} ) }}"
+            updateDateTime: "{{ url('event_updatedatetime', {'id' : 'PLACEHOLDER'} ) }}",
+            delete: "{{ url('event_delete', {'id' : 'PLACEHOLDER'} ) }}",
+            deleteSeries: "{{ url('event_deleteseries', {'id' : 'PLACEHOLDER'} ) }}",
         });
     </script>
+
 {% endblock %}
 ```
 

@@ -15,7 +15,7 @@ class SpecShaperCalendarBundle extends Bundle
     {
         parent::build($container);
         // ...
-
+  
         $mappings = array(
             realpath(__DIR__.'/Resources/config/doctrine-mapping/model') => 'SpecShaper\CalendarBundle\Model',
         );
@@ -25,7 +25,7 @@ class SpecShaperCalendarBundle extends Bundle
         if (class_exists($ormCompilerClass)) {
             $container->addCompilerPass(
                     DoctrineOrmMappingsPass::createXmlMappingDriver(
-                            $mappings, array('spec_shaper_calender.model_manager_name'), 'spec_shaper_calendar.backend_type_orm',
+                            $mappings, array('spec_shaper_calendar.model_manager_name'), 'spec_shaper_calendar.backend_type_orm',
                             array('SpecShaperCalendarBundle' => 'SpecShaper\CalendarBundle\Model')
             ));
         }

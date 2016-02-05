@@ -3,6 +3,7 @@
 namespace SpecShaper\CalendarBundle\Model;
 
 use DateTimeInterface;
+use SpecShaper\CalendarBundle\Model\CalendarReoccuranceInterface;
 
 /**
  * CalendarEvent.
@@ -13,6 +14,8 @@ interface CalendarEventInterface
     const REPEAT_WEEKLY = 1;
     const REPEAT_FORTNIGHTLY = 2;
     const REPEAT_MONTHLY = 3;
+    
+    
 
     public function toArray();
 
@@ -28,6 +31,22 @@ interface CalendarEventInterface
      */
     public function getId();
 
+        /**
+     * Set location.
+     *
+     * @param string $location
+     *
+     * @return CalendarEvent
+     */
+    public function setLocation($location);
+
+    /**
+     * Get location.
+     *
+     * @return string
+     */
+    public function getLocation();
+    
     /**
      * Set title.
      *
@@ -51,7 +70,7 @@ interface CalendarEventInterface
      *
      * @return CalendarEventInterface
      */
-    public function setStartDatetime($startDatetime);
+    public function setStartDatetime(DateTimeInterface $startDatetime);
 
     /**
      * Get startDatetime.
@@ -67,7 +86,7 @@ interface CalendarEventInterface
      *
      * @return CalendarEventInterface
      */
-    public function setEndDatetime($endDatetime);
+    public function setEndDatetime(DateTimeInterface $endDatetime);
 
     /**
      * Get endDatetime.
@@ -125,38 +144,6 @@ interface CalendarEventInterface
     public function getIsReoccuring();
 
     /**
-     * Set repeatUntil.
-     *
-     * @param \DateTimeInterface $repeatUntil
-     *
-     * @return CalendarEventInterface
-     */
-    public function setRepeatUntil(DateTimeInterface $repeatUntil);
-
-    /**
-     * Get repeatUntil.
-     *
-     * @return \DateTime
-     */
-    public function getRepeatUntil();
-
-    /**
-     * Set period.
-     *
-     * @param int $period
-     *
-     * @return CalendarEventInterface
-     */
-    public function setPeriod($period);
-
-    /**
-     * Get period.
-     *
-     * @return int
-     */
-    public function getPeriod();
-
-    /**
      * Set text.
      *
      * @param string $text
@@ -205,27 +192,27 @@ interface CalendarEventInterface
     public function getCalendar();
 
     /**
-     * Add invitee
+     * Add attendee
      *
-     * @param CalendarInviteeInterface $invitee
+     * @param CalendarAttendeeInterface $attendee
      *
      * @return CalendarEventInterface
      */
-    public function addCalendarInvitee(CalendarInviteeInterface $invitee);
+    public function addCalendarAttendee(CalendarAttendeeInterface $attendee);
 
     /**
-     * Remove invitees
+     * Remove attendees
      *
-     * @param CalendarInviteeInterface $invitee
+     * @param CalendarAttendeeInterface $attendee
      */
-    public function removeCalendarInvitee(CalendarInviteeInterface $invitee);
+    public function removeCalendarAttendee(CalendarAttendeeInterface $attendee);
 
     /**
-     * Get invitees
+     * Get attendees
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCalendarInvitees();
+    public function getCalendarAttendees();
 
     /**
      * Get comments
@@ -253,4 +240,22 @@ interface CalendarEventInterface
      * @param CalendarCommentInterface $comment
      */
     public function removeCalendarComment(CalendarCommentInterface $comment);
+    
+        /**
+     * Set title.
+     *
+     * @param string $title
+     *
+     * @return CalendarEvent
+     */
+    public function setCalendarReoccurance(CalendarReoccuranceInterface $reoccurance);
+
+    public function removeCalendarReoccurance();
+    
+    /**
+     * Get title.
+     *
+     * @return string
+     */
+    public function getCalendarReoccurance();
 }

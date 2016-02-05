@@ -12,7 +12,7 @@ class CalendarManager
     protected $objectManager;
     protected $class;
     protected $repository;
-    protected $originalInvitees;
+    protected $originalAttendees;
 
     /**
      * Constructor.

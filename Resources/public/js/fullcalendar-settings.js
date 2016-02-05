@@ -6,7 +6,7 @@
  * 
  * @type type
  */
-Calendar = {
+var Calendar = {
     settings: {
         loader: null,
         new : null,
@@ -22,13 +22,17 @@ Calendar = {
         this.bindUIActions();
     },
     bindUIActions: function () {
-        $(document).on('ready', Calendar.onReady);
-        $(document).on('click', '#submitButton', Calendar.submitButtonClickHander);
-        $(document).on('submit', 'form[name="specshaper_calendar_event"]', Calendar.eventSubmitHandler);
-        $(document).on('click', '#addInviteeButton', Calendar.addInviteeButtonClickHander);
-        $(document).on('click', '.removeInviteeButton', Calendar.removeInviteeClickHandler);
+        $(document).on('ready.calendar', Calendar.onReady);
+        $(document).on('click.calendar', '#submitButton', Calendar.submitButtonClickHander);
+        $(document).on('submit.calendar', 'form[name="spec_shaper_calendar_event"]', Calendar.eventSubmitHandler);
+        $(document).on('click.calendar', '#addAttendeeButton', Calendar.addAttendeeButtonClickHander);
+        $(document).on('click.calendar', '.removeAttendeeButton', Calendar.removeAttendeeClickHandler);
+        $(document).on('click.calendar', '#deleteButton', Calendar.deleteButtonClickHandler);
+        $(document).on('change', '#spec_shaper_calendar_event_calendarReoccurance_period', Calendar.periodChangeHandler);
+        $(document).on('change', '#spec_shaper_calendar_event_calendarReoccurance_stopMethod', Calendar.stopMethodChangeHandler);
         
-        $(document).on('click', '#deleteButton', Calendar.deleteButtonClickHandler);
+        //$(document).on('click.calendar', '#spec_shaper_calendar_event_isReoccuring', Calendar.isReoccuringClickHandler);
+
         //$(document).on('click', '#deleteSeriesButton', Calendar.deleteSeriesButtonClickHandler);
     },
     /**
@@ -89,7 +93,7 @@ Calendar = {
 
     },
     bindColorPicker: function () {
-        $('#specshaper_calendar_event_bgColor').simplecolorpicker({theme: 'fontawesome'});
+        $('#spec_shaper_calendar_event_bgColor').simplecolorpicker({theme: 'fontawesome'});
     },
     /**
      * Bind the datepickers to the modal datetime inputs.
@@ -97,20 +101,24 @@ Calendar = {
      * @returns {undefined}
      */
     bindDatePickers: function () {
-        $('input#specshaper_calendar_event_startDate').datepicker({
+        $('#spec_shaper_calendar_event_startDate').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
-        $('input#specshaper_calendar_event_endDate').datepicker({
+        $('#spec_shaper_calendar_event_endDate').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
-        $('input#specshaper_calendar_event_repeatUntil').datepicker({
+        $('#spec_shaper_calendar_event_repeatUntil').datepicker({
+            format: "dd M yyyy",
+            autoclose: true
+        });
+        $('#spec_shaper_calendar_event_calendarReoccurance_endDate').datepicker({
             format: "dd M yyyy",
             autoclose: true
         });
     },
-    addInviteeButtonClickHander: function (e) {
+    addAttendeeButtonClickHander: function (e) {
         e.preventDefault();
 
         var input = $('#emailAddressesInput');
@@ -130,12 +138,12 @@ Calendar = {
             input.removeClass("valid").addClass("invalid");
         }
 
-        Calendar.addInvitee(input.val());
+        Calendar.addAttendee(input.val());
     },
-    addInvitee: function (newAddress) {
+    addAttendee: function (newAddress) {
 
 
-        var $collectionHolder = $('#inviteeContainer');
+        var $collectionHolder = $('#attendeeContainer');
 
         var prototype = $collectionHolder.data('prototype');
 
@@ -161,7 +169,7 @@ Calendar = {
 
 
     },
-    removeInviteeClickHandler: function (e) {
+    removeAttendeeClickHandler: function (e) {
         // prevent the link from creating a "#" on the URL
         e.preventDefault();
 
@@ -196,7 +204,6 @@ Calendar = {
      * 
      * @param {type} start
      * @param {type} end
-     * @param {type} allDay
      * @returns {undefined}
      */
     select: function (start, end) {
@@ -210,23 +217,23 @@ Calendar = {
                     success: function (html, textStatus, jqXHR)
                     {
                         var $eventModal = $('#eventModal');
-                        
+
                         $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
 
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
 
                         if (start.hasTime() === false) {
-                            $eventModal.find('#specshaper_calendar_event_isAllDay').prop('checked', true);                           
+                            $eventModal.find('#spec_shaper_calendar_event_isAllDay').prop('checked', true);
                         }
 
-                        $eventModal.find('#specshaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
+                        $eventModal.find('#spec_shaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
 
-                        $eventModal.find('#specshaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
+                        $eventModal.find('#spec_shaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
 
-                        $eventModal.find('#specshaper_calendar_event_startTime').val(start.format('HH:mm'));
+                        $eventModal.find('#spec_shaper_calendar_event_startTime').val(start.format('HH:mm'));
 
-                        $eventModal.find('#specshaper_calendar_event_endTime').val(end.format('HH:mm'));
+                        $eventModal.find('#spec_shaper_calendar_event_endTime').val(end.format('HH:mm'));
 
                         $eventModal.modal('show');
 
@@ -268,17 +275,17 @@ Calendar = {
                     type: "GET",
                     success: function (html, textStatus, jqXHR)
                     {
-                        var $eventModal = $("#eventModal");                        
-                        var $newModalContent = $(html).find('div.modal-content')
-            
+                        var $eventModal = $("#eventModal");
+                        var $newModalContent = $(html).find('div.modal-content');
+
                         $eventModal
                                 .find('div.modal-content')
-                                .replaceWith($newModalContent);                        
+                                .replaceWith($newModalContent);
                         ;
 
                         Calendar.bindDatePickers();
                         Calendar.bindColorPicker();
-                        
+
                         $eventModal.modal('show');
 
                     },
@@ -312,7 +319,7 @@ Calendar = {
 
         e.preventDefault();
 
-        var $form = $('form[name="specshaper_calendar_event"]');
+        var $form = $('form[name="spec_shaper_calendar_event"]');
 
         // Serialize the form.
         var postData = $form.serializeArray();
@@ -332,6 +339,7 @@ Calendar = {
                     data: postData,
                     success: function (html, textStatus, jqXHR)
                     {
+
                         if (type === "PUT") {
                             Calendar.updateEventInCalendar(html);
                         } else {
@@ -456,7 +464,6 @@ Calendar = {
                 }
         );
     },
-    
     deleteButtonClickHandler: function (e) {
 
         e.preventDefault();
@@ -471,12 +478,11 @@ Calendar = {
         $.ajax(
                 {
                     url: url,
-
                     type: "DELETE",
                     success: function (html, textStatus, jqXHR)
                     {
-                       $('#calendar-holder').fullCalendar('removeEvents', [id]);                      
-                       $("#eventModal").modal('hide');
+                        $('#calendar-holder').fullCalendar('removeEvents', [id]);
+                        $("#eventModal").modal('hide');
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
 
@@ -486,6 +492,102 @@ Calendar = {
                     }
                 }
         );
+    },
+    
+//    isReoccuringClickHandler: function(e){
+//                            if ( $(this).prop('checked')){
+//                                var $panel = $('.reoccurance-panel');
+//                                $panel.find('select').prop('disabled', false);
+//                                $panel.find('input').prop('disabled', false);
+//                        }
+//    },
+    periodChangeHandler: function (e) {
+
+//        var $form = $('form[name="spec_shaper_calendar_event"]');
+
+        var $input = $(this);
+
+        var $form = $input.closest('form');
+        // Simulate form data, but only include the selected sport value.
+
+        var data = {};
+
+        data[$input.attr('name')] = $input.val();
+
+        var type = $form.attr("method");
+
+        if ($form.find("input[name='_method']").val() === "PUT") {
+            type = "PUT";
+        }
+
+        $.ajax(
+                {
+                    url: $form.attr("action"),
+                    type: type,
+                    data: data,
+                    success: function (html, textStatus, jqXHR)
+                    {
+                        var $newModalContent = $(html).find('#dayCheckBoxes');
+
+                        $("#dayCheckBoxes")
+                                .replaceWith($newModalContent);
+                        ;
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        var w = window.open();
+                        var html = XMLHttpRequest.responseText;
+                        $(w.document.body).html(html);
+                    }
+                });
+    },
+    stopMethodChangeHandler: function (e) {
+
+        var $input = $(this);
+
+        var $form = $input.closest('form');
+        // Simulate form data, but only include the selected sport value.
+
+        var data = {};
+
+        data[$input.attr('name')] = $input.val();
+
+        var type = $form.attr("method");
+
+        if ($form.find("input[name='_method']").val() === "PUT") {
+            type = "PUT";
+        }
+
+        $.ajax(
+                {
+                    url: $form.attr("action"),
+                    type: type,
+                    data: data,
+                    success: function (html, textStatus, jqXHR)
+                    {
+                        var $newModalContent = $(html).find('#endMethodContainer');
+
+                        $("#endMethodContainer")
+                                .replaceWith($newModalContent);
+                        ;
+
+                        if ($input.val() == 1) {
+                            $('#spec_shaper_calendar_event_calendarReoccurance_endDate').datepicker({
+                                format: "dd M yyyy",
+                                autoclose: true
+                            });
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        var w = window.open();
+                        var html = XMLHttpRequest.responseText;
+                        $(w.document.body).html(html);
+                    }
+                });
+
     }
 
 };

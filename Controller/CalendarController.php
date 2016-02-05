@@ -73,7 +73,7 @@ class CalendarController extends Controller {
      */
     public function addEventAction(Request $request) {
 
-        $eventManager = $this->get('spec_shaper_calender.manager.event');
+        $eventManager = $this->get('spec_shaper_calendar.manager.event');
 
         $event = $eventManager->createEvent();
 
@@ -118,7 +118,7 @@ class CalendarController extends Controller {
 
         $event = $this->getEventManager()->getEvent($id);
         
-        $orgionalInvitees = $this->getEventManager()->storeOrigionalInvitees($event->getCalendarInvitees());
+        $orgionalAttendees = $this->getEventManager()->storeOrigionalAttendees($event->getCalendarAttendees());
 
         $form = $this->createForm(CalendarEventType::class, $event, array(
             'action' => $this->generateUrl('event_update', array('id' => $id)),
@@ -129,7 +129,7 @@ class CalendarController extends Controller {
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $event = $this->getEventManager()->updateEvent($event, $orgionalInvitees);
+            $event = $this->getEventManager()->updateEvent($event, $orgionalAttendees);
             
             $newEvent = new CalendarEditEvent($event);
 
@@ -163,7 +163,7 @@ class CalendarController extends Controller {
      * @return CalendarEventManager
      */
     protected function getEventManager() {
-        return $this->get('spec_shaper_calender.manager.event');
+        return $this->get('spec_shaper_calendar.manager.event');
     }
 
     /**

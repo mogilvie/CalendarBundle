@@ -28,7 +28,7 @@ Work to complete:
 
 - Provide custom validators on forms
 - Fully comment docBlocks
-- Integrate invitees and comments
+- Integrate attendees and comments
 - Implement event series
 - Unit tests to be added
 - Translation files are required for both backend and frontend 
@@ -110,7 +110,7 @@ class AppKernel extends Kernel
 The bundle requires entities to interact with the database and store information.
 - Calendar
 - Event
-- CalendarInvitee
+- CalendarAttendee
 - Comment
 
 ### Calendar entity
@@ -154,7 +154,7 @@ The CalendarEvent entity contains all the information about a particular event
 or event series. Information such as:
 - The time and duration of the event.
 - The text content
-- Any invitees
+- Any attendees
 - Display properties
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -185,13 +185,13 @@ class CalendarEvent extends BaseCalendarEvent{
 }
 ```
 
-### CalendarInvitee entity
+### CalendarAttendee entity
 
-The entity contains information about an event invitee, such as:
-- The email address of the invitee.
+The entity contains information about an event attendee, such as:
+- The email address of the attendee.
 - The invitation status
 
-The invitee should be modified to include a reference to your user entity if
+The attendee should be modified to include a reference to your user entity if
 you have one.
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -199,20 +199,20 @@ entity code as required to suit your application.
 
 ```php
 <?php
-// src/AppBundle/Entity/CalendarInvitee.php
+// src/AppBundle/Entity/CalendarAttendee.php
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use SpecShaper\CalendarBundle\Model\CalendarInvitee as BaseCalendarInvitee;
+use SpecShaper\CalendarBundle\Model\CalendarAttendee as BaseCalendarAttendee;
 
 /**
- * A invitee entity to contain the invited user information and status.
+ * A attendee entity to contain the invited user information and status.
  *
  * @ORM\Entity
  */
-class CalendarInvitee extends BaseCalendarInvitee{
+class CalendarAttendee extends BaseCalendarAttendee{
 
-    // Extend the calendar invitee with additional application specific code...
+    // Extend the calendar attendee with additional application specific code...
 
     public function __construct()
     {        
@@ -225,7 +225,7 @@ class CalendarInvitee extends BaseCalendarInvitee{
 ### CalendarComent entity
 
 The entity contains any comments or messages made about an event:
-- The email address of the invitee who commented.
+- The email address of the attendee who commented.
 - The message
 
 The entity should extend the mapped superclass. You can provide any additional
@@ -240,7 +240,7 @@ use Doctrine\ORM\Mapping as ORM;
 use SpecShaper\CalendarBundle\Model\CalendarComment as BaseCalendarComment;
 
 /**
- * A invitee entity to contain the invited user information and status.
+ * A attendee entity to contain the invited user information and status.
  *
  * @ORM\Entity
  */
@@ -280,7 +280,7 @@ spec_shaper_calendar:
     custom_classes:
         calendar_class: AppBundle\Entity\Calendar
         event_class:    AppBundle\Entity\CalendarEvent     
-        invitee_class:  AppBundle\Entity\CalendarInvitee
+        attendee_class:  AppBundle\Entity\CalendarAttendee
         comment_class:  AppBundle\Entity\CalendarComment
 ```
 

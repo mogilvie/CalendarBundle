@@ -12,7 +12,7 @@
         </id>
         <field name="createdOn" type="datetimetz" />
         <field name="comment" type="text" />
-        <field name="invitee" type="string" length="255" />
+        <field name="attendee" type="string" length="255" />
 
     </mapped-superclass>
 

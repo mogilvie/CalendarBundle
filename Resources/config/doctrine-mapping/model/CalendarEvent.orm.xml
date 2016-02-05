@@ -19,8 +19,6 @@
         <field name="url" type="string" length="255" nullable="true"/>
         <field name="isAllDay" type="boolean" />
         <field name="isReoccuring" type="boolean" />
-        <field name="repeatUntil" type="datetime" nullable="true" />
-        <field name="period" type="integer" nullable="true" />
         <field name="text" type="text" nullable="true" />
         <field name="bgColor" type="string" />
 

@@ -2,103 +2,149 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="92dfg6ddd9d317" resname="specshaper_calendarbundle.label.title">
+            <trans-unit id="92dfg6ddd9d317" resname="spec_shaper_calendarbundle.label.title">
                 <source>Event Details</source>
                 <target>Event Details</target>
             </trans-unit>
-            <trans-unit id="92dgd4127317" resname="specshaper_calendarbundle.label.text">
+            <trans-unit id="92dgd4127317" resname="spec_shaper_calendarbundle.label.text">
                 <source>Event message</source>
                 <target>Event message</target>
             </trans-unit>
-            <trans-unit id="92g17" resname="specshaper_calendarbundle.button.submit">
+            <trans-unit id="92dgd4ss127317" resname="spec_shaper_calendar.label.stopRepeatingAfter">
+                <source>Stop after</source>
+                <target>Stop after</target>
+            </trans-unit>
+            <trans-unit id="92dgd4ss1d27317" resname="spec_shaper_calendarbundle.label.location">
+                <source>Location</source>
+                <target>Location</target>
+            </trans-unit>
+            <trans-unit id="92g17" resname="spec_shaper_calendarbundle.button.submit">
                 <source>Submit</source>
                 <target>Submit</target>
             </trans-unit>
-            <trans-unit id="92df6ddd94127317" resname="specshaper_calendarbundle.heading.event">
+            <trans-unit id="92df6ddd94127317" resname="spec_shaper_calendarbundle.heading.event">
                 <source>Calendar Event</source>
                 <target>Calendar Event</target>
             </trans-unit>
-            <trans-unit id="92dfggdd94127317" resname="specshaper_calendarbundle.heading.event">
+            <trans-unit id="92dfggdd94127317" resname="spec_shaper_calendarbundle.heading.event">
                 <source>Calendar Event</source>
                 <target>Calendar Event</target>
             </trans-unit>
-            <trans-unit id="92dfddd94127317" resname="specshaper_calendarbundle.choice.general">
+            <trans-unit id="92dfddd94127317" resname="spec_shaper_calendarbundle.choice.general">
                 <source>General</source>
                 <target>General</target>
             </trans-unit>
-            <trans-unit id="92df6ddd94d127317" resname="specshaper_calendarbundle.choice.meeting">
+            <trans-unit id="92df6ddd94d127317" resname="spec_shaper_calendarbundle.choice.meeting">
                 <source>Meeting</source>
                 <target>Meeting</target>
             </trans-unit>
-            <trans-unit id="92df6ddd941273s17" resname="specshaper_calendarbundle.choice.inspection">
+            <trans-unit id="92df6ddd941273s17" resname="spec_shaper_calendarbundle.choice.inspection">
                 <source>Inspection</source>
                 <target>Inspection</target>
-            </trans-unit>
-            <trans-unit id="92df6dddd941273s17" resname="specshaper_calendarbundle.choice.daily">
-                <source>Daily</source>
-                <target>Daily</target>
-            </trans-unit>
-            <trans-unit id="92df6dddd94127d3s17" resname="specshaper_calendarbundle.choice.daily">
-                <source>Daily</source>
-                <target>Daily</target>
-            </trans-unit>
-            <trans-unit id="92df6dddd9d41273s17" resname="specshaper_calendarbundle.choice.weekly">
-                <source>Weekly</source>
-                <target>Weekly</target>
-            </trans-unit>
-            <trans-unit id="92df6ddddd9d41273s17" resname="specshaper_calendarbundle.choice.fortnightly">
-                <source>Fortnightly</source>
-                <target>Fortnightly</target>
-            </trans-unit>
-            <trans-unit id="92df6ssdddd941273s17" resname="specshaper_calendarbundle.choice.monthly">
-                <source>Monthly</source>
-                <target>Monthly</target>
-            </trans-unit>
-            <trans-unit id="92df6ddd941aa27317" resname="specshaper_calendarbundle.choice.conversation">
+            </trans-unit>    
+            <trans-unit id="92df6ddd941aa27317" resname="spec_shaper_calendarbundle.choice.conversation">
                 <source>Conversation</source>
                 <target>Conversation</target>
             </trans-unit>
-            <trans-unit id="92df6dddd941aa273s17" resname="specshaper_calendarbundle.label.isAllDay">
+            <trans-unit id="92df6dddd941aa273s17" resname="spec_shaper_calendarbundle.label.isAllDay">
                 <source>All day</source>
                 <target>All day</target>
             </trans-unit>
-            <trans-unit id="92df6dddd941aa27d3s17" resname="specshaper_calendarbundle.label.repeatUntil">
-                <source>Repeat until</source>
-                <target>Repeat until</target>
-            </trans-unit>
-            <trans-unit id="92dggf6dddd941aa273s17" resname="specshaper_calendarbundle.label.period">
-                <source>Period</source>
-                <target>Period</target>
-            </trans-unit>
-            <trans-unit id="92df6ddd941aas27317" resname="specshaper_calendarbundle.label.isReoccuring">
+            <trans-unit id="92df6ddd941aas27317" resname="spec_shaper_calendarbundle.label.isReoccuring">
                 <source>Reccuring</source>
                 <target>Reccuring</target>
             </trans-unit>
-            <trans-unit id="92df6dddaas27317" resname="specshaper_calendarbundle.button.delete">
+            <trans-unit id="92df6dssdd941aas27317" resname="spec_shaper_calendarbundle.label.interval">
+                <source>Interval</source>
+                <target>Interval</target>
+            </trans-unit>
+            <trans-unit id="92df6dddaas27317" resname="spec_shaper_calendarbundle.button.delete">
                 <source>Delete</source>
                 <target>Delete</target>
             </trans-unit>
-            <trans-unit id="92df6ddds7317" resname="specshaper_calendarbundle.button.deleteSeries">
+            <trans-unit id="92df6ddds7317" resname="spec_shaper_calendarbundle.button.deleteSeries">
                 <source>Delete series</source>
                 <target>Delete series</target>
             </trans-unit>
-            <trans-unit id="92ds7ss317" resname="specshaper_calendarbundle.tooltip.remove">
+            <trans-unit id="92ds7ss317" resname="spec_shaper_calendarbundle.tooltip.remove">
                 <source>Remove</source>
                 <target>Remove</target>
             </trans-unit>
-            <trans-unit id="92ds7gga317" resname="specshaper_calendarbundle.tooltip.hasDenied">
+            <trans-unit id="92ds7gga317" resname="spec_shaper_calendarbundle.tooltip.hasDenied">
                 <source>Has denied event</source>
                 <target>Has denied event</target>
             </trans-unit>
-            <trans-unit id="92dssss7317" resname="specshaper_calendarbundle.tooltip.hasAccepted">
+            <trans-unit id="92dssss7317" resname="spec_shaper_calendarbundle.tooltip.hasAccepted">
                 <source>Has accepted event</source>
                 <target>Has accepted event</target>
-            </trans-unit>
-            
-            <trans-unit id="92dssss73d17" resname="specshaper_calendarbundle.heading.guests">
+            </trans-unit>            
+            <trans-unit id="92dssss73d17" resname="spec_shaper_calendarbundle.heading.guests">
                 <source>Guests</source>
                 <target>Guests</target>
+            </trans-unit>            
+            <trans-unit id="92ddh73d17" resname="spec_shaper_calendar.choice.firstLetter.sunday">
+                <source>s</source>
+                <target>s</target>
             </trans-unit>
+            <trans-unit id="92gsh73d17" resname="spec_shaper_calendar.choice.firstLetter.monday">
+                <source>m</source>
+                <target>m</target>
+            </trans-unit>
+            <trans-unit id="92dssh7l3d17" resname="spec_shaper_calendar.choice.firstLetter.tuesday">
+                <source>t</source>
+                <target>t</target>
+            </trans-unit>
+            <trans-unit id="92dsshfd17" resname="spec_shaper_calendar.choice.firstLetter.wednesday">
+                <source>w</source>
+                <target>w</target>
+            </trans-unit>
+            <trans-unit id="92d73d17" resname="spec_shaper_calendar.choice.firstLetter.thursday">
+                <source>t</source>
+                <target>t</target>
+            </trans-unit>
+            <trans-unit id="92dh73d17" resname="spec_shaper_calendar.choice.firstLetter.friday">
+                <source>f</source>
+                <target>f</target>
+            </trans-unit>
+            <trans-unit id="92ssd17" resname="spec_shaper_calendar.choice.firstLetter.saturday">
+                <source>s</source>
+                <target>s</target>
+            </trans-unit>            
+            <trans-unit id="92shhsd17" resname="spec_shaper_calendar.choice.daily">
+                <source>Daily</source>
+                <target>Daily</target>
+            </trans-unit>
+            <trans-unit id="92sggssssd17" resname="spec_shaper_calendar.choice.weeks">
+                <source>Weeks</source>
+                <target>Weeks</target>
+            </trans-unit>
+            <trans-unit id="92ssad1aa7" resname="spec_shaper_calendar.choice.years">
+                <source>Years</source>
+                <target>Years</target>
+            </trans-unit>
+            <trans-unit id="92sshdaa17" resname="spec_shaper_calendar.choice.months">
+                <source>Months</source>
+                <target>Months</target>
+            </trans-unit>
+            <trans-unit id="92sshaadaa17" resname="spec_shaper_calendar.choice.iterations">
+                <source>Iterations</source>
+                <target>Iterations</target>
+            </trans-unit>
+            <trans-unit id="92sshdggaa17" resname="spec_shaper_calendar.choice.endDate">
+                <source>End date</source>
+                <target>End date</target>
+            </trans-unit>
+            <trans-unit id="9ddsshdddggaa17" resname="spec_shaper_calendar.label.start">
+                <source>Start</source>
+                <target>Start</target>
+            </trans-unit>
+            <trans-unit id="92sshdddggaa17" resname="spec_shaper_calendar.label.end">
+                <source>End</source>
+                <target>End</target>
+            </trans-unit>
+            
+            
+
 
         </body>
     </file>

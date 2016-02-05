@@ -21,9 +21,11 @@ class SpecShaperCalendarExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
+        
         $config = $this->processConfiguration($configuration, $configs);
-
+        
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        
         $loader->load('services.xml');
 
         if ('custom' !== $config['db_driver']) {
@@ -33,7 +35,7 @@ class SpecShaperCalendarExtension extends Extension
 
         if ('custom' !== $config['db_driver'] && 'propel' !== $config['db_driver']) {
             if ('orm' === $config['db_driver']) {
-                $managerService = 'spec_shaper_calender.entity_manager';
+                $managerService = 'spec_shaper_calendar.entity_manager';
                 $doctrineService = 'doctrine';
             } else {
                 $managerService = 'spec_shaper_calendar.document_manager';
@@ -50,6 +52,8 @@ class SpecShaperCalendarExtension extends Extension
             }
         }
 
+        // Create a parameter name for each of the custom calendar entities.
+        // Name is of the form: spec_shaper_calendar.calendar_class
         foreach ($config['custom_classes'] as $customClassKey => $customClassName) {
             $parameterName = $this->getAlias().'.'.$customClassKey;
             $container->setParameter($parameterName, $customClassName);

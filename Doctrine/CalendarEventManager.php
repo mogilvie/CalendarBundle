@@ -2,35 +2,34 @@
 
 namespace SpecShaper\CalendarBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
 
-class CalendarEventManager
-{
+class CalendarEventManager {
+
     protected $objectManager;
     protected $class;
     protected $repository;
-    protected $originalInvitees;
+    protected $originalAttendees;
+    protected $origionalReoccuranceId;
 
     /**
      * Constructor.
      * 
-     * @param ObjectManager $om
+     * @param ObjectManager $em
      * @param string $class
      */
-    public function __construct(ObjectManager $om, $class)
-    {
-        $this->objectManager = $om;
-        $this->repository = $om->getRepository($class);
+    public function __construct(EntityManager $em, $class) {
+        $this->objectManager = $em;
+        $this->repository = $em->getRepository($class);
 
-        $metadata = $om->getClassMetadata($class);
+        $metadata = $em->getClassMetadata($class);
         $this->class = $metadata->getName();
     }
 
-    public function createEvent()
-    {
+    public function createEvent() {
         $class = $this->class;
 
         return new $class();
@@ -39,39 +38,36 @@ class CalendarEventManager
     /**
      * {@inheritdoc}
      */
-    public function getClass()
-    {
+    public function getClass() {
         return $this->class;
     }
 
-    public function getEvent($id)
-    {
+    public function getEvent($id) {
         return $this->repository->find($id);
     }
 
-    public function save(CalendarEventInterface $event)
-    {
-        $om = $this->objectManager;                
-        $om->persist($event);
-        $om->flush();
+    public function save(CalendarEventInterface $event) {
+        $em = $this->objectManager;
+        $em->persist($event);
+        $em->flush();
 
         return $event;
     }
-    
+
     public function updateDateTimes(FormInterface $form, CalendarEventInterface $event) {
         $startDate = $form->get('startDate')->getData();
         $startTime = $form->get('startTime')->getData();
-        
+
         $startDatetime = $this->processTime($startDate, $startTime);
         $event->setStartDatetime($startDatetime);
-        
+
         $endDate = $form->get('endDate')->getData();
         $endTtime = $form->get('endTime')->getData();
-        
+
         $endDatetime = $this->processTime($endDate, $endTtime);
-        $event->setEndDatetime($endDatetime);   
+        $event->setEndDatetime($endDatetime);
     }
-   
+
     public function processTime($date, $time) {
 
         $hour = $time->format('H');
@@ -82,45 +78,64 @@ class CalendarEventManager
 
         return $datetime;
     }
-    
-    public function storeOrigionalInvitees($invitees) {
 
-        $originalInvitees = new ArrayCollection();
+    public function storeOrigionalData(CalendarEventInterface $event) {
+
+        $this->storeOrigionalAttendees($event);
+
+        if ($event->getCalendarReoccurance() !== null) {
+            $this->origionalReoccuranceId = $event->getCalendarReoccurance()->getId();
+        }
+    }
+
+    public function storeOrigionalAttendees(CalendarEventInterface $event) {
+
+        $originalAttendees = new ArrayCollection();
 
         // Create an ArrayCollection of the current Tag objects in the database
-        foreach ($invitees as $invitee) {
-            $originalInvitees->add($invitee);
+        foreach ($event->getCalendarAttendees() as $attendee) {
+            $originalAttendees->add($attendee);
         }
-        
-        return $originalInvitees;
-    }
-    
-    public function updateEvent(CalendarEventInterface $event, $originalInvitees) {
-        
-        $om = $this->objectManager;
 
-        foreach ($originalInvitees as $invitee) {
-            if (false === $event->getCalendarInvitees()->contains($invitee)) {
-                $om->remove($invitee);
+        $this->originalAttendees = $originalAttendees;
+    }
+
+    public function updateEvent(CalendarEventInterface $event) {
+
+        $em = $this->objectManager;
+
+        foreach ($this->originalAttendees as $attendee) {
+            if (false === $event->getCalendarAttendees()->contains($attendee)) {
+                $em->remove($attendee);
             }
         }
-        
-        $om->persist($event);
-        $om->flush();
-        
+
+        if ($event->getIsReoccuring() === false && $this->origionalReoccuranceId !== null) {
+
+            $reoccurance = $em->getRepository("AppBundle:CalendarReoccurance")->find($this->origionalReoccuranceId);
+
+            if ($reoccurance->getCalendarEvents()->count() === 1) {
+                $em->remove($reoccurance);
+            }
+
+            $event->removeCalendarReoccurance();
+        }
+
+
+        $em->persist($event);
+
+        $em->flush();
+
+        dump($event);
+
         return $event;
-        
-        
     }
-    
+
     public function deleteEvent(CalendarEventInterface $event) {
-                
-        $om = $this->objectManager;
-        $om->remove($event);
-        $om->flush();
-        
+
+        $em = $this->objectManager;
+        $em->remove($event);
+        $em->flush();
     }
-    
-    
-    
+
 }

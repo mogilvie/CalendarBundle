@@ -25,7 +25,7 @@ abstract class CalendarComment implements CalendarCommentInterface
     /**
      * @var string
      */
-    protected $invitee;
+    protected $attendee;
 
     /**
      * Constructor.
@@ -79,16 +79,16 @@ abstract class CalendarComment implements CalendarCommentInterface
         return $this->calendarEvent;
     }
 
-    public function setCalendarInvitee(CalendarInviteeInterface $invitee)
+    public function setCalendarAttendee(CalendarAttendeeInterface $attendee)
     {
-        $this->invitee = $invitee;
+        $this->attendee = $attendee;
 
         return $this;
     }
 
-    public function getCalendarInvitee()
+    public function getCalendarAttendee()
     {
-        return $this->invitee;
+        return $this->attendee;
     }
      
     

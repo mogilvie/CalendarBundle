@@ -1,0 +1,20 @@
+
+<tr>
+  <td class="isOptional">{{ form_row(form.isOptional) }}</td>
+  <td><span class="emailAddress">{{ form.emailAddress.vars.data }}</span>{{ form_row(form.emailAddress) }}</td>     
+  <td>
+    <span class="attendeeIcons pull-right"></span>
+
+    {% if form.vars.data != null %}
+        {% if form.vars.data.hasAccepted == true %}
+            <i class="glyphicon glyphicon-ok-sign" title="{% trans %}spec_shaper_calendarbundle.tooltip.hasAccepted{% endtrans %}"></i>
+        {% endif %}
+        {% if form.vars.data.hasDenied == true %}
+            <i class="glyphicon glyphicon-remove-sign" title="{% trans %}spec_shaper_calendarbundle.tooltip.hasDenied{% endtrans %}"></i>
+        {% endif %}
+    {% endif %}
+    <i class="removeAttendeeButton glyphicon glyphicon-trash" title="{% trans %}spec_shaper_calendarbundle.tooltip.remove{% endtrans %}"></i>
+  </td>
+</tr>
+
+

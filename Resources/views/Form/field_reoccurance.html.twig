@@ -1,0 +1,38 @@
+{% block _spec_shaper_calendar_event_calendarReoccurance_widget %}
+
+    <div class="reoccurance-panel">
+      {{ form_start(form) }}
+      {{ form_errors(form) }}
+      <div class="row">
+        <div class="col-sm-6">
+          {{ form_row(form.period)}}
+        </div>
+        <div class="col-sm-6">
+          {{ form_row(form.intervalBetween)}}
+        </div>        
+      </div>
+      <div id="dayCheckBoxes">
+        {% if form.days is defined %}
+            {{ form_widget(form.days) }}
+        {% endif %}
+      </div>
+      <label>{{ 'spec_shaper_calendar.label.stopRepeatingAfter' | trans }}</label>
+      <div class="row">        
+        <div class="col-sm-6">
+          {{ form_row(form.stopMethod)}}
+        </div>
+        <div id="endMethodContainer" class="col-sm-6">
+          <div id="iterationsInput">
+            {% if form.iterations is defined %}
+                {{ form_row(form.iterations)}}
+            {% endif %}
+          </div>
+          {% if form.endDate is defined %}
+              {{ form_row(form.endDate)}}
+          {% endif %}
+        </div>        
+      </div>
+      {{ form_end(form) }}
+    </div>
+
+{% endblock %}

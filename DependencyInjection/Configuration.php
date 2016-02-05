@@ -18,7 +18,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('spec_shaper_calendar');
+        
+        $rootNode = $treeBuilder->root('spec_shaper_calendar', 'array');       
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
@@ -40,10 +41,11 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('model_manager_name')->end()
                 ->arrayNode('custom_classes')
                     ->children()
-                        ->scalarNode('invitee_class')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('attendee_class')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('calendar_class')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('event_class')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('comment_class')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('reoccurance_class')->isRequired()->cannotBeEmpty()->end()
                     ->end()
                 ->end()
                 ->scalarNode('voter')->end()

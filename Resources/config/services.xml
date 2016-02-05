@@ -4,17 +4,19 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-
     <services>
         <service id="spec_shaper_calendar.form.type.calendar_event" class="SpecShaper\CalendarBundle\Form\CalendarEventType">
             <tag name="form.type" />
-            <argument type="service" id="spec_shaper_calender.entity_manager" />
+            <argument type="service" id="spec_shaper_calendar.entity_manager" />            
         </service>
+        <service id="spec_shaper_calendar.form.calendar_reoccurance" class="SpecShaper\CalendarBundle\Form\CalendarReoccuranceType">
+            <tag name="form.type" />
+            <argument>%spec_shaper_calendar.reoccurance_class%</argument>
+        </service>  
+        <service id="spec_shaper_calendar.form.calendar_attendee" class="SpecShaper\CalendarBundle\Form\CalendarAttendeeType">
+            <tag name="form.type" />
+            <argument>%spec_shaper_calendar.attendee_class%</argument>
+        </service>       
     </services>
-    
-    <!--    <parameters>
-        <parameter key="fullcalendar.event.class">SpecShaper\CalendarBundle\Entity\EventEntity</parameter>
-        <parameter key="fullcalendar.loader.event">calendar.load_events</parameter>
-    </parameters>-->
     
 </container>

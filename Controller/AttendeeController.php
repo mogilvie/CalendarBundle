@@ -19,9 +19,9 @@ use SpecShaper\CalendarBundle\Event\CalendarGetAddressesEvent;
 
 
 /**
- * @Route("/invitee")
+ * @Route("/attendee")
  */
-class InviteeController extends Controller {
+class AttendeeController extends Controller {
     
     /**
      *
@@ -49,7 +49,7 @@ class InviteeController extends Controller {
      * @return CalendarEventManager
      */
     protected function getEventManager() {
-        return $this->get('spec_shaper_calender.manager.calendar_event');
+        return $this->get('spec_shaper_calendar.manager.calendar_event');
     }
 
     /**

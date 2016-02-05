@@ -29,7 +29,7 @@ use SpecShaper\CalendarBundle\Event\CalendarGetAddressesEvent;
 class PublicController extends Controller {
     
     /**
-     * Action to display an invitation and offer the invitee the change to 
+     * Action to display an invitation and offer the attendee the change to 
      * accept or reject.
      * 
      * @Route("/{hash}/getaddresses", name="public_view")

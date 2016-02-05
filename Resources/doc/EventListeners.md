@@ -108,7 +108,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: 'kernel.event_listener', event: 'specshaper_calendar.load_events', method: loadEvents }
+            - { name: 'kernel.event_listener', event: 'spec_shaper_calendar.load_events', method: loadEvents }
 ```
 
 
@@ -186,7 +186,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: 'kernel.event_listener', event: 'specshaper_calendar.new_event', method: newEventEntity }
+            - { name: 'kernel.event_listener', event: 'spec_shaper_calendar.new_event', method: newEventEntity }
 ```
 
 ## CalendarRemoveEventListener
@@ -199,7 +199,7 @@ Thrown when an event is modified.
 
 Used to modify or remove the CalendarEvent to customise it for your application. For
 example:
-- Send an email updating invitees.
+- Send an email updating attendees.
 - Change relationships.
 
 See the documents section for more detail of the listeners available:
