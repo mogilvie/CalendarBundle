@@ -20,21 +20,21 @@ use SpecShaper\CalendarBundle\Model\CalendarEventInterface;
  *
  * @author      Mark Ogilvie <mark.ogilvie@specshaper.com>
  */
-class CalendarEditEvent extends Event
-{
+class CalendarEditEvent extends Event {
+
     /**
      * @var CalendarEventInterface
      */
     private $calendarEvent;
+    private $sendUpdate = false;
 
     /**
      * Construct the Event and store the CalendarEvent.
      * 
      * @param CalendarEventInterface $calendarEvent
      */
-    public function __construct(CalendarEventInterface $calendarEvent)
-    {
-        $this->calendarEvent = $calendarEvent;        
+    public function __construct(CalendarEventInterface $calendarEvent) {
+        $this->calendarEvent = $calendarEvent;
     }
 
     /**
@@ -42,11 +42,10 @@ class CalendarEditEvent extends Event
      * 
      * @return CalendarEventInterface
      */
-    public function getEventEntity()
-    {
+    public function getEventEntity() {
         return $this->calendarEvent;
     }
-    
+
     /**
      * Set a different event if required.
      * 
@@ -54,11 +53,20 @@ class CalendarEditEvent extends Event
      * 
      * @return \SpecShaper\CalendarBundle\Event\CalendarEditEvent
      */
-    public function setEventEntity(CalendarEventInterface $calendarEvent)
-    {
+    public function setEventEntity(CalendarEventInterface $calendarEvent) {
         $this->calendarEvent = $calendarEvent;
-                
+
         return $this;
+    }
+
+    public function setSendUpdate() {
+
+        $this->sendUpdate = true;
+        return $this;
+    }
+
+    public function getSendUpdate() {
+        return $this->sendUpdate;
     }
 
 }

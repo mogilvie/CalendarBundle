@@ -45,7 +45,7 @@ class CalendarReoccuranceType extends AbstractType {
         $builder
                 ->add('period', ChoiceType::class, array(
                     'choices' => array(
-                        'spec_shaper_calendar.choice.daily' => Reoccurance::FREQUENCY_DAY,
+                        'spec_shaper_calendar.choice.days' => Reoccurance::FREQUENCY_DAY,
                         'spec_shaper_calendar.choice.weeks' => Reoccurance::FREQUENCY_WEEK,
                         'spec_shaper_calendar.choice.months' => Reoccurance::FREQUENCY_MONTH,
                         'spec_shaper_calendar.choice.years' => Reoccurance::FREQUENCY_YEAR
@@ -166,13 +166,15 @@ class CalendarReoccuranceType extends AbstractType {
                 ->add('iterations', IntegerType::class, array(
                     'label' => false,
                     'required' => false,
+                    
                 ))
         ;
     }
 
     private function setEndDateStopMethod(FormInterface $form) {
 
-        $now = new \DateTime('now');
+        $tomorrow = new \DateTime('now');
+        $tomorrow->modify('+1 day');
 
         $form
                 ->remove('iterations')
@@ -182,7 +184,7 @@ class CalendarReoccuranceType extends AbstractType {
                     'html5' => false,
                     'required' => false,
                     'label' => false,
-                    'empty_data' => $now->format('d m Y')
+                    'empty_data' => $tomorrow->format('d m Y')
                 ))
 
         ;
@@ -197,7 +199,7 @@ class CalendarReoccuranceType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => $this->entityClass,              
+            'data_class' => $this->entityClass,            
         ));
     }
 

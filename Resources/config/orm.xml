@@ -6,6 +6,11 @@
 
     <services>
         <service id="spec_shaper_calendar.manager.event" class="SpecShaper\CalendarBundle\Doctrine\CalendarEventManager" public="true">
+            <argument type="service" id="spec_shaper_calendar.entity_manager" />   
+            <argument type="service" id="spec_shaper_calendar.manager.reoccurance" />         
+            <argument>%spec_shaper_calendar.event_class%</argument>
+        </service>
+        <service id="spec_shaper_calendar.manager.reoccurance" class="SpecShaper\CalendarBundle\Doctrine\CalendarReoccuranceManager" public="true">
             <argument type="service" id="spec_shaper_calendar.entity_manager" />
             <argument>%spec_shaper_calendar.event_class%</argument>
         </service>

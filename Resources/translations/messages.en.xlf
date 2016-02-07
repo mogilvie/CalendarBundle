@@ -18,9 +18,13 @@
                 <source>Location</source>
                 <target>Location</target>
             </trans-unit>
-            <trans-unit id="92g17" resname="spec_shaper_calendarbundle.button.submit">
-                <source>Submit</source>
-                <target>Submit</target>
+            <trans-unit id="92g1sdf7" resname="spec_shaper_calendarbundle.button.saveAndSend">
+                <source>Send</source>
+                <target>Send</target>
+            </trans-unit>
+            <trans-unit id="92g17" resname="spec_shaper_calendarbundle.button.save">
+                <source>Save</source>
+                <target>Save</target>
             </trans-unit>
             <trans-unit id="92df6ddd94127317" resname="spec_shaper_calendarbundle.heading.event">
                 <source>Calendar Event</source>
@@ -110,7 +114,7 @@
                 <source>s</source>
                 <target>s</target>
             </trans-unit>            
-            <trans-unit id="92shhsd17" resname="spec_shaper_calendar.choice.daily">
+            <trans-unit id="92shhsd17" resname="spec_shaper_calendar.choice.days">
                 <source>Daily</source>
                 <target>Daily</target>
             </trans-unit>

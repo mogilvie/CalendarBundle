@@ -9,18 +9,15 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use SpecShaper\CalendarBundle\Form\CalendarReoccuranceType;
 use SpecShaper\CalendarBundle\Form\CalendarAttendeeType;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 
 class CalendarEventType extends AbstractType {
 
@@ -36,10 +33,6 @@ class CalendarEventType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $event = $builder->getData();
-
-        $isReoccuring = $event->getIsReoccuring();
-
-        dump($isReoccuring);
 
         $builder
                 ->add('bgColor', ChoiceType::class, array(
@@ -63,6 +56,7 @@ class CalendarEventType extends AbstractType {
                 ))
                 ->add('location', TextType::class, array(
                     'required' => false,
+                    'attr' => array('autocomplete' => true),
                     'label' => 'spec_shaper_calendarbundle.label.location',
                 ))
                 ->add('title', TextType::class, array(
@@ -87,6 +81,11 @@ class CalendarEventType extends AbstractType {
                     'by_reference' => false,
                     'allow_add' => true,
                     'allow_delete' => true,
+                ))
+                ->add('updateAttendees', CheckboxType::class, array(
+                    'mapped' => false,
+                    'required' => false,
+                    'attr' => array('class' => 'hidden'),
                 ))
                 ->addEventListener(
                         FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -140,7 +139,8 @@ class CalendarEventType extends AbstractType {
                     'data' => $event->getEndDatetime()
                 ))
                 ->add('calendarReoccurance', CalendarReoccuranceType::class, array(
-                    'disabled' => !$event->getIsReoccuring()
+                    'error_bubbling' => false
+           //         'disabled' => !$event->getIsReoccuring()
                 ))
         ;
     }

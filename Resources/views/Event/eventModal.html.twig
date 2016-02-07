@@ -51,7 +51,7 @@
             </div>
             <div class="form-group-sm well well-sm">
               {{ form_row(form.isReoccuring) }}
-              {{ form_widget(form.calendarReoccurance) }}
+              {{ form_row(form.calendarReoccurance) }}
             </div>
           </div>
           <div class="col-md-6">   
@@ -77,9 +77,12 @@
 
               </div>
               {{ form_widget(form.calendarAttendees)}}
+              {{ form_widget(form.updateAttendees)}}
             </div>
           </div>
-          <input id="eventSubmitButton" type="submit" class="hidden" />
+
+          <input id="eventFormSubmitButton" type="submit" class="hidden" />
+
           {{ form_end(form)}}
         </div>
 
@@ -87,10 +90,26 @@
       <div class="modal-footer">
         <div class="input-group pull-right">
           {% if form.vars.data.isReoccuring %}
-              <button id="deleteSeriesButton" class="btn btn-primary">{{ "spec_shaper_calendarbundle.button.deleteSeries" | trans }}</button>      
+
+              {{ form_start(deleteSeriesForm, {'attr':{'class':'buttonForm deleteForm'} } )}}
+              <input type="submit" value="{{ "spec_shaper_calendarbundle.button.deleteSeries" | trans }}"
+                     class="btn btn-primary" />
+
+              {{ form_end(deleteSeriesForm)}}
+
+
           {% endif %}
-          <button id="deleteButton" class="btn btn-primary">{{ "spec_shaper_calendarbundle.button.delete" | trans }}</button>
-          <button id="submitButton" class="btn btn-primary">{{ "spec_shaper_calendarbundle.button.submit" | trans }}</button>
+          
+          {% if deleteForm is defined %}
+              {{ form_start(deleteForm, {'attr':{'class':'buttonForm deleteForm'} } )}}
+              <input type="submit" value="{{ "spec_shaper_calendarbundle.button.delete" | trans }}"
+                     class="btn btn-primary" />
+              {{ form_end(deleteForm)}}
+
+          {% endif %}
+
+          <button id="saveButton" class="btn btn-primary">{{ "spec_shaper_calendarbundle.button.save" | trans }}</button>
+          <button id="saveSendButton" class="btn btn-primary">{{ "spec_shaper_calendarbundle.button.saveAndSend" | trans }}</button>
         </div>
       </div>
     </div>

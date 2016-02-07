@@ -27,3 +27,7 @@ td.isOptional > div > div > label{
 .modal-xl{
     width: 80%; 
 }
+
+form.buttonForm{
+    display: inline-block;
+}

@@ -170,7 +170,7 @@ interface CalendarReoccuranceInterface {
      * 
      * @param DateTimeInterface $startTime
      */
-    public function setStartTime(DateTimeInterface $startTime);
+    public function setStartTime(DateTimeInterface $startTime = null);
 
     /**
      * Get the event start time.
@@ -184,7 +184,7 @@ interface CalendarReoccuranceInterface {
      * 
      * @param DateTimeInterface $endTime
      */
-    public function setEndTime(DateTimeInterface $endTime);
+    public function setEndTime(DateTimeInterface $endTime = null);
 
     /**
      * Get the event end time.
@@ -256,7 +256,7 @@ interface CalendarReoccuranceInterface {
      * @param DateTimeInterface $endDate
      * @return \SpecShaper\CalendarBundle\Model\CalendarReoccurance
      */
-    public function setStartDate(DateTimeInterface $startDate);
+    public function setStartDate(DateTimeInterface $startDate = null);
 
     /**
      * Get the date set as the start date for calendarEvents to reoccur.
@@ -273,7 +273,7 @@ interface CalendarReoccuranceInterface {
      * @param DateTimeInterface $endDate
      * @return \SpecShaper\CalendarBundle\Model\CalendarReoccurance
      */
-    public function setEndDate(DateTimeInterface $endDate);
+    public function setEndDate(DateTimeInterface $endDate = null);
 
     /**
      * Get the date set as the last date for calendarEvents to reoccur.

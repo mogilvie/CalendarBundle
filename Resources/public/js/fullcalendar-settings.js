@@ -23,14 +23,16 @@ var Calendar = {
     },
     bindUIActions: function () {
         $(document).on('ready.calendar', Calendar.onReady);
-        $(document).on('click.calendar', '#submitButton', Calendar.submitButtonClickHander);
+        $(document).on('click.calendar', '#saveButton', Calendar.saveButtonClickHander);
+        $(document).on('click.calendar', '#saveSendButton', Calendar.saveSendButtonClickHander);
         $(document).on('submit.calendar', 'form[name="spec_shaper_calendar_event"]', Calendar.eventSubmitHandler);
+        $(document).on('submit.calendar', 'form.deleteForm', Calendar.deleteFormSubmitHandler);
         $(document).on('click.calendar', '#addAttendeeButton', Calendar.addAttendeeButtonClickHander);
         $(document).on('click.calendar', '.removeAttendeeButton', Calendar.removeAttendeeClickHandler);
         $(document).on('click.calendar', '#deleteButton', Calendar.deleteButtonClickHandler);
         $(document).on('change', '#spec_shaper_calendar_event_calendarReoccurance_period', Calendar.periodChangeHandler);
         $(document).on('change', '#spec_shaper_calendar_event_calendarReoccurance_stopMethod', Calendar.stopMethodChangeHandler);
-        
+
         //$(document).on('click.calendar', '#spec_shaper_calendar_event_isReoccuring', Calendar.isReoccuringClickHandler);
 
         //$(document).on('click', '#deleteSeriesButton', Calendar.deleteSeriesButtonClickHandler);
@@ -38,6 +40,7 @@ var Calendar = {
     /**
      * Prepare the calendar and modals.
      * 
+     * @todo translate
      * @returns {undefined}
      */
     onReady: function () {
@@ -181,21 +184,17 @@ var Calendar = {
 
         var url = Calendar.settings.addresses;
 
-        $.ajax(
-                {
-                    url: url,
-                    type: "GET",
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        $("#emailAddresses").html();
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+        $.ajax({
+            url: url,
+            type: "GET"
+        }).done(function (html, textStatus, jqXHR) {
+            $("#emailAddresses").html();
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                });
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
     },
     /**
      * Function called when calendar dates are selected.
@@ -206,45 +205,45 @@ var Calendar = {
      * @param {type} end
      * @returns {undefined}
      */
-    select: function (start, end) {
+    select: function (start, end, allDay) {
 
         var url = Calendar.settings.new;
 
-        $.ajax(
-                {
-                    url: url,
-                    type: "GET",
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        var $eventModal = $('#eventModal');
+        $.ajax({
+            url: url,
+            type: "GET"
+        }).done(function (html, textStatus, jqXHR) {
+            var $eventModal = $('#eventModal');
 
-                        $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
+            $("#eventModal").find('div.modal-content').replaceWith($(html).find('div.modal-content'));
 
-                        Calendar.bindDatePickers();
-                        Calendar.bindColorPicker();
+            Calendar.bindDatePickers();
+            Calendar.bindColorPicker();
 
-                        if (start.hasTime() === false) {
-                            $eventModal.find('#spec_shaper_calendar_event_isAllDay').prop('checked', true);
-                        }
+            // Check if the selection is an allday event.
+            if (start.hasTime() === false) {
+                $eventModal.find('#spec_shaper_calendar_event_isAllDay').prop('checked', true);
+                var minute = moment.duration(1, 'm');
 
-                        $eventModal.find('#spec_shaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
+                end.subtract(minute);
+            }
 
-                        $eventModal.find('#spec_shaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
+            $eventModal.find('#spec_shaper_calendar_event_startDate').datepicker("setDate", start.format('DD/MM/YYYY'));
 
-                        $eventModal.find('#spec_shaper_calendar_event_startTime').val(start.format('HH:mm'));
+            $eventModal.find('#spec_shaper_calendar_event_endDate').datepicker("setDate", end.format('DD/MM/YYYY'));
 
-                        $eventModal.find('#spec_shaper_calendar_event_endTime').val(end.format('HH:mm'));
+            $eventModal.find('#spec_shaper_calendar_event_startTime').val(start.format('HH:mm'));
 
-                        $eventModal.modal('show');
+            $eventModal.find('#spec_shaper_calendar_event_endTime').val(end.format('HH:mm'));
 
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $eventModal.modal('show');
 
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                });
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
 
 
     },
@@ -269,41 +268,41 @@ var Calendar = {
 
         var url = route.replace('PLACEHOLDER', calEvent.id);
 
-        $.ajax(
-                {
-                    url: url,
-                    type: "GET",
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        var $eventModal = $("#eventModal");
-                        var $newModalContent = $(html).find('div.modal-content');
+        $.ajax({
+            url: url,
+            type: "GET"
+        }).done(function (html, textStatus, jqXHR) {
+            var $eventModal = $("#eventModal");
+            var $newModalContent = $(html).find('div.modal-content');
 
-                        $eventModal
-                                .find('div.modal-content')
-                                .replaceWith($newModalContent);
-                        ;
+            $eventModal
+                    .find('div.modal-content')
+                    .replaceWith($newModalContent);
+            ;
 
-                        Calendar.bindDatePickers();
-                        Calendar.bindColorPicker();
+            Calendar.bindDatePickers();
+            Calendar.bindColorPicker();
 
-                        $eventModal.modal('show');
+            $eventModal.modal('show');
 
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                });
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
     },
     /**
      * Modal submit button clicked then triggers the form submit button.
      * 
      * @returns {undefined}
      */
-    submitButtonClickHander: function () {
-        $(document).find('#eventSubmitButton').click();
+    saveButtonClickHander: function () {
+        $('#eventFormSubmitButton').click();
+    },
+    saveSendButtonClickHander: function () {
+        //$('#spec_shaper_calendar_event_updateAttendees').prop('checked', 'true');
+        $('#eventFormSubmitButton').click();
     },
     /**
      * Event modal submit click handler.
@@ -321,7 +320,6 @@ var Calendar = {
 
         var $form = $('form[name="spec_shaper_calendar_event"]');
 
-        // Serialize the form.
         var postData = $form.serializeArray();
 
         var formURL = $form.attr("action");
@@ -332,30 +330,40 @@ var Calendar = {
             type = "PUT";
         }
 
-        $.ajax(
-                {
-                    url: formURL,
-                    type: type,
-                    data: postData,
-                    success: function (html, textStatus, jqXHR)
-                    {
+        $.ajax({
+            url: formURL,
+            type: type,
+            data: postData,
+            dataType: 'json'
+        }).done(function (html, textStatus, jqXHR) {
 
-                        if (type === "PUT") {
-                            Calendar.updateEventInCalendar(html);
-                        } else {
-                            Calendar.addEventToCalendar(html);
-                        }
+            if (type === "PUT") {
+                Calendar.updateEventInCalendar(html);
+            } else {
+                Calendar.addEventToCalendar(html);
+            }
 
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $('#eventModal').modal('hide');
 
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                });
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-        $('#eventModal').modal('hide');
+            var $eventModal = $("#eventModal");
+
+            var response = $.parseHTML(XMLHttpRequest.responseText);
+
+            var $newModalContent = $(response).find('div.modal-content');
+
+            $eventModal
+                    .find('div.modal-content')
+                    .replaceWith($newModalContent);
+            ;
+
+            Calendar.bindDatePickers();
+            Calendar.bindColorPicker();
+
+        });
+
+        //;
 
     },
     /**
@@ -442,27 +450,22 @@ var Calendar = {
             "end": event.end.format()
         };
 
-        $.ajax(
-                {
-                    url: url,
-                    data: postData,
-                    type: "PUT",
-                    success: function (html, textStatus, jqXHR)
-                    {
+        $.ajax({
+            url: url,
+            data: postData,
+            type: "PUT"
+        }).done(function (html, textStatus, jqXHR) {
 
 //                        $("#eventModal").find('div.modal-body').replaceWith($(html).find('div.modal-body'));
 //                        Calendar.bindDatePickers();
 //                        $("#eventModal").modal('show');
 
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                }
-        );
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
     },
     deleteButtonClickHandler: function (e) {
 
@@ -474,26 +477,20 @@ var Calendar = {
 
         var url = route.replace('PLACEHOLDER', id);
 
+        $.ajax({
+            url: url,
+            type: "DELETE"
+        }).done(function (html, textStatus, jqXHR)
+        {
+            $('#calendar-holder').fullCalendar('removeEvents', [id]);
+            $("#eventModal").modal('hide');
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-        $.ajax(
-                {
-                    url: url,
-                    type: "DELETE",
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        $('#calendar-holder').fullCalendar('removeEvents', [id]);
-                        $("#eventModal").modal('hide');
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                }
-        );
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
     },
-    
 //    isReoccuringClickHandler: function(e){
 //                            if ( $(this).prop('checked')){
 //                                var $panel = $('.reoccurance-panel');
@@ -520,27 +517,22 @@ var Calendar = {
             type = "PUT";
         }
 
-        $.ajax(
-                {
-                    url: $form.attr("action"),
-                    type: type,
-                    data: data,
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        var $newModalContent = $(html).find('#dayCheckBoxes');
+        $.ajax({
+            url: $form.attr("action"),
+            type: type,
+            data: data
+        }).done(function (html, textStatus, jqXHR) {
+            var $newModalContent = $(html).find('#dayCheckBoxes');
 
-                        $("#dayCheckBoxes")
-                                .replaceWith($newModalContent);
-                        ;
+            $("#dayCheckBoxes")
+                    .replaceWith($newModalContent);
+            ;
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
-                });
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
     },
     stopMethodChangeHandler: function (e) {
 
@@ -559,37 +551,63 @@ var Calendar = {
             type = "PUT";
         }
 
-        $.ajax(
-                {
-                    url: $form.attr("action"),
-                    type: type,
-                    data: data,
-                    success: function (html, textStatus, jqXHR)
-                    {
-                        var $newModalContent = $(html).find('#endMethodContainer');
+        $.ajax({
+            url: $form.attr("action"),
+            type: type,
+            data: data
+        }).done(function (html, textStatus, jqXHR)
+        {
+            var $newModalContent = $(html).find('#endMethodContainer');
 
-                        $("#endMethodContainer")
-                                .replaceWith($newModalContent);
-                        ;
+            $("#endMethodContainer")
+                    .replaceWith($newModalContent);
+            ;
 
-                        if ($input.val() == 1) {
-                            $('#spec_shaper_calendar_event_calendarReoccurance_endDate').datepicker({
-                                format: "dd M yyyy",
-                                autoclose: true
-                            });
-                        }
-
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-
-                        var w = window.open();
-                        var html = XMLHttpRequest.responseText;
-                        $(w.document.body).html(html);
-                    }
+            if ($input.val() === 1) {
+                $('#spec_shaper_calendar_event_calendarReoccurance_endDate').datepicker({
+                    format: "dd M yyyy",
+                    autoclose: true
                 });
+            }
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
+
+    },
+    deleteFormSubmitHandler: function (e) {
+
+        e.preventDefault();
+
+        var $form = $(this);
+
+        var postData = $form.serializeArray();
+
+        var formURL = $form.attr("action");
+
+        $.ajax({
+            url: formURL,
+            type: "DELETE",
+            data: postData,
+            dataType: 'json'
+        }).done(function (json, textStatus, jqXHR)
+        {
+            json.forEach(function (id) {
+                Calendar.settings.calendar.fullCalendar('removeEvents', [id]);
+            });
+
+            $("#eventModal").modal('hide');
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            var w = window.open();
+            var html = XMLHttpRequest.responseText;
+            $(w.document.body).html(html);
+        });
 
     }
-
 };
 
 

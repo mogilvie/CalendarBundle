@@ -5,9 +5,12 @@ namespace SpecShaper\CalendarBundle\Model;
 use DateTimeInterface;
 use SpecShaper\CalendarBundle\Model\CalendarAttendeeInterface;
 use SpecShaper\CalendarBundle\Model\CalendarCommentInterface;
+use SpecShaper\CalendarBundle\Validator\Constraints as CalendarAssert;;
 
 /**
  * CalendarEvent.
+ * 
+ * @CalendarAssert\LogicalEndDate
  */
 abstract class CalendarEvent implements CalendarEventInterface {
 
@@ -168,7 +171,7 @@ abstract class CalendarEvent implements CalendarEventInterface {
     }
 
     public function removeCalendarReoccurance() {
-
+        
         $this->calendarReoccurance = null;
 
         return $this;

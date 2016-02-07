@@ -55,7 +55,7 @@ class EventController extends Controller {
         ;
         $response->headers->set('Content-Type', 'multipart/alternative');
         $response->headers->set('Content-Disposition', 'attachment; filename="cal.ics"');
-        
+
         return $response;
     }
 
@@ -86,6 +86,10 @@ class EventController extends Controller {
 
             $newEvent = new CalendarEditEvent($event);
 
+            if ($form->get('updateAttendees')->getData()) {
+                $newEvent->setSendUpdate();
+            }
+
             $this->getEventManager()->updateDateTimes($form, $event);
 
             $modifiedEventEntity = $loadedEvents = $this->getDispatcher()
@@ -93,6 +97,7 @@ class EventController extends Controller {
                     ->getEventEntity();
 
             $this->getEventManager()->save($modifiedEventEntity);
+
 
             return new JsonResponse($modifiedEventEntity->toArray());
         }
@@ -123,6 +128,9 @@ class EventController extends Controller {
             'method' => 'PUT',
         ));
 
+        $deleteForm = $this->createDeleteForm($id);
+        $deleteSeriesForm = $this->createDeleteSeriesForm($id);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -131,17 +139,26 @@ class EventController extends Controller {
 
             $newEvent = new CalendarEditEvent($event);
 
+            if ($form->get('updateAttendees')->getData()) {
+                $newEvent->setSendUpdate();
+            }
+
             $modifiedEventEntity = $this->getDispatcher()
                     ->dispatch(CalendarEvents::CALENDAR_EVENT_UPDATED, $newEvent)
                     ->getEventEntity();
-
+          
             $modifiedEventEntity = $this->getEventManager()->updateEvent($modifiedEventEntity);
 
-            return new JsonResponse($modifiedEventEntity->toArray());
+            $response = new JsonResponse($modifiedEventEntity->toArray());
+
+            return $response;
         }
+
 
         return $this->render('SpecShaperCalendarBundle:Event:eventModal.html.twig', array(
                     'form' => $form->createView(),
+                    'deleteForm' => $deleteForm->createView(),
+                    'deleteSeriesForm' => $deleteSeriesForm->createView(),
         ));
     }
 
@@ -173,11 +190,31 @@ class EventController extends Controller {
         $em->persist($event);
         $em->flush();
 
-
-
         return new JsonResponse($event->toArray());
     }
 
+    
+
+    /**
+     * @param Request $request
+     * @Route("/{id}/deleteseries", name="event_deleteseries")
+     * @Method({"DELETE"})
+     */
+    public function deleteSeriesEventAction(Request $request, $id) {
+        
+        $event = $this->getEventManager()->getEvent($id);
+
+        $removeEvent = new CalendarEditEvent($event);
+        
+        $this->getDispatcher()
+                ->dispatch(CalendarEvents::CALENDAR_EVENT_REMOVED, $removeEvent)
+                ->getEventEntity();
+
+        $deletedIdArray = $this->getEventManager()->deleteEventSeries($event);
+
+        return new JsonResponse($deletedIdArray);
+    }
+    
     /**
      * @param Request $request
      * @Route("/{id}/delete", name="event_delete")
@@ -193,21 +230,9 @@ class EventController extends Controller {
                 ->dispatch(CalendarEvents::CALENDAR_EVENT_REMOVED, $removeEvent)
                 ->getEventEntity();
 
-        $this->getEventManager()->deleteEvent($event);
+        $deletedIdArray = $this->getEventManager()->deleteEvent($event);
 
-        return new JsonResponse("deleted");
-    }
-
-    /**
-     * @param Request $request
-     * @Route("/{id}/deleteseries", name="event_deleteseries")
-     * @Method({"POST"})
-     */
-    public function deleteSeriesEventAction(Request $request) {
-
-        $this->getEventManager()->deleteEvent($id);
-
-        return new JsonResponse("deleted");
+        return new JsonResponse($deletedIdArray);
     }
 
     /**
@@ -226,6 +251,40 @@ class EventController extends Controller {
         return $this->render('SpecShaperCalendarBundle:Calendar:emailAddressDatalist.html.twig', array(
                     'emailAddresses' => $addressArray
         ));
+    }
+
+    /**
+     * Creates a form to delete a AvailableDiscipline entity by id.
+     *
+     * @since  Available since Release 1.0.0
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    protected function createDeleteForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('event_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->getForm()
+        ;
+    }
+
+    /**
+     * Creates a form to delete a AvailableDiscipline entity by id.
+     *
+     * @since  Available since Release 1.0.0
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    protected function createDeleteSeriesForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('event_deleteseries', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->getForm()
+        ;
     }
 
     /**

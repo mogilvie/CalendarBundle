@@ -88,7 +88,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * 
      * @var integer 
      */
-    protected $intervalBetween;
+    protected $intervalBetween = 1;
 
     /**
      * The method by which the reoccuring event is chosen to finish.
@@ -105,7 +105,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * 
      * @var integer 
      */
-    protected $iterations;
+    protected $iterations = 1;
 
     /**
      * The date before which the calendarEvents will stop reoccuring.
@@ -140,8 +140,8 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * 
      */
     public function removeCalendarEvent(CalendarEventInterface $event) {       
-        
-        if (!$this->calendarEvents->isEmpty() && $this->calendarEvents->contains($event)) {
+                
+        if (!$this->getCalendarEvents()->isEmpty() && $this->calendarEvents->contains($event)) {
             
             if($this->calendarEvents->count() > 1){
             
@@ -206,7 +206,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * 
      * @param DateTimeInterface $startTime
      */
-    public function setStartTime(DateTimeInterface $startTime) {
+    public function setStartTime(DateTimeInterface $startTime = null) {
         $this->startTime = $startTime;
         return $this;
     }
@@ -225,7 +225,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * 
      * @param DateTimeInterface $endTime
      */
-    public function setEndTime(DateTimeInterface $endTime) {
+    public function setEndTime(DateTimeInterface $endTime = null) {
         $this->endTime = $endTime;
         return $this;
     }
@@ -317,7 +317,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * @param DateTimeInterface $endDate
      * @return \SpecShaper\CalendarBundle\Model\CalendarReoccurance
      */
-    public function setStartDate(DateTimeInterface $startDate) {
+    public function setStartDate(DateTimeInterface $startDate = null) {
         $this->startDate = $startDate;
         return $this;
     }
@@ -340,7 +340,7 @@ abstract class CalendarReoccurance implements CalendarReoccuranceInterface {
      * @param DateTimeInterface $endDate
      * @return \SpecShaper\CalendarBundle\Model\CalendarReoccurance
      */
-    public function setEndDate(DateTimeInterface $endDate) {
+    public function setEndDate(DateTimeInterface $endDate = null) {
         $this->endDate = $endDate;
         return $this;
     }
