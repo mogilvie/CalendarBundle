@@ -1,5 +1,8 @@
 # SpecShaperCalendarBundle
 
+
+Currently using this bundle for payments at (https://www.parolla.ie)](https://www.parolla.ie) and (https://tools.parolla.ie)](https://tools.parolla.ie)
+
 The SpecShaperCalendarBundle provides a calendar and appointment package for the Symfony2 
 framework utilising the [fullcalendar](http://fullcalendar.io/) jquery plugin.
 
